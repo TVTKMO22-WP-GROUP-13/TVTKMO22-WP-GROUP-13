@@ -11,8 +11,10 @@ const Header = () => {
             <Link to="/" className='linkki'>MyShowMoList</Link>
             
             <div className="headermenu">
+            <Link to="/login">
             <button type="button"> Login</button>
             <button type="button"> Sign Up</button>
+            </Link>
             </div>
             </div>
 

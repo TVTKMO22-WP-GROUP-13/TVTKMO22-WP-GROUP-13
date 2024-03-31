@@ -20,19 +20,23 @@ ul {
         text-decoration: none;
         text-align: center;
         font-size: 20px;
+
   
   }
   ul li ul.dropdownmenu {
-    background: #3c3f29;
+    background: #22438c;
     display: none;
     width: 100%;
     position: absolute;
     z-index: 999;
+
+    
     
   }
   
   ul li:hover ul.dropdownmenu {
     display: block;
+
     
   }
   #category{
@@ -42,4 +46,15 @@ ul {
   #search {
     padding: 4px;
     font-size: 15px;
+  }
+
+  @media screen and (max-width: 320px){
+    ul li {
+      display: block;
+      width: 100%;
+    }
+    ul li ul.dropdownmenu {
+      position: relative;
+      width: 100%;
+    }
   }
