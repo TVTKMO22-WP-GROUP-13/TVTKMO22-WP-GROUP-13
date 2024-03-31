@@ -33,6 +33,7 @@ ul {
   
   ul li:hover ul.dropdownmenu {
     display: block;
+    
   }
   #category{
     padding: 4px;
