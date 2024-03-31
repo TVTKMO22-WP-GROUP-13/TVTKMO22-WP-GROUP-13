@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './Header.css'
 import React from "react";
 
@@ -6,7 +7,9 @@ const Header = () => {
     return (
         <div className="header"> 
            
-            <div className="otsikko"> MyShowMoList
+            <div className="otsikko"> 
+            <Link to="/" className='linkki'>MyShowMoList</Link>
+            
             <div className="headermenu">
             <button type="button"> Login</button>
             <button type="button"> Sign Up</button>
