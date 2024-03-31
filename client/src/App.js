@@ -13,6 +13,7 @@ import GroupSearch from './pages/GroupSearch';
 import YourGroups from './pages/YourGroups';
 import ReviewsSearch from './pages/ReviewsSearch';
 import Dinnkino from './pages/Dinnkino';
+import Login from './pages/Login';
 function App() {
   return (
     <>
@@ -30,7 +31,7 @@ function App() {
         <Route path='/YourGroups' element={<YourGroups/>}/>
         <Route path='/ReviewsSearch' element={<ReviewsSearch/>}/>
         <Route path='/Dinnkino' element={<Dinnkino/>}/>
-
+        <Route path='/Login' element={<Login/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
       </div>
