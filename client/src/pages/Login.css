@@ -1,0 +1,37 @@
+div#Both-Div{
+    width: 20%;
+    max-width: 400px;
+    margin: 0 auto; 
+    border: 3px solid #3818aa;
+    border-radius: 1px;
+}
+div#Login-Div {
+    display: flex;
+    justify-content: center;
+}
+div#Login-Div div {
+    margin: 1em 0;
+    
+}
+
+button {
+    display: inline-block;
+    width: 100%;
+}
+div#Or{
+    display: flex;
+    justify-content: center;
+    font-size: large;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+div#SignIn-Div{
+    display: flex;
+    justify-content: center;
+
+}
+div#SignIn-Div div {
+    margin: 1em 0;
+    
+}

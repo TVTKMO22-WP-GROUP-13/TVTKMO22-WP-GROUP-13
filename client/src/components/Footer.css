@@ -1,0 +1,10 @@
+.footer {
+    background-color: #49455e;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.5%;
+    text-align: center;
+  }

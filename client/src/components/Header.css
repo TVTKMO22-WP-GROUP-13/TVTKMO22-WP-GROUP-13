@@ -1,0 +1,35 @@
+.header {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+  }
+  .otsikko{
+    background-color: #913549;
+    font-size: 35px;
+    text-align: left;
+    padding: 5px;
+    font-family:'Times New Roman', Times, serif
+ 
+  }
+
+  .linkki{
+    color: rgb(27, 148, 255);
+    text-decoration: none;
+  }
+  .headermenu {
+    text-align: right;
+    
+  }
+  .headermenu button{
+    width: 150px;
+    min-height: 40px;
+    border-radius: 6px;
+    margin-right: 10px;
+    color: rgb(241, 8, 86);
+    font-size: 25px;
+    font-family:'Times New Roman', Times, serif;
+    font-weight: bold;
+  
+  }
+  .headermenu button:hover{
+    background-color: aqua;
+  }
