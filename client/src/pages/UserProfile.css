@@ -5,7 +5,9 @@
     height: 50vh;
     justify-content: space-evenly;
 
+
 }
+
 .Kaikki{
     height: 200px;
     width: 200px;
@@ -14,12 +16,21 @@
     border-radius: 10px;
     border: 1px solid black;
     margin-left: 10px;
-
 }
 .KolmeEkaa, .ToisetKolme{
     display: flex;
     column-gap: 20em;
     justify-content: center;
+
+}
+.Kaikki a {
+    
+    text-decoration: none;
+  }
+.Kaikki p{
+    font-size: 20px;
+    padding: 8px;
+    
 
 }
 
@@ -36,7 +47,7 @@
 }
 #Listat {
     background-color: aqua;
-    
+
 }
 #Favourites{
     background-color: rgb(212, 165, 10);
