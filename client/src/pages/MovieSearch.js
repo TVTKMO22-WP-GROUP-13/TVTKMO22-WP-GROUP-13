@@ -1,5 +1,5 @@
-import './MovieSearch.css'
 import React, { useState } from 'react';
+import './MovieSearch.css';
 
 const genresList = [
   'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary',
@@ -15,6 +15,7 @@ const App = () => {
   const [rating, setRating] = useState(50);
   const [startYear, setStartYear] = useState(1895);
   const [endYear, setEndYear] = useState(2026);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const toggleGenre = (genre) => {
     setSelectedGenres((prevSelectedGenres) => {
@@ -28,87 +29,102 @@ const App = () => {
     });
   };
 
+  const handleSearchInput = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   const handleSearch = () => {
     console.log('Hakuehdot:', {
+      searchTerm,
       selectedGenres: Array.from(selectedGenres),
       certification,
       rating,
       startYear,
       endYear,
     });
+    // Implementoi hakutoiminnallisuus täällä
   };
 
   return (
     <div className="wrapper">
-    {/* Genre nappulat */}
-    <div>
-      <h2>Genres</h2>
-      <div className="genre-container">
-        {genresList.map((genre) => (
-          <button
-            key={genre}
-            className={`genre-button ${selectedGenres.has(genre) ? 'selected' : ''}`}
-            onClick={() => toggleGenre(genre)}
-          >
-            {genre}
-          </button>
-        ))}
+      {/* Hakupalkki */}
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search for movies..."
+          value={searchTerm}
+          onChange={handleSearchInput}
+        />
       </div>
-    </div>
 
-    {/* ikäsuositus nappulat */}
-    <div>
-      <h2>Certification</h2>
-      <div className="certification-container">
-        {certificationsList.map((cert) => (
-          <button
-            key={cert}
-            className={`certification-button ${certification === cert ? 'selected' : ''}`}
-            onClick={() => setCertification(cert)}
-          >
-            {cert}
-          </button>
-        ))}
+      {/* Genre nappulat */}
+      <div>
+        <h2>Genres</h2>
+        <div className="genre-container">
+          {genresList.map((genre) => (
+            <button
+              key={genre}
+              className={`genre-button ${selectedGenres.has(genre) ? 'selected' : ''}`}
+              onClick={() => toggleGenre(genre)}
+            >
+              {genre}
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
 
+      {/* Ikäsuositus nappulat */}
+      <div>
+        <h2>Certification</h2>
+        <div className="certification-container">
+          {certificationsList.map((cert) => (
+            <button
+              key={cert}
+              className={`certification-button ${certification === cert ? 'selected' : ''}`}
+              onClick={() => setCertification(cert)}
+            >
+              {cert}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Arvostelu ja vuodet liukusäätimillä */}
+      <div>
+        <h2>Rating: {rating}</h2>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+        />
+      </div>
 
       <div>
-        <label>
-         <h2>Rating: {rating}</h2>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
-          />
-        </label>
-      </div>
-
-      <div>
-        <label>
         <h2>Start Year: {startYear}</h2>
-          <input
-            type="range"
-            min="1895"
-            max={endYear} 
-            value={startYear}
-            onChange={(e) => setStartYear(Number(e.target.value))}
-          />
-        </label>
-        <label>
-          <h2>End Year: {endYear}</h2>
-          <input
-            type="range"
-            min={startYear} 
-            max="2024"
-            value={endYear}
-            onChange={(e) => setEndYear(Number(e.target.value))}
-          />
-        </label>
+        <input
+          type="range"
+          min="1895"
+          max={endYear}
+          value={startYear}
+          onChange={(e) => setStartYear(Number(e.target.value))}
+        />
       </div>
 
+      <div>
+        <h2>End Year: {endYear}</h2>
+        <input
+          type="range"
+          min={startYear}
+          max="2024"
+          value={endYear}
+          onChange={(e) => setEndYear(Number(e.target.value))}
+        />
+      </div>
+
+      {/* Haku nappi */}
       <button className="search-button" onClick={handleSearch}>Search</button>
     </div>
   );
