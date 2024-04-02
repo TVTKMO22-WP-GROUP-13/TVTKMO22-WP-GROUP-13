@@ -17,7 +17,7 @@ export default function Navbar() {
             </li>
           </ul>
         </li>
-        <li><a> Series</a>
+        <li><a> Series &nbsp; </a>
           <ul className="dropdownmenu">
           <li>
           <Link to="/SeriesSearch">Series Search</Link>
@@ -57,6 +57,7 @@ export default function Navbar() {
         <input type="text" id="search" placeholder="Search" ></input>
 
 
-      </ul></nav>
+      </ul>
+      </nav>
   )
 }

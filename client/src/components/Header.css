@@ -1,6 +1,5 @@
 .header {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    
   }
   .otsikko{
     background-color: #913549;
@@ -10,7 +9,57 @@
     font-family:'Times New Roman', Times, serif
  
   }
+  .profile{
+    background-color: rgb(55, 55, 78);
+    position: fixed;
+    top: 0;
+    right: 0;
 
+  }
+  
+  ul.UlProfile {
+    list-style-type: none;
+    background-color: #913549;
+    
+  }
+  ul :hover{
+    background-color: rgb(46, 46, 117);
+    color: white;
+  }
+  ul li {
+  
+    display: inline-block;
+    position: relative;
+  }
+  ul li a.Profiili {
+        display: block;
+        color: #f3f3f3;
+        padding: 10px 20px;
+        text-decoration: none;
+        text-align: center;
+        font-size: 15px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-style:italic
+
+  
+  }
+  ul li ul.Droppi {
+    background: #22438c;
+    display: none;
+    width: 100%;
+    position: absolute;
+    z-index: 999;
+
+    
+    
+  }
+  
+  ul li:hover ul.Droppi {
+    display: block;
+
+    
+  }
+  
   .linkki{
     color: rgb(27, 148, 255);
     text-decoration: none;
