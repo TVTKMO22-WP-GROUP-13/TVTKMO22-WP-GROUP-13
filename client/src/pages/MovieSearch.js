@@ -75,7 +75,7 @@ const App = () => {
 
       <div>
         <label>
-          Rating: {rating}
+         <h2>Rating: {rating}</h2>
           <input
             type="range"
             min="0"
@@ -88,7 +88,7 @@ const App = () => {
 
       <div>
         <label>
-        Start Year: {startYear}
+        <h2>Start Year: {startYear}</h2>
           <input
             type="range"
             min="1895"
@@ -98,7 +98,7 @@ const App = () => {
           />
         </label>
         <label>
-          End Year: {endYear}
+          <h2>End Year: {endYear}</h2>
           <input
             type="range"
             min={startYear} 
