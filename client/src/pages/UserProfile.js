@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './UserProfile.css'
 import React from 'react'
 
@@ -6,14 +7,31 @@ export default function UserProfile() {
     <>
     <div className='Konkka'>
     <div className='KolmeEkaa'>
-    <div className='Kaikki' id='UserProfileAndAva'>UserProfile</div>
-    <div className='Kaikki' id='ReviewsDiv'> Tänne tulee userin revit</div>
-    <div className='Kaikki' id='Listat'> tänne tulee listat mitä on katottu yms</div>
+    <div className='Kaikki' id='UserProfileAndAva'>
+        <p>UserProfile</p>
+    </div>
+    <div className='Kaikki' id='ReviewsDiv'> 
+        <p> <Link to="/TopMovies">Reviews</Link></p>
+    </div>
+    <div className='Kaikki' id='Listat'>
+        <p><Link to="/TopMovies">Completed</Link></p>
+        
+        <p><Link to="/TopMovies">Watching</Link></p>
+        <p><Link to="/TopMovies">Plan to watch</Link></p>
+        
+    </div>
     </div>
     <div className='ToisetKolme'>
-    <div className='Kaikki' id='Favourites'> tänne tulee käyttäjän favs</div>
-    <div className='Kaikki' id='LastWatched'> Tänne tulee mitä on viimeks katottu</div>
-    <div className='Kaikki' id='Groups'> ja tänne tulee käyttäjän groupit</div>
+    <div className='Kaikki' id='Favourites'> 
+    <p> <Link to="/TopMovies">Favourites</Link></p>
+ 
+    </div>
+    <div className='Kaikki' id='LastWatched'> 
+    <p> Last Watched</p>
+    </div>
+    <div className='Kaikki' id='Groups'>
+    <p>Groups</p> 
+    </div>
     </div>
     </div>
     </>
