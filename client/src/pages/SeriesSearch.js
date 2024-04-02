@@ -52,7 +52,7 @@ const App = () => {
         <input
           type="text"
           className="search-input"
-          placeholder="Search for movies..."
+          placeholder="Search for series..."
           value={searchTerm}
           onChange={handleSearchInput}
         />
