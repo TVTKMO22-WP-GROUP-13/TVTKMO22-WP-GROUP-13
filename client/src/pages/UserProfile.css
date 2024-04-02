@@ -1,0 +1,53 @@
+.Konkka{
+    display: flex;
+    flex-direction: column;
+    border: 5px solid black;
+    height: 50vh;
+    justify-content: space-evenly;
+
+}
+.Kaikki{
+    height: 200px;
+    width: 200px;
+    text-align: center;
+    font-size: large;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin-left: 10px;
+
+}
+.KolmeEkaa, .ToisetKolme{
+    display: flex;
+    column-gap: 20em;
+    justify-content: center;
+
+}
+
+#UserProfileAndAva{
+    background-color: blue;
+    
+    
+     
+}
+#ReviewsDiv{
+    background-color: yellow;
+    
+
+}
+#Listat {
+    background-color: aqua;
+    
+}
+#Favourites{
+    background-color: rgb(212, 165, 10);
+    
+   
+}
+#LastWatched{
+    background-color: red;
+    
+}
+#Groups{
+    background-color: green;
+   
+}
