@@ -15,6 +15,11 @@ import ReviewsSearch from './pages/ReviewsSearch';
 import Dinnkino from './pages/Dinnkino';
 import Login from './pages/Login';
 import UserProfile from './pages/UserProfile';
+import UserFavorites from './pages/UserFavorites';
+import MakeGroup from './pages/MakeGroup';
+import UserComplitedPages from './pages/UserCompletedPages'
+import UserWatchingPages from './pages/UserWatchingPages';
+import UserPlanToWatchPages from './pages/UserPlanToWatchPages';
 function App() {
   return (
     <>
@@ -34,6 +39,12 @@ function App() {
         <Route path='/Dinnkino' element={<Dinnkino/>}/>
         <Route path='/Login' element={<Login/>}/>
         <Route path='/UserProfile' element={<UserProfile/>}/>
+        <Route path='/UserFavorites' element={<UserFavorites/>}/>
+        <Route path='/MakeGroup' element={<MakeGroup/>}/>
+        <Route path='/UserCompletedPages' element={<UserComplitedPages/>}/>
+        <Route path='/UserWatchingPages' element={<UserWatchingPages/>}/>
+        <Route path='/UserPlanToWatchPages' element={<UserPlanToWatchPages/>}/>
+
         <Route path="*" element={<NotFound/>}/>
       </Routes>
       </div>
