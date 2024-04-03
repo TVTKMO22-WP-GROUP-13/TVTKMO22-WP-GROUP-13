@@ -1,7 +1,8 @@
 import React from 'react'
 
-export default function LogOut() {
+export default function LogOut({setUser}) {
+    setUser(null)
   return (
-    <div>LogOut</div>
+    <p>Logged Out</p>
   )
 }
