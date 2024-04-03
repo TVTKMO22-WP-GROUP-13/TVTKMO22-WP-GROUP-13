@@ -28,7 +28,7 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header user={user}/>
       <Navbar />
       
       <div className='container'>
@@ -41,7 +41,7 @@ function App() {
         <Route path='/GroupSearch' element={<GroupSearch/>}/>
         <Route path='/YourGroups' element={<YourGroups user={user}/>}/>
         <Route path='/YourReviews' element={<YourReviews user={user}/>}/>
-        <Route path='/LogOut' element={<LogOut/>}/>
+        <Route path='/LogOut' element={<LogOut setUser={setUser}/>}/>
         <Route path='/ReviewsSearch' element={<ReviewsSearch/>}/>
         <Route path='/Dinnkino' element={<Dinnkino/>}/>
         <Route path='/Login' element={<Login setUser={setUser}/>}/>
