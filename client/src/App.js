@@ -15,7 +15,17 @@ import ReviewsSearch from './pages/ReviewsSearch';
 import Dinnkino from './pages/Dinnkino';
 import Login from './pages/Login';
 import UserProfile from './pages/UserProfile';
+import UserFavorites from './pages/UserFavorites';
+import MakeGroup from './pages/MakeGroup';
+import UserComplitedPages from './pages/UserCompletedPages'
+import UserWatchingPages from './pages/UserWatchingPages';
+import UserPlanToWatchPages from './pages/UserPlanToWatchPages';
+import { useState } from 'react';
+import YourReviews from './pages/YourReviews';
+import LogOut from './pages/LogOut';
 function App() {
+  const [user, setUser] = useState(null)
+
   return (
     <>
       <Header />
@@ -29,11 +39,19 @@ function App() {
         <Route path='/SeriesSearch' element={<SeriesSearch/>}/>
         <Route path='/TopSeries' element={<TopSeries/>}/>
         <Route path='/GroupSearch' element={<GroupSearch/>}/>
-        <Route path='/YourGroups' element={<YourGroups/>}/>
+        <Route path='/YourGroups' element={<YourGroups user={user}/>}/>
+        <Route path='/YourReviews' element={<YourReviews user={user}/>}/>
+        <Route path='/LogOut' element={<LogOut/>}/>
         <Route path='/ReviewsSearch' element={<ReviewsSearch/>}/>
         <Route path='/Dinnkino' element={<Dinnkino/>}/>
-        <Route path='/Login' element={<Login/>}/>
-        <Route path='/UserProfile' element={<UserProfile/>}/>
+        <Route path='/Login' element={<Login setUser={setUser}/>}/>
+        <Route path='/UserProfile' element={<UserProfile user={user}/>}/>
+        <Route path='/UserFavorites' element={<UserFavorites/>}/>
+        <Route path='/MakeGroup' element={<MakeGroup/>}/>
+        <Route path='/UserCompletedPages' element={<UserComplitedPages/>}/>
+        <Route path='/UserWatchingPages' element={<UserWatchingPages/>}/>
+        <Route path='/UserPlanToWatchPages' element={<UserPlanToWatchPages/>}/>
+
         <Route path="*" element={<NotFound/>}/>
       </Routes>
       </div>

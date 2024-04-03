@@ -17,9 +17,9 @@ const Header = () => {
                 <ul className='Droppi'> 
                     <li>
                     <Link to="/UserProfile">Profile</Link>
-                    <Link to="/MovieSearch">Groups</Link>
-                    <Link to="/MovieSearch">Reviews</Link>
-                    <Link to="/MovieSearch">Logout</Link>
+                    <Link to="/YourGroups">Groups</Link>
+                    <Link to="/YourReviews">Reviews</Link>
+                    <Link to="/Logout">Logout</Link>
 
 
                     </li>
@@ -30,8 +30,7 @@ const Header = () => {
             
             <div className="headermenu">
             <Link to="/login">
-            <button type="button"> Login</button>
-            <button type="button"> Sign Up</button>
+            <button type="button">Login / Sign Up</button>
             </Link>
             </div>
             </div>

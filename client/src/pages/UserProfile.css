@@ -16,6 +16,7 @@
     border-radius: 10px;
     border: 1px solid black;
     margin-left: 10px;
+    
 }
 .KolmeEkaa, .ToisetKolme{
     display: flex;
@@ -26,12 +27,47 @@
 .Kaikki a {
     
     text-decoration: none;
-  }
-.Kaikki p{
-    font-size: 20px;
-    padding: 8px;
-    
+}
 
+#Review{
+    font-size: auto;
+    margin-top: 0.5em;
+}
+
+#Lista{
+    font-size: 15px;
+    padding: 20px;
+    text-align: start;
+    font-weight: bold;
+
+}
+
+#Favori{
+    font-size: auto;
+    margin-top: 0.5em;
+    text-align: start;
+    
+}
+#MakeGroupButton{
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #dd1313;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+#MakeGroupButton:hover{
+    background-color: #033f06;
+
+}
+#ComplitedA{
+    background-color: rgb(255, 0, 0);
 }
 
 #UserProfileAndAva{
@@ -51,8 +87,9 @@
 }
 #Favourites{
     background-color: rgb(212, 165, 10);
+    padding: 8px;
     
-   
+    
 }
 #LastWatched{
     background-color: red;
