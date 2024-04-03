@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import './UserProfile.css'
 import React from 'react'
 
-export default function UserProfile() {
+export default function UserProfile({user}) {
     const Num = 10;
+    if (user === null){
+      return <Navigate to='/login' />
+    }
   return (
     <>
     <div className='Konkka'>
