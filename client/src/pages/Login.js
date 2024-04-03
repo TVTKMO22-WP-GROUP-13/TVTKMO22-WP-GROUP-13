@@ -9,7 +9,6 @@ export default function Login({setUser}) {
     const navigate = useNavigate()
     const validate = (e) =>{
         e.preventDefault()
-        //tänne oikea backend kutsu
         if(username === 'Admin' && Password ==='Admin'){
             setUser({user: username,password: Password})
             navigate("/UserProfile")
