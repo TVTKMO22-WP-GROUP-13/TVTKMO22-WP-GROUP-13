@@ -3,15 +3,22 @@ import React, { useState } from 'react'
 
 
 export default function Dinnkino() {
-  const [selectedKino, setSelectedKino] = useState('Pick a kino');
-  const [selectedDate, setSelectedDate] = useState('Pick a date');
-  const [selectedMovie, setSelectedMovie] = useState('Pick a movie');
-
+  const [selectedKino, setSelectedKino] = useState('')
+  const [selectedDate, setSelectedDate] = useState('')
+  const [selectedMovie, setSelectedMovie] = useState('')
+  const [showShowtimeContainer, setShowtimeContainer] = useState(false)
 
   const handleSearch = () => {
     // Hakutoiminnallisuus tähä
     console.log('Searching...')
-  };
+
+    if (selectedKino && selectedDate && selectedMovie) {
+      setShowtimeContainer(true)
+      
+    } else {
+    setShowtimeContainer(false)
+    }
+  }
 
   return (
     <div className="everything-wrapper">
@@ -27,26 +34,67 @@ export default function Dinnkino() {
       {/* Date dropdown */}
       <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}>
         <option value="Pick a date">Pick a date</option>
-        <option value="Kalenteri">Kalenteri </option>
+        <option value="Date 1">Date 1 </option>
+        <option value="Date 2">Date 2 </option>
+        <option value="Date 3">Date 3 </option>
       </select>
 
       {/* Movie dropdown */}
       <select value={selectedMovie} onChange={(e) => setSelectedMovie(e.target.value)}>
         <option value="Pick a movie">Pick a movie</option>
-        <option value="Movie 1">Movie 1</option>
-        <option value="Movie 2">Movie 2</option>
-        <option value="Movie 3">Movie 3</option>
+        <option value="All movies ">All movies</option>
       </select>
 
       {/* Search button */}
       <button onClick={handleSearch}>Search</button>
       </div>
       
-      <div className="showtime">
-      <button>Yee</button>
+      {showShowtimeContainer && ( 
+         <>
+         <div className="showtime-container">
+           <div className='block'>
+             <p>Date/time</p>
+           </div>
+           <div className='block'>
+             <p>Movie name</p>
+           </div>
+           <div className='block'>
+             <p>Location: {selectedKino}</p>
+           </div>
+           <div className='block'>
+             <p>Places left</p>
+           </div>
+         </div>
+         <div className="showtime-container">
+         <div className='block'>
+             <p>Date/time</p>
+           </div>
+           <div className='block'>
+             <p>Movie name</p>
+           </div>
+           <div className='block'>
+             <p>Location: {selectedKino}</p>
+           </div>
+           <div className='block'>
+             <p>Places left</p>
+           </div>
+         </div>
+         <div className="showtime-container">
+         <div className='block'>
+             <p>Date/time</p>
+           </div>
+           <div className='block'>
+             <p>Movie name</p>
+           </div>
+           <div className='block'>
+             <p>Location: {selectedKino}</p>
+           </div>
+           <div className='block'>
+             <p>Places left</p>
+           </div>
+         </div>
+       </>   
+    )}
     </div>
-    </div>
-
-    
   )
 }
