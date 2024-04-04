@@ -5,6 +5,7 @@ console.log('Database user is:', process.env.PG_USER);
 console.log('Database host is:', process.env.PG_HOST);
 console.log('Database port is:', process.env.PG_PORT);
 console.log('Database name is:', process.env.PG_DATABASE);
+console.log('Database jwt secret is:', process.env.JWT_SECRET);
 
 
 const {Pool} = require('pg');
