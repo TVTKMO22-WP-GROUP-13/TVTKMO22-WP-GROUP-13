@@ -1,10 +1,14 @@
 import { Link, Navigate } from 'react-router-dom'
 import './UserProfile.css'
 import React from 'react'
+import { useSignals } from '@preact/signals-react/runtime';
+import { jwtToken } from '../components/AuSignal';
 
-export default function UserProfile({user}) {
+export default function UserProfile() {
     const Num = 10;
-    if (user === null){
+    useSignals();
+    if(jwtToken.value.length === 0){
+      
       return <Navigate to='/login' />
     }
   return (
