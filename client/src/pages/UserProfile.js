@@ -15,7 +15,7 @@ export default function UserProfile({user}) {
         <p>User xxx Profile</p>
     </div>
     <div className='Kaikki' id='ReviewsDiv'> 
-        <p> <Link to="/TopMovies">Reviews</Link></p>
+        <p> <Link to="/YourReviews">Reviews</Link></p>
         <p id='Review'> Review 1</p>
         <p id='Review'> Review 2</p>
         <p id='Review'> Review 3</p>
