@@ -26,9 +26,10 @@ import React, {useState} from 'react';
 
 function App() {
   
+      const [accountName, setAccountName] = useState({})
   return (
     <>
-      <Header/>
+      <Header accountName={accountName} setAccountName={setAccountName}/>
       <Navbar />
       
       <div className='container'>
@@ -44,7 +45,7 @@ function App() {
         <Route path='/LogOut' element={<LogOut/>}/>
         <Route path='/ReviewsSearch' element={<ReviewsSearch/>}/>
         <Route path='/Dinnkino' element={<Dinnkino/>}/>
-        <Route path='/Login' element={<Login/>}/>
+        <Route path='/Login' element={<Login setAccountName={setAccountName}/>}/>
         <Route path='/UserProfile' element={<UserProfile/>}/>
         <Route path='/UserFavorites' element={<UserFavorites/>}/>
         <Route path='/MakeGroup' element={<MakeGroup/>}/>
