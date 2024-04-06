@@ -10,13 +10,14 @@ const Header = ({accountName, setAccountName}) => {
            
            <div className="otsikko"> 
             <Link to="/" className='linkki'>MyShowMoList</Link>
+            {username && (
             <div className='profile'>
                 
                 <ul className='UlProfile'>
                 <li>
                 
-                <a className='Profiili'> Username {username}</a>
-              
+              <a className='Profiili'> {username} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            
                 <ul className='Droppi'> 
                     <li>
                     <Link to="/UserProfile">Profile</Link>
@@ -31,16 +32,18 @@ const Header = ({accountName, setAccountName}) => {
                 </li>
                 </ul>
             </div>
-            
+            )}
+            {!username && (
             <div className="headermenu">
                 
             <Link to="/login">
             <button type="button">Login/Sign Up</button>
             </Link>
-             
+        
              
         
             </div>
+            )}
             </div>
 
             </div>
