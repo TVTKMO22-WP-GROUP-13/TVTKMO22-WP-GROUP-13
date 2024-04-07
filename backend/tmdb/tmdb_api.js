@@ -4,9 +4,6 @@ const axios = require('axios');
 //here we create an axios instance with the base URL for the TMDB API
 const tmdb = axios.create({
     baseURL: 'https://api.themoviedb.org/3',
-    headers: {
-        'Authorization': `Bearer ${process.env.TMDB_API_BEARER_TOKEN}`
-    },
     params: {
         api_key: process.env.TMDB_API_KEY
     }
