@@ -7,7 +7,6 @@ export default function Dinnkino() {
   const [selectedKino, setSelectedKino] = useState('')
   const [selectedDate, setSelectedDate] = useState('')
   const [selectedMovie, setSelectedMovie] = useState('')
-  const [showShowtimeContainer, setShowtimeContainer] = useState(false)
 
  
   const handleSearch = () => {
@@ -50,5 +49,6 @@ export default function Dinnkino() {
         <p>.</p>
         </div>
       </div>
+
   </div>
 )}
