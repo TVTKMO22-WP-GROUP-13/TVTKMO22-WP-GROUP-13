@@ -10,7 +10,8 @@ export default function Dinnkino() {
   const [showShowtimeContainer, setShowtimeContainer] = useState(false)
   const [theatreAreas, setTheatreAreas] = useState([])
   const [showdates, setshowDates] = useState([])
-  const [moviesFinni, setMovies] = useState([]);
+  const [moviesFinni, setMovies] = useState([])
+  const [showtimeData, setShowtimeData] = useState([])
 
 
   useEffect(() => {
@@ -22,8 +23,6 @@ export default function Dinnkino() {
         const areasArray = Array.from(areas).map(area => ({
           tiituid: area.querySelector('ID').textContent,
           name: area.querySelector('Name').textContent
-
-         
         }))
         console.log("Teatteri id: ", areasArray.map(area => area.tiituid))
         setTheatreAreas(areasArray);
@@ -64,28 +63,50 @@ useEffect(() => {
         const moviesArray = Array.from(showElements).map(show => ({
           tiitteliidid: show.querySelector('EventID').textContent,
           title: show.querySelector('Title').textContent
-        })).filter(movie => movie.title !== "Leffasynttärit")
+        })).filter(movie => movie.title !== "Leffasynttärit" && movie.title !== "Oma näytös")
         setMovies(moviesArray)
       })
       .catch(error => console.error('Error fetching movies:', error))
   }
 }, [selectedKino, selectedDate])
-  /*const handleDateChange = (event) => {
-    setSelectedDate(event.target.value)
-  }*/
-
-
+ 
   const handleSearch = () => {
-    // Hakutoiminnallisuus tähä
-    console.log('Searching...')
-
+   
     if (selectedKino && selectedDate && selectedMovie) {
       setShowtimeContainer(true)
+      const selectMovieDets = moviesFinni.find(movie => movie.tiitteliidid == selectedMovie)
       
-    } else {
+        if(selectMovieDets) {
+          const movieTitteli = selectMovieDets.title
+          const MovieImgaage = selectMovieDets.imageURL
+          const scheduleURL = `https://www.finnkino.fi/xml/Schedule/?area=${selectedKino}&dt=${selectedDate}&eventID=${selectedMovie}`
+          
+          axios.get(scheduleURL)
+          .then(response => {
+            const parser = new DOMParser()
+            const xmlDoc = parser.parseFromString(response.data, 'text/xml')
+            const showElements = xmlDoc.getElementsByTagName('Show')
+            const showtimeData = []
+
+            for (let i = 0; i < showElements.length; i++) {
+              const show = showElements[i]
+              const showtime = show.querySelector('dttmShowStart').textContent
+              const theaterName = show.querySelector('Theatre').textContent
+              const imageURL = show.querySelector('EventSmallImagePortrait').textContent
+            
+              showtimeData.push({
+                showtime: showtime,
+                movieTitle: movieTitteli,
+                theaterName: theaterName,
+                imageURL: imageURL
+              })
+            }
+            setShowtimeData(showtimeData)
+          })
+     } else {
     setShowtimeContainer(false)
     }
-  }
+  }}
 
   return (
     <div className="everything-wrapper">
@@ -116,58 +137,30 @@ useEffect(() => {
     }, []).map(movie => (
         <option key={movie.tiitteliidid} value={movie.tiitteliidid}>{movie.title}</option>
     ))}
-</select>
+    </select>
 
       {/* Search button */}
       <button onClick={handleSearch}>Search</button>
+      </div>  
+      {showShowtimeContainer && (
+  <>
+    {showtimeData.map((show, index) => (
+      <div className="showtime-container" key={index}>
+        <div className='block'>
+          <p>{show.showtime}</p>
+        </div>
+        <div className='block'>
+          <p>{show.movieTitle}</p>
+        </div>
+        <div className='block'>
+          <p>{selectedKino}</p>
+        </div>
+        <div className='block'>
+          <img src = {show.imageURL} alt = "movie posteri"></img>
+        </div>
       </div>
-      
-      {showShowtimeContainer && ( 
-         <>
-         <div className="showtime-container">
-           <div className='block'>
-             <p>Date/time</p>
-           </div>
-           <div className='block'>
-             <p>Movie name</p>
-           </div>
-           <div className='block'>
-             <p>Location: {selectedKino}</p>
-           </div>
-           <div className='block'>
-             <p>Places left</p>
-           </div>
-         </div>
-         <div className="showtime-container">
-         <div className='block'>
-             <p>Date/time</p>
-           </div>
-           <div className='block'>
-             <p>Movie name</p>
-           </div>
-           <div className='block'>
-             <p>Location: {selectedKino}</p>
-           </div>
-           <div className='block'>
-             <p>Places left</p>
-           </div>
-         </div>
-         <div className="showtime-container">
-         <div className='block'>
-             <p>Date/time</p>
-           </div>
-           <div className='block'>
-             <p>Movie name</p>
-           </div>
-           <div className='block'>
-             <p>Location: {selectedKino}</p>
-           </div>
-           <div className='block'>
-             <p>Places left</p>
-           </div>
-         </div>
-       </>   
+      ))}
+      </>
     )}
-    </div>
-  )
-}
+  </div>
+)}
