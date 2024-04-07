@@ -2,7 +2,7 @@ const pgPool = require('./pg_connection');
 
 const sql = {
     GET_ALL_USERS: 'SELECT username FROM user_data',
-    GET_USER: 'SELECT username FROM user_data WHERE username=$1',
+    GET_USER: 'SELECT user_id, username, created_at FROM user_data WHERE username=$1',
 }
 
 
