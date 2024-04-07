@@ -11,7 +11,7 @@ async function register(username, password_hash){
 
 async function getPassword(username){
     const result = await pgPool.query(sql.GET_PASSWORD, [username]);
-    return result.rowCount > 0 ? result.rows[0].pw : null;
+    return result.rowCount > 0 ? result.rows[0].password_hash : null;
 
 }
 
