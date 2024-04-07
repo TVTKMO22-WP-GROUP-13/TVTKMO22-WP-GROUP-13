@@ -4,8 +4,9 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import { jwtToken } from '../components/AuSignal'
 
-export default function Login() {
+export default function Login({setAccountName}) {
 
+    
     const [username, setUsername] = useState('')
     const [Password, setPassword] = useState('')
     const [username2, setUsername2] = useState('')
@@ -16,9 +17,11 @@ export default function Login() {
         
        
        axios.post('http://localhost:3001/authentication/login', {username: username, pw: Password})
+      
        .then(resp =>{ 
         jwtToken.value = resp.data.jwtToken
-        
+        setAccountName({accountName: username})
+        console.log(setAccountName)
         navigate("/UserProfile")
     })
        
@@ -26,19 +29,13 @@ export default function Login() {
     
        console.log(jwtToken)
        
-        
-        
-       
     }
     const accountmake = (e) =>{
         e.preventDefault()
-        
-       
+          
        axios.post('http://localhost:3001/authentication/register',
        {username: username2, pw: Password2})
        .catch(err => console.log(err.message))
-
-       console.log()
         
        //navigate("/UserProfile")
     }
