@@ -24,4 +24,10 @@ async function createGroup(group_name, description, owner_id){
     await pgPool.query(sql.CREATE_GROUP, [group_name, description, owner_id]);
 }
 
+
+async function createGroup(group_name, description, owner_id){
+    await pgPool.query(sql.CREATE_GROUP, [group_name, description, owner_id]);
+}
+
 module.exports = {register, getPassword, createGroup, deleteUser};
+

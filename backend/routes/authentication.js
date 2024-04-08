@@ -41,6 +41,7 @@ router.post('/login', async (req,res)=>{
     }
 });
 
+
 //end point for deleting account
 router.delete('/delete', auth, async(req, res)=>{
     const username = req.body.username;
@@ -71,7 +72,6 @@ router.delete('/delete', auth, async(req, res)=>{
         res.status(500).json({error: 'internal server error'})
     }
 })
-
 
 
 module.exports = router;
