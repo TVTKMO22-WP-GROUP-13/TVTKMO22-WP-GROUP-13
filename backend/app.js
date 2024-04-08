@@ -1,6 +1,8 @@
 require('dotenv').config();
 const user_data = require('./routes/user_data');
 const authentication = require('./routes/authentication');
+const user_group = require('./routes/user_group');
+const tmdb = require('./routes/tmdb');
 const cors = require('cors');
 
 const express = require('express');
@@ -18,6 +20,8 @@ app.use(cors());
 //Adding routes
 app.use('/user_data', user_data);
 app.use('/authentication',  authentication);
+app.use('/tmdb', tmdb);
+app.use('/user_group', user_group);
 
 const PORT = process.env.PORT || 3001;
 
