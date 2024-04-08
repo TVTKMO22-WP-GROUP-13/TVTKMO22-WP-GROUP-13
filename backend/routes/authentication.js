@@ -32,6 +32,8 @@ router.post('/login', async (req,res)=>{
         if(isAuth){
             //create a token
             const token = jwt.sign({username: uname }, process.env.JWT_SECRET);
+            //here we can set the token to expire in 30 minutes
+            //const token = jwt.sign({username: uname }, process.env.JWT_SECRET, { expiresIn: '30m' });
             res.status(200).json({jwtToken: token });
         }else{
             res.status(401).json({error: 'Wrong password'});            
