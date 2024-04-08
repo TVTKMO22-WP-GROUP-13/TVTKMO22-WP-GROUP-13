@@ -17,16 +17,19 @@ import Login from './pages/Login';
 import UserProfile from './pages/UserProfile';
 import UserFavorites from './pages/UserFavorites';
 import MakeGroup from './pages/MakeGroup';
-import UserComplitedPages from './pages/UserCompletedPages'
+import UserComplitedPages from './pages/UserCompletedPages';
 import UserWatchingPages from './pages/UserWatchingPages';
 import UserPlanToWatchPages from './pages/UserPlanToWatchPages';
 import YourReviews from './pages/YourReviews';
 import LogOut from './pages/LogOut';
+import AccountSettings from './pages/accountSettings';
 import React, {useState} from 'react';
+
 
 function App() {
   
       const [accountName, setAccountName] = useState({})
+      const [passu, setPassu] = useState({})
   return (
     <>
       <Header accountName={accountName} setAccountName={setAccountName}/>
@@ -45,8 +48,9 @@ function App() {
         <Route path='/LogOut' element={<LogOut/>}/>
         <Route path='/ReviewsSearch' element={<ReviewsSearch/>}/>
         <Route path='/Dinnkino' element={<Dinnkino/>}/>
-        <Route path='/Login' element={<Login setAccountName={setAccountName}/>}/>
+        <Route path='/Login' element={<Login setAccountName={setAccountName} setPassu={setPassu}/>}/>
         <Route path='/UserProfile' element={<UserProfile/>}/>
+        <Route path='/AccountSettings' element={<AccountSettings accountName={accountName} passu={passu} setAccountName={setAccountName}/>}/>
         <Route path='/UserFavorites' element={<UserFavorites/>}/>
         <Route path='/MakeGroup' element={<MakeGroup/>}/>
         <Route path='/UserCompletedPages' element={<UserComplitedPages/>}/>

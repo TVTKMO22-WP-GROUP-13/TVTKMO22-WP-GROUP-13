@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import './Header.css'
 import React from "react";
 const Header = ({accountName, setAccountName}) => {
-    console.log(accountName)
+    
     const username = accountName.accountName
-    console.log(username)
+    
     return (
         <div className="header"> 
            
@@ -21,6 +21,7 @@ const Header = ({accountName, setAccountName}) => {
                 <ul className='Droppi'> 
                     <li>
                     <Link to="/UserProfile">Profile</Link>
+                    <Link to="/accountSettings">Account settings</Link>
                     <Link to="/YourGroups">Groups</Link>
                     <Link to="/YourReviews">Reviews</Link>
                     
