@@ -1,4 +1,4 @@
-const { getUser, getUsers } = require('../database/user_data_db');
+const { getUser, getUsers, getUserByID } = require('../database/user_data_db');
 const { auth } = require('../middleware/auth');
 
 const router = require('express').Router();
@@ -19,8 +19,25 @@ router.get('/all', async (req, res) => {
     }
 });
 
+//endpoint to get user by user_id
+router.get('/user_id', async (req, res) => {   //:user_id
+    try {
+        const user = await getUserByID(req.query.user_id);
+        //check if the user object is empty
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        console.log(user);
+        res.json({ message: 'User retrieved successfully', user });
+    } catch (error) {
+        console.error('Error fetching the user:', error);
+        res.status(500).json({ message: 'Failed to retrieve the user' });
+    }
+});
+
+
 //endpoint to get user by username
-router.get('/', async (req, res) => {
+router.get('/username', async (req, res) => {
     try {
         const user = await getUser(req.query.username);
         //check if the user object is empty
@@ -34,5 +51,6 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: 'Failed to retrieve the user' });
     }
 });
+
 
 module.exports = router;
