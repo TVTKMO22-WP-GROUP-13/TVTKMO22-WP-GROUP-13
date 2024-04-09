@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import { jwtToken } from '../components/AuSignal'
 
-export default function Login({setAccountName}) {
-
+export default function Login({setAccountName, setPassu}) {
+    
     
     const [username, setUsername] = useState('')
     const [Password, setPassword] = useState('')
@@ -20,14 +20,17 @@ export default function Login({setAccountName}) {
       
        .then(resp =>{ 
         jwtToken.value = resp.data.jwtToken
+        
+        console.log("salasana on", Password)
         setAccountName({accountName: username})
-        console.log(setAccountName)
+        
         navigate("/UserProfile")
+        setPassu({ passu: Password })
     })
+    
        
        .catch(err => console.log(err.message))
     
-       console.log(jwtToken)
        
     }
     const accountmake = (e) =>{
