@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './MovieSearch.css';
+import { searchMovies } from './MovieService';
 
 const genresList = [
   'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary',
@@ -16,6 +17,7 @@ const App = () => {
   const [startYear, setStartYear] = useState(1895);
   const [endYear, setEndYear] = useState(2026);
   const [searchTerm, setSearchTerm] = useState('');
+  const [movies, setMovies] = useState([]);
 
   const toggleGenre = (genre) => {
     setSelectedGenres((prevSelectedGenres) => {
@@ -33,16 +35,13 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearch = () => {
-    console.log('Hakuehdot:', {
-      searchTerm,
-      selectedGenres: Array.from(selectedGenres),
-      certification,
-      rating,
-      startYear,
-      endYear,
-    });
-    // Implementoi hakutoiminnallisuus täällä
+  const handleSearch = async () => {
+    try {
+      const results = await searchMovies(searchTerm); 
+      setMovies(results);
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
   };
 
   return (
@@ -96,7 +95,7 @@ const App = () => {
         <input
           type="range"
           min="0"
-          max="100"
+          max="10"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
         />
@@ -124,10 +123,20 @@ const App = () => {
         />
       </div>
 
-      {/* Haku nappi */}
-      <button className="search-button" onClick={handleSearch}>Search</button>
+      {/* Hakunappi */}
+      <div>
+        <button className="search-button" onClick={handleSearch}>Search</button>
+      </div>
+      
+      {/* Näytetään hakutulokset */}
+      <div className="search-results">
+        {movies.map((movie) => (
+          <div key={movie.id}>{movie.title}</div>
+        ))}
+      </div>
     </div>
   );
 };
+
 
 export default App;

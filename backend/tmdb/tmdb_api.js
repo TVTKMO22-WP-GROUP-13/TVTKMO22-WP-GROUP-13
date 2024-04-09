@@ -1,31 +1,25 @@
-require('dotenv').config();
-const axios = require('axios');
+import axiosClient from "../axios/axios_client.js";
+import tmdbEndpoints from "./tmdb_endpoints.js";
 
-//here we create an axios instance with the base URL for the TMDB API
-const tmdb = axios.create({
-    baseURL: 'https://api.themoviedb.org/3',
-    params: {
-        api_key: process.env.TMDB_API_KEY
-    }
-});
+const tmdbApi = {
+  mediaList: async ({ mediaType, mediaCategory, page }) => await axiosClient.get(
+    tmdbEndpoints.mediaList({ mediaType, mediaCategory, page })
+  ),
+  mediaDetail: async ({ mediaType, mediaId }) => await axiosClient.get(
+    tmdbEndpoints.mediaDetail({ mediaType, mediaId })
+  ),
+  mediaGenres: async ({ mediaType }) => await axiosClient.get(
+    tmdbEndpoints.mediaGenres({ mediaType })
+  ),
+  mediaCredits: async ({ mediaType, mediaId }) => await axiosClient.get(
+    tmdbEndpoints.mediaCredits({ mediaType, mediaId })
+  ),
+  mediaImages: async ({ mediaType, mediaId }) => await axiosClient.get(
+    tmdbEndpoints.mediaImages({ mediaType, mediaId })
+  ),
+  mediaSearch: async ({ mediaType, query, page }) => await axiosClient.get(
+    tmdbEndpoints.mediaSearch({ mediaType, query, page })
+  )
+};
 
-//function to get a movie by its ID
-async function getMovie(id) {
-    const response = await tmdb.get(`/movie/${id}`);
-    return response.data;
-}
-
-//function to search for movies with a query
-async function searchMovie(query) {
-    const response = await tmdb.get('/search/movie', {
-        params: {
-            query: query,
-            include_adult: false,
-            language: 'en-US',
-            page: 1
-        }
-    });
-    return response.data;
-}
-
-module.exports = { getMovie, searchMovie };
+export default tmdbApi;
