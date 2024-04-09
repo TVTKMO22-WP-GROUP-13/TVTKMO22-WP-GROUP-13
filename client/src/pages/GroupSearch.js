@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './GroupSearch.css'
 
 function GroupSearch() {
   const [allGroups, setAllGroups] = useState([]);
@@ -27,15 +28,15 @@ function GroupSearch() {
   }, [searchTerm, allGroups]);
 
   return (
-    <div>
+    <div className="group-list">
       <form>
         <input type="text" placeholder="Search groups" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
       </form>
       {displayedGroups.map((group) => (
-        <div key={group.group_id}>
+        <div className="group-list-item" key={group.group_id}>
           <h2>{group.group_name}</h2>
           <p>Created by: {group.owner_name}</p>
-          <p>{group.description}</p>
+          <p>Description: {group.description}</p>
         </div>
       ))}
     </div>
