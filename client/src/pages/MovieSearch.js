@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './MovieSearch.css';
-import { searchMovies } from './MovieService';
+import { fetchMovies } from './MovieService'; 
 
 const genresList = [
   'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary',
@@ -37,12 +37,19 @@ const App = () => {
 
   const handleSearch = async () => {
     try {
-      const results = await searchMovies(searchTerm); 
-      setMovies(results);
+        const results = await fetchMovies({
+            searchTerm,
+            selectedGenres,
+            certification,
+            rating,
+            startYear,
+            endYear,
+        });
+        setMovies(results);
     } catch (error) {
-      console.error('Error fetching search results:', error);
+        console.error('Error fetching search results:', error);
     }
-  };
+};
 
   return (
     <div className="wrapper">

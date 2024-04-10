@@ -1,4 +1,4 @@
-import axios from "axios";
+const axios = require("axios");
 require('dotenv').config();
 
 const axiosClient = axios.create({
@@ -8,4 +8,4 @@ const axiosClient = axios.create({
   }
 });
 
-export default axiosClient;
+module.exports = axiosClient;

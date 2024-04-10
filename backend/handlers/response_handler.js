@@ -2,4 +2,4 @@
 const ok = (res, data) => res.status(200).json(data);
 const error = (res, message = "Internal server error") => res.status(500).json({ message });
 
-export default { ok, error };
+module.exports = { ok, error };

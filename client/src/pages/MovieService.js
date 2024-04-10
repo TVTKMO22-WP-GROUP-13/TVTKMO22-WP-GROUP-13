@@ -1,15 +1,21 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3001'; 
+const API_BASE_URL = 'http://localhost:3001';
 
-export const searchMovies = async (searchTerm) => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/api/search/movies`, {
-      params: { query: searchTerm },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error searching movies:', error);
-    throw error;
-  }
+export const fetchMovies = async ({ searchTerm}) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/movies/search`, {
+            params: {
+                query: searchTerm,
+               // genres: Array.from(selectedGenres).join(','),
+              // certification,
+               // rating,
+              //  startYear,
+              //  endYear
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Fetching movies failed:', error);
+    }
 };

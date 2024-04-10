@@ -7,4 +7,4 @@ const tmdbEndpoints = {
   //getMovieProvidersById: (id) => `/movie/${id}/watch/providers`,
 };
 
-export default tmdbEndpoints;
+module.exports = tmdbEndpoints;
