@@ -1,65 +1,37 @@
-import responseHandler from "../handlers/response_handler.js";
-import tmdbApi from "../tmdb/tmdb_api.js";
+import responseHandler from "./handlers/response_handler";
+import tmdbApi from "./tmdb/tmdb_api";
 
-const getList = async (req, res) => {
-    try {
-      const { page } = req.query;
-      const { mediaType, mediaCategory } = req.params;
-  
-      const response = await tmdbApi.mediaList({ mediaType, mediaCategory, page });
-  
-      return responseHandler.ok(res, response);
-    } catch {
-      responseHandler.error(res);
-    }
-  };
-  
-  const getGenres = async (req, res) => {
-    try {
-      const { mediaType } = req.params;
-  
-      const response = await tmdbApi.mediaGenres({ mediaType });
-  
-      return responseHandler.ok(res, response);
-    } catch {
-      responseHandler.error(res);
-    }
-  };
-  
-  const search = async (req, res) => {
-    try {
-      const { mediaType } = req.params;
-      const { query, page } = req.query;
-  
-      const response = await tmdbApi.mediaSearch({
-        query,
-        page,
-        mediaType: mediaType === "people" ? "person" : mediaType
-      });
-  
-      responseHandler.ok(res, response);
-    } catch {
-      responseHandler.error(res);
-    }
-  };
-  
-  const getDetail = async (req, res) => {
-    try {
-      const { mediaType, mediaId } = req.params;
-  
-      const params = { mediaType, mediaId };
-  
-      const media = await tmdbApi.mediaDetail(params);
-  
-      media.credits = await tmdbApi.mediaCredits(params);
-  
-      media.images = await tmdbApi.mediaImages(params);
+const with_genres = { /* Genre-id:t, kuten aiemmin */ };
 
-          responseHandler.ok(res, media);
-        } catch (e) {
-          console.log(e);
-          responseHandler.error(res);
-        }
-      };
+const searchMovies = async (req, res) => {
+  try {
+    const { query, page, year, language } = req.query;
+    const movies = await tmdbApi.searchMovies(query, page, year, language);
+    responseHandler.ok(res, movies);
+  } catch (error) {
+    responseHandler.error(res, error.message);
+  }
+};
 
-export default { getList, getGenres, search, getDetail };
+const discoverMovies = async (req, res) => {
+  try {
+    const { sort_by, page, year, language, genre } = req.query;
+    const genreId = with_genres[genre] || '';
+    const movies = await tmdbApi.discoverMovies(sort_by, page, year, language, genreId);
+    responseHandler.ok(res, movies);
+  } catch (error) {
+    responseHandler.error(res, error.message);
+  }
+};
+
+const getMovieById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const movie = await tmdbApi.getMovieById(id);
+    responseHandler.ok(res, movie);
+  } catch (error) {
+    responseHandler.error(res, error.message);
+  }
+};
+
+export { searchMovies, discoverMovies, getMovieById };

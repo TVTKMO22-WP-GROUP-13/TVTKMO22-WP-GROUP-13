@@ -1,13 +1,11 @@
 import axios from "axios";
+require('dotenv').config();
 
-const get = async (url) => {
-  const response = await axios.get(url, {
-    headers: {
-      Accept: "application/json",
-      "Accept-Encoding": "identity"
-    }
-  });
-  return response.data;
-};
+const axiosClient = axios.create({
+  baseURL: "https://api.themoviedb.org/3",
+  params: {
+    api_key: process.env.TMDB_API_KEY
+  }
+});
 
-export default { get };
+export default axiosClient;

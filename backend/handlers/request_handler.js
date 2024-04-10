@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
-
+const cors = require('cors');
+app.use(cors());
 const validate = (req, res, next) => {
   const errors = validationResult(req);
 
