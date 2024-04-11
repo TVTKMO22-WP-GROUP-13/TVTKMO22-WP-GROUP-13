@@ -1,8 +1,7 @@
-const responseHandler = require("../handlers/response_handler");
-const tmdbApi = require("../tmdb/tmdb_api");
+const responseHandler = require('../handlers/response_handler');
+const tmdbApi = require('../tmdb/tmdb_api');
 
 const with_genres = {     
-  // Genret ja niiden ID:t
   "action": 28,
   "adventure": 12,
   "animation": 16,

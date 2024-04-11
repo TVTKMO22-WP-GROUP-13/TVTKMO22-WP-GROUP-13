@@ -1,4 +1,4 @@
-const axiosClient = require("./axios_client");
+const axiosClient = require('../axios/axios_client');
 const tmdbEndpoints = require("./tmdb_endpoints");
 
 const tmdbApi = {

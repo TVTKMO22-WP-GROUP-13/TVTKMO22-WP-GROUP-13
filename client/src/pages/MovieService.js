@@ -2,20 +2,16 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:3001';
 
-export const fetchMovies = async ({ searchTerm}) => {
+export const fetchMovies = async (searchTerm) => {
     try {
-        const response = await axios.get(`${API_BASE_URL}/movies/search`, {
+        const response = await axios.get(`${API_BASE_URL}/movie/search`, {
             params: {
                 query: searchTerm,
-               // genres: Array.from(selectedGenres).join(','),
-              // certification,
-               // rating,
-              //  startYear,
-              //  endYear
+                // Voit lisätä muita parametreja, jos tarpeen
             },
         });
         return response.data;
     } catch (error) {
-        throw new Error('Fetching movies failed:', error);
+        console.error('Fetching movies failed:', error);
     }
 };

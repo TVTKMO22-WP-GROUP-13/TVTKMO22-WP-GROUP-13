@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
 import './MovieSearch.css';
-import { fetchMovies } from './MovieService'; 
 
 const genresList = [
   'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary',
@@ -8,48 +8,67 @@ const genresList = [
   'Romance', 'Science Fiction', 'TV Movie', 'Thriller', 'War', 'Western'
 ];
 
-const certificationsList = ['U', 'PG', '12A', '12', '15', '18', 'R18'];
-
-const App = () => {
-  const [selectedGenres, setSelectedGenres] = useState(new Set());
-  const [certification, setCertification] = useState('');
-  const [rating, setRating] = useState(50);
-  const [startYear, setStartYear] = useState(1895);
-  const [endYear, setEndYear] = useState(2026);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [movies, setMovies] = useState([]);
-
-  const toggleGenre = (genre) => {
-    setSelectedGenres((prevSelectedGenres) => {
-      const newSelectedGenres = new Set(prevSelectedGenres);
-      if (newSelectedGenres.has(genre)) {
-        newSelectedGenres.delete(genre);
-      } else {
-        newSelectedGenres.add(genre);
+const Movies = () => {
+    const [query, setQuery] = useState('');
+    const [genre, setGenre] = useState('');
+    const [page, setPage] = useState(1);
+    const [year, setYear] = useState('');
+    const [movies, setMovies] = useState([]);
+    useEffect(() => {
+      search();
+    }, [page]); 
+  
+    const search = async () => {
+      try {
+        let response;
+        if (query !== '') {
+          response = await axios.get('http://localhost:3001/movie/search', {
+            params: {
+              query: query,
+              page: page,
+              year: year
+            }
+          });
+        } else {
+          response = await axios.get('http://localhost:3001/movie/discover', {
+            params: {
+              genre: genre,
+              sort_by: 'popularity.desc',
+              page: page,
+              year: year
+            }
+          });
+        }
+        console.log(response.data); 
+        setMovies(response.data); 
+      } catch (error) {
+        console.error('Hakuvirhe:', error);
       }
-      return newSelectedGenres;
-    });
-  };
+    };
+  
+    const handleInputChange = (event) => {
+      setGenre('');
+      setQuery(event.target.value);
+    };
+  
+    const handleGenreChange = (event) => {
+      setQuery(''); 
+      setGenre(event.target.value);
+    };
+  
+    const handlePageChange = (event) => {
+      setPage(event.target.value);
+    };
+  
+    const handleYearChange = (event) => {
+      setYear(event.target.value);
+    };
+  
+    const handleSearch = () => {
+      setMovies([]);
+      search();
+    };
 
-  const handleSearchInput = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleSearch = async () => {
-    try {
-        const results = await fetchMovies({
-            searchTerm,
-            selectedGenres,
-            certification,
-            rating,
-            startYear,
-            endYear,
-        });
-        setMovies(results);
-    } catch (error) {
-        console.error('Error fetching search results:', error);
-    }
-};
 
   return (
     <div className="wrapper">
@@ -80,21 +99,6 @@ const App = () => {
         </div>
       </div>
 
-      {/* Ikäsuositus nappulat */}
-      <div>
-        <h2>Certification</h2>
-        <div className="certification-container">
-          {certificationsList.map((cert) => (
-            <button
-              key={cert}
-              className={`certification-button ${certification === cert ? 'selected' : ''}`}
-              onClick={() => setCertification(cert)}
-            >
-              {cert}
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* Arvostelu ja vuodet liukusäätimillä */}
       <div>
@@ -109,24 +113,13 @@ const App = () => {
       </div>
 
       <div>
-        <h2>Start Year: {startYear}</h2>
+        <h2>Year: {year}</h2>
         <input
           type="range"
           min="1895"
-          max={endYear}
-          value={startYear}
-          onChange={(e) => setStartYear(Number(e.target.value))}
-        />
-      </div>
-
-      <div>
-        <h2>End Year: {endYear}</h2>
-        <input
-          type="range"
-          min={startYear}
-          max="2024"
-          value={endYear}
-          onChange={(e) => setEndYear(Number(e.target.value))}
+          max="2026"
+          value={year}
+          onChange={(e) => setYear(Number(e.target.value))}
         />
       </div>
 
@@ -146,4 +139,4 @@ const App = () => {
 };
 
 
-export default App;
+export default Movies;
