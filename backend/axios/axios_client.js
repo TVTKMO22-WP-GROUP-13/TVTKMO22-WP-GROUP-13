@@ -9,3 +9,5 @@ const axiosClient = axios.create({
 });
 
 module.exports = axiosClient;
+
+const axios = require('axios');

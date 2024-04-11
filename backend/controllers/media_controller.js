@@ -1,5 +1,6 @@
 const responseHandler = require('../handlers/response_handler');
 const tmdbApi = require('../tmdb/tmdb_api');
+//const router = require('../routes/tmdb.js');
 
 const with_genres = {     
   "action": 28,

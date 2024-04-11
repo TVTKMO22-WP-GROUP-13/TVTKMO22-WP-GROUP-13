@@ -2,7 +2,7 @@ const axiosClient = require('../axios/axios_client');
 const tmdbEndpoints = require("./tmdb_endpoints");
 
 const tmdbApi = {
-  async searchMovies(query, page = 1, year = '', language = 'en') {
+  async searchMovies(query, page = 1, year = '', language = 'en-US') {
     const endpoint = tmdbEndpoints.searchMovies(query, page, year, language);
     const { data } = await axiosClient.get(endpoint);
     return data.results;
