@@ -1,62 +1,90 @@
 .everything-wrapper {
-    background-color: white;
-    /*max-width: 320px;*/
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin: 20px;
-    
-}
-
-.dropdown {
-    display: flex;
-    align-items: center;
-    background: black;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin: 10px;
-    
-}
-.dropdown select {
-    padding: 10px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
-    color: black;
-    margin-right: 15px;
-    width: 30%;
-}
-.dropdown button {
-    padding: 10px;
-    background-color: #c7370b;
-    color: white;
-    border-radius: 5px;
-    width: 30%;
-  }
-.dropdown button:hover {
-    background-color: #f30909
-}
-
-.showtime-container {
-    display: flex;
-    align-items: center;
-    background: black;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin: 10px;
-  }
+  max-width: 1200px;
+  margin: 0 auto;
   
-  .block {
-    background-color: #c0c0c0;
-    width: 30%; 
-    height: 50px;
-    margin: 20px; 
-    border-radius: 5px;
-    display: inline-block; 
-    
-  }
-  .block p {
-    text-align: center;
-    
-  }
+}
+
+
+/* Container for dropdowns */
+.dropdown {
+  align-items: center;
+  background: #444;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  margin: 10px;
+  padding: 20px;
+}
+
+/* Style for dropdowns */
+.dropdown select {
+  background-color: #666; 
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  margin-right: 15px;
+  padding: 10px;
+  width: 30%;
+}
+
+/* Style for search button */
+.dropdown button {
+  background-color: #c7370b;
+  border: none;
+  border-radius: 5px;
+  color: #fff; 
+  cursor: pointer;
+  padding: 10px;
+  width: 30%;
+}
+
+/* Hover effect for search button */
+.dropdown button:hover {
+  background-color: #f30909; 
+}
+
+/* Card container */
+.card {
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  margin: 10px;
+  padding: 20px;
+  background: #444;
+  color: #fff
+}
+
+.card-header {
+  align-items: center;
+  color: #fff;
+  text-align: center;
+}
+.card-header p {
+  font-size: 10px;
+  color: #ccc;
+}
+
+/* Content inside the card */
+.card-content {
+  flex: 1;
+  margin-left: 30px;
+}
+
+.card-content h2 {
+  color: #fff; 
+  font-size: 18px;
+}
+
+.card-content h3 {
+  color: #ccc;
+  font-size: 15px;
+}
+
+/* Style for images inside the card */
+.card img {
+  border-radius: 8px;
+  margin-left: auto;
+  max-height: 200px;
+  max-width: 100%;
+}
