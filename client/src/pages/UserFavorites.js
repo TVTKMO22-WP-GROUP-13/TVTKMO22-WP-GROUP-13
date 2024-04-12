@@ -1,5 +1,5 @@
 import React from 'react'
-import './UserFavorites.css'
+import './UserFavoritesWatchingPlanningCompleted.css'
 
 export default function UserFavorites() {
   return (

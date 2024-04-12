@@ -1,7 +1,7 @@
 .wrapperi {
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: #1b1b1b;
     max-width: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -12,6 +12,10 @@
 .wrapperi h1 {
     font-size: 30px;
     padding: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    color: white;
 }
 
 .flex-container {
@@ -20,10 +24,13 @@
     justify-content: space-evenly;
     align-items: flex-start;
     align-content: flex-start;
-    background-color: aqua;
+    background-color: #1b1b1b;
+    border-radius: 8px;
     width: auto;
     height: auto;
     margin: 1%;
+    box-shadow: rgb(0 0 0 / 69%) 0px 26px 30px -10px,
+        rgb(0 0 0 / 73%) 0px 16px 10px -10px;
 }
 
 .movie {
@@ -32,11 +39,12 @@
     justify-content: space-evenly;
     align-items: flex-start;
     align-content: flex-end;
-    background-color: yellow;
+    background-color: #1b1b1b;
     height: 100px;
     width: auto;
     margin: 1%;
     flex-basis: 200px;
+    color: white;
 }
 
 .rating {
@@ -45,11 +53,12 @@
     justify-content: center;
     align-items: flex-start;
     align-content: flex-end;
-    background-color: blueviolet;
+    background-color: #1b1b1b;
     height: 100px;
     width: auto;
     margin: 1%;
     flex-basis: 200px;
+    color: white;
 }
 
 .description {
@@ -58,11 +67,12 @@
     justify-content: space-evenly;
     align-items: flex-start;
     align-content: flex-end;
-    background-color: orange;
+    background-color: #1b1b1b;
     height: 100px;
     width: auto;
     margin: 1%;
     flex-grow: 1;
+    color: white;
 }
 
 .release {
@@ -71,9 +81,10 @@
     justify-content: center;
     align-items: flex-start;
     align-content: flex-end;
-    background-color: red;
+    background-color: #1b1b1b;
     height: 100px;
     width: auto;
     margin: 1%;
     flex-basis: 200px;
+    color: white;
 }

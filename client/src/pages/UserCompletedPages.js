@@ -1,5 +1,5 @@
 import React from 'react'
-import './UserCompleted.css'
+import './UserFavoritesWatchingPlanningCompleted.css'
 
 export default function ComplitedPages() {
   return (
