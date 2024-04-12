@@ -1,7 +1,7 @@
 .wrapperi {
     display: flex;
     flex-direction: column;
-    background-color: #1b1b1b;
+    background-color: #13070c;
     max-width: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;

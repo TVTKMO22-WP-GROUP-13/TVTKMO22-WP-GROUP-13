@@ -20,6 +20,7 @@ import MakeGroup from './pages/MakeGroup';
 import UserComplitedPages from './pages/UserCompletedPages';
 import UserWatchingPages from './pages/UserWatchingPages';
 import UserPlanToWatchPages from './pages/UserPlanToWatchPages';
+import UserLastWatched from './pages/UserLastWatched';
 import YourReviews from './pages/YourReviews';
 import LogOut from './pages/LogOut';
 import AccountSettings from './pages/accountSettings';
@@ -56,6 +57,7 @@ function App() {
         <Route path='/UserCompletedPages' element={<UserComplitedPages/>}/>
         <Route path='/UserWatchingPages' element={<UserWatchingPages/>}/>
         <Route path='/UserPlanToWatchPages' element={<UserPlanToWatchPages/>}/>
+        <Route path='/UserLastWatched' element={<UserLastWatched/>}/>
 
         <Route path="*" element={<NotFound/>}/>
       </Routes>
