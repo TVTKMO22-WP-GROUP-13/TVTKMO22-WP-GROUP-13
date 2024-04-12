@@ -3,6 +3,7 @@ const user_data = require('./routes/user_data');
 const authentication = require('./routes/authentication');
 const user_group = require('./routes/user_group');
 const tmdb = require('./routes/tmdb');
+const group_member = require('./routes/group_member');
 const cors = require('cors');
 
 const express = require('express');
@@ -22,6 +23,7 @@ app.use('/user_data', user_data);
 app.use('/authentication',  authentication);
 app.use('/tmdb', tmdb);
 app.use('/user_group', user_group);
+app.use('/group_member', group_member);
 
 const PORT = process.env.PORT || 3001;
 
@@ -30,7 +32,7 @@ app.listen(PORT, () => {
 });
 
 app.get('/', (req, res) => {
-    res.json( {info: 'hei'} );
+    res.json( {info: 'heloust'} );
 });
 
 module.exports = app;
