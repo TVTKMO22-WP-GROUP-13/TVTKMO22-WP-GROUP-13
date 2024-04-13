@@ -1,5 +1,5 @@
 import React from 'react'
-import './UserWatching.css'
+import './UserFavoritesWatchingPlanningCompleted.css'
 
 export default function UserWatchingPages() {
   return (
