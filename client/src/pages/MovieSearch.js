@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './MovieSearch.css';
 
 const genresList = [
@@ -7,127 +8,91 @@ const genresList = [
   'Romance', 'Science Fiction', 'TV Movie', 'Thriller', 'War', 'Western'
 ];
 
-const certificationsList = ['U', 'PG', '12A', '12', '15', '18', 'R18'];
+const Movies = () => {
+    const [query, setQuery] = useState('');
+    const [selectedGenre, setSelectedGenre] = useState('');
+    const [year, setYear] = useState('');
 
-const App = () => {
-  const [selectedGenres, setSelectedGenres] = useState(new Set());
-  const [certification, setCertification] = useState('');
-  const [rating, setRating] = useState(50);
-  const [startYear, setStartYear] = useState(1895);
-  const [endYear, setEndYear] = useState(2026);
-  const [searchTerm, setSearchTerm] = useState('');
+    const [movies, setMovies] = useState([]);
 
-  const toggleGenre = (genre) => {
-    setSelectedGenres((prevSelectedGenres) => {
-      const newSelectedGenres = new Set(prevSelectedGenres);
-      if (newSelectedGenres.has(genre)) {
-        newSelectedGenres.delete(genre);
-      } else {
-        newSelectedGenres.add(genre);
-      }
-      return newSelectedGenres;
-    });
-  };
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get('http://localhost:3001/tmdb/movie/search', {
+                params: {
+                    query: query,
+                    genre: selectedGenre,
+                    year: year
+                }
+            });
+            setMovies(response.data); 
+        } catch (error) {
+            console.error('Hakuvirhe:', error);
+        }
+    };
 
-  const handleSearchInput = (event) => {
-    setSearchTerm(event.target.value);
-  };
+    const handleInputChange = (event) => {
+        setQuery(event.target.value);
+    };
 
-  const handleSearch = () => {
-    console.log('Hakuehdot:', {
-      searchTerm,
-      selectedGenres: Array.from(selectedGenres),
-      certification,
-      rating,
-      startYear,
-      endYear,
-    });
-    // Implementoi hakutoiminnallisuus täällä
-  };
+    const handleGenreChange = (genre) => {
+        setSelectedGenre(genre);
+    };
 
-  return (
-    <div className="wrapper">
-      {/* Hakupalkki */}
-      <div className="search-container">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search for movies..."
-          value={searchTerm}
-          onChange={handleSearchInput}
-        />
-      </div>
+    const handleYearChange = (event) => {
+        setYear(event.target.value);
+    };
 
-      {/* Genre nappulat */}
-      <div>
-        <h2>Genres</h2>
-        <div className="genre-container">
-          {genresList.map((genre) => (
-            <button
-              key={genre}
-              className={`genre-button ${selectedGenres.has(genre) ? 'selected' : ''}`}
-              onClick={() => toggleGenre(genre)}
-            >
-              {genre}
-            </button>
-          ))}
+    return (
+        <div className="wrapper">
+            {/* Hakupalkki */}
+            <div className="search-container">
+                <input
+                    type="text"
+                    className="search-input"
+                    placeholder="Search for movies..."
+                    value={query}
+                    onChange={handleInputChange}
+                />
+            </div>
+
+            {/* Genre nappulat */}
+            <div>
+                <h2>Genres</h2>
+                <div className="genre-container">
+                    {genresList.map((genre) => (
+                        <button
+                            key={genre}
+                            className={`genre-button ${selectedGenre === genre ? 'selected' : ''}`}
+                            onClick={() => handleGenreChange(genre)}
+                        >
+                            {genre}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Vuoden valinta */}
+            <div>
+                <h2>Year: {year}</h2>
+                <input
+                    type="number"
+                    value={year}
+                    onChange={handleYearChange}
+                    placeholder="Year"
+                />
+            </div>
+
+            {/* Hakunappi */}
+            <button className="search-button" onClick={handleSearch}>Search</button>
+            
+            {/* Näytetään hakutulokset */}
+            <div className="search-results">
+                {movies.map((movie) => (
+                    <div key={movie.id}>{movie.title}</div>
+                ))}
+            </div>
         </div>
-      </div>
-
-      {/* Ikäsuositus nappulat */}
-      <div>
-        <h2>Certification</h2>
-        <div className="certification-container">
-          {certificationsList.map((cert) => (
-            <button
-              key={cert}
-              className={`certification-button ${certification === cert ? 'selected' : ''}`}
-              onClick={() => setCertification(cert)}
-            >
-              {cert}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Arvostelu ja vuodet liukusäätimillä */}
-      <div>
-        <h2>Rating: {rating}</h2>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-        />
-      </div>
-
-      <div>
-        <h2>Start Year: {startYear}</h2>
-        <input
-          type="range"
-          min="1895"
-          max={endYear}
-          value={startYear}
-          onChange={(e) => setStartYear(Number(e.target.value))}
-        />
-      </div>
-
-      <div>
-        <h2>End Year: {endYear}</h2>
-        <input
-          type="range"
-          min={startYear}
-          max="2024"
-          value={endYear}
-          onChange={(e) => setEndYear(Number(e.target.value))}
-        />
-      </div>
-
-      {/* Haku nappi */}
-      <button className="search-button" onClick={handleSearch}>Search</button>
-    </div>
-  );
+    );
 };
 
-export default App;
+export default Movies;

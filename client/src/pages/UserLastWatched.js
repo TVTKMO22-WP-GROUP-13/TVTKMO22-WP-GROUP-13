@@ -1,10 +1,10 @@
 import React from 'react'
 import './UserFavoritesWatchingPlanningCompleted.css'
 
-export default function UserPlanToWatchPages() {
+export default function UserLastWatched() {
   return (
     <div class="wrapperi">
-      <h1>Plan to watch</h1>
+      <h1>Last watched</h1>
 
       <div class="flex-container">
         {/* Kuva elokuvasta/sarjasta */}

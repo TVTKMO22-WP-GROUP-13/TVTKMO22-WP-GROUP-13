@@ -44,7 +44,7 @@ export default function UserProfile() {
  
     </div>
     <div className='Kaikki' id='LastWatched'> 
-    <p> Last Watched</p>
+    <p> <Link to="/UserLastWatched">Last watched</Link></p>
     <p id='Lwatched'> Movie 1</p>
     <p id='Lwatched'> Movie 2</p>
     <p id='Lwatched'> Movie 3</p>
