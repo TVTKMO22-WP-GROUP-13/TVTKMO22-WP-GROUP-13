@@ -4,6 +4,7 @@ const authentication = require('./routes/authentication');
 const user_group = require('./routes/user_group');
 const tmdb = require('./routes/tmdb');
 const group_member = require('./routes/group_member');
+const group_request = require('./routes/group_request');
 const cors = require('cors');
 
 const express = require('express');
@@ -24,6 +25,7 @@ app.use('/authentication',  authentication);
 app.use('/tmdb', tmdb);
 app.use('/user_group', user_group);
 app.use('/group_member', group_member);
+app.use('/group_request', group_request);
 
 const PORT = process.env.PORT || 3001;
 
