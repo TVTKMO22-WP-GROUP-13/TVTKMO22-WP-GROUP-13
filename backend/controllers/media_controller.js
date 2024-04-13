@@ -1,6 +1,6 @@
 const responseHandler = require('../handlers/response_handler');
 const tmdbApi = require('../tmdb/tmdb_api');
-//const router = require('../routes/tmdb.js');
+const movieModel = require('../tmdb/movieModel');
 
 const with_genres = {     
   "action": 28,
@@ -26,14 +26,19 @@ const with_genres = {
 
 const searchMovies = async (req, res) => {
   try {
-    const { query, page, year, language } = req.query;
-    const movies = await tmdbApi.searchMovies(query, page, year, language);
-    responseHandler.ok(res, movies);
+      const { query, page, year, language } = req.query;
+      const movies = await tmdbApi.searchMovies(query, page, year, language);
+      const formattedMovies = movies.map(movie => ({
+        id: movie.id,
+        title: movie.title,
+        poster_path: movie.poster_path,
+        overview: movie.overview
+    }));
+      responseHandler.ok(res, formattedMovies);
   } catch (error) {
-    responseHandler.error(res, error.message);
+      responseHandler.error(res, error.message);
   }
 };
-
 const discoverMovies = async (req, res) => {
   try {
     const { sort_by, page, year, language, genre } = req.query;
@@ -56,3 +61,4 @@ const getMovieById = async (req, res) => {
 };
 
 module.exports = { searchMovies, discoverMovies, getMovieById };
+

@@ -15,3 +15,4 @@ export const fetchMovies = async (searchTerm) => {
         console.error('Fetching movies failed:', error);
     }
 };
+
