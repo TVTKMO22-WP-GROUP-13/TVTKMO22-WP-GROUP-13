@@ -27,6 +27,7 @@ async function getGroupRequests(group_id){
 async function updateGroupRequest(request_status, request_id){
     try {
         const result = await pool.query(sql.UPDATE_GROUP_REQUEST, [request_status, request_id]);
+        console.log("Update result:", result.rows);
         if (result.rows.length === 0) {
             throw new Error('No entry found to update');
         }

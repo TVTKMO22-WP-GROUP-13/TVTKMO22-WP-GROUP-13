@@ -37,10 +37,10 @@ router.patch('/update_status', async (req, res) => {
         }
 
         const result = await updateGroupRequest(request_status, request_id);
-        if (result.rowCount === 0) {
+        if (!result) {
             return res.status(404).json({ message: 'Group join request not found' });
         }
-        res.json({ message: 'Group join request updated successfully', result: result.rows[0] });
+        res.json({ message: 'Group join request updated successfully', result });
     } catch (error) {
         console.error('Error updating group join request:', error);
         res.status(500).json({ message: 'Failed to update group join request' });
