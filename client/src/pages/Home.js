@@ -71,9 +71,7 @@ export default function Home() {
             nowInTheat.map(movie => (
           <div key={movie.id} className="movie2">
             <img className='movieImage' src={movie.image} alt={movie.title} />
-            <h2 className='elokuvaNimi'>{movie.title}</h2>
-            <p className=' elokuvaSynop'>{movie.synop}({movie.prodYear})</p>
-            <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">Lue lisää</a>
+            <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">{movie.title}</a>
           </div>
         ))}
       </div>
