@@ -1,15 +1,25 @@
+const { auth } = require('../middleware/auth');
 const {addGroupRequest, getGroupRequests, updateGroupRequest} = require('../database/group_request_db');
 
 const router = require('express').Router();
 
 //endpoint to add group join request
-router.post('/add_request', async (req, res) => {
+router.post('/add_request', auth, async (req, res) => {
+    const user_id = res.locals.user_id;
+    console.log("user_id: ", user_id);
+
+    const group_id = req.body.group_id;
+    console.log("group_id: ", group_id);
+
     try {
-        const result = await addGroupRequest(req.body.group_id, req.body.user_id);
-        res.json({ message: 'Group request added successfully', result });
+        const result = await addGroupRequest(group_id, user_id);
+        if (!result) {
+            return res.status(404).json({ message: 'Group join request failed' });
+        }
+        res.status(201).json({ message: 'Group join request added successfully', result });
     } catch (error) {
-        console.error('Error adding group request:', error);
-        res.status(500).json({ message: 'Failed to add group request' });
+        console.error('Error adding group join request:', error);
+        res.status(500).json({ message: 'Failed to add group join request' });
     }
 });
 

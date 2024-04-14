@@ -7,6 +7,7 @@ const sql = {
 };
 
 async function addGroupRequest(group_id, user_id){
+    console.log("addGroupRequest called with group_id:", group_id, "and user_id:", user_id);
     try {
         const result = await pool.query(sql.ADD_GROUP_REQUEST, [group_id, user_id]);
         return result.rows[0];
