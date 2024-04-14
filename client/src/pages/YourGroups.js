@@ -1,74 +1,66 @@
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { useSignals } from '@preact/signals-react/runtime'
+import { useSignals } from '@preact/signals-react/runtime';
 import { jwtToken } from '../components/AuSignal';
 import axios from 'axios';
+import './YourGroups.css'; // Make sure the path is correct
 
 export default function YourGroups() {
-  useSignals()
+  useSignals();
   const [createdGroups, setCreatedGroups] = useState([]);
   const [joinedGroups, setJoinedGroups] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorCreated, setErrorCreated] = useState('');
+  const [errorJoined, setErrorJoined] = useState('');
 
   useEffect(() => {
-    const fetchCreatedGroups = async () => {
+    const fetchGroups = async (url, setGroups, setError) => {
       try {
-        const response = await axios.get('http://localhost:3001/user_group/getUserCreatedGroups', {
+        const response = await axios.get(url, {
           headers: {
             'Authorization': `Bearer ${jwtToken.value}`
           }
         });
-        if (response.data.groups.length === 0) {
-          setErrorMessage('No groups created yet.');
+        if (response.data.groups?.length > 0) {
+          setGroups(response.data.groups);
         } else {
-          setCreatedGroups(response.data.groups);
+          setError('No groups found.');
         }
       } catch (error) {
-        setErrorMessage('Error fetching created groups.');
+        setError('Error fetching groups.');
+        console.error(error);
       }
     };
 
-    const fetchJoinedGroups = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/group_member/groups_joined', {
-          headers: {
-            'Authorization': `Bearer ${jwtToken.value}`
-          }
-        });
-        if (response.data.groupsJoined.length === 0) {
-          setErrorMessage('No groups joined yet.');
-        } else {
-          setJoinedGroups(response.data.groupsJoined);
-        }
-      } catch (error) {
-        setErrorMessage('Error fetching joined groups.');
-      }
-    };
-
-    fetchCreatedGroups();
-    fetchJoinedGroups();
+    if(jwtToken.value) {
+      fetchGroups('http://localhost:3001/user_group/getUserCreatedGroups', setCreatedGroups, setErrorCreated);
+      fetchGroups('http://localhost:3001/group_member/groups_joined', setJoinedGroups, setErrorJoined);
+    }
   }, []);
 
-  if(jwtToken.value.length === 0){
-    return <Navigate to='/login' />
+  if(!jwtToken.value) {
+    return <Navigate to='/login' />;
   }
 
   return (
     <div>
-      <h2>Your Created Groups</h2>
-      {createdGroups.length > 0 ? createdGroups.map((group) => (
-        <div key={group.group_id}>
-          <h2>{group.group_name}</h2>
-          <p>Description: {group.description}</p>
-        </div>
-      )) : <p>{errorMessage}</p>}
-      <h2>Your Joined Groups</h2>
-      {joinedGroups.length > 0 ? joinedGroups.map((group) => (
-        <div key={group.group_id}>
-          <h2>{group.group_name}</h2>
-          <p>Description: {group.description}</p>
-        </div>
-      )) : <p>{errorMessage}</p>}
+      <div className="group-list">
+        <h2>Your Created Groups</h2>
+        {createdGroups.length > 0 ? createdGroups.map(group => (
+          <div key={group.group_id} className="group-list-item">
+            <h2 className="group-title">{group.group_name}</h2>
+            <p className="group-description">Description: {group.description}</p>
+          </div>
+        )) : <p className="error-message">{errorCreated}</p>}
+      </div>
+      <div className="group-list">
+        <h2>Your Joined Groups</h2>
+        {joinedGroups.length > 0 ? joinedGroups.map(group => (
+          <div key={group.group_id} className="group-list-item">
+            <h2 className="group-title">{group.group_name}</h2>
+            <p className="group-description">Description: {group.description}</p>
+          </div>
+        )) : <p className="error-message">{errorJoined}</p>}
+      </div>
     </div>
   );
 }
