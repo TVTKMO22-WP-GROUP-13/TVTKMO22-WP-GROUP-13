@@ -1,4 +1,5 @@
-const {addUserToGroup,removeUserFromGroup, getGroupMembers} = require('../database/group_member_db');
+const { auth } = require('../middleware/auth');
+const {addUserToGroup,removeUserFromGroup, getGroupMembers, getGroupsJoined} = require('../database/group_member_db');
 
 const router = require('express').Router();
 
@@ -24,6 +25,7 @@ router.delete('/remove', async (req, res) => {
     }
 });
 
+//endpoint to get all members of a group
 router.get('/group_members', async (req, res) => {
     try {
         const groupMembers = await getGroupMembers(req.query.group_id);
@@ -39,5 +41,22 @@ router.get('/group_members', async (req, res) => {
         res.status(500).json({ message: 'Failed to retrieve group members' });
     }
 });
+
+//endpoint to get all groups joined by a user
+router.get('/groups_joined', auth, async (req, res) => {
+    try {
+        const groupsJoined = await getGroupsJoined(res.locals.user_id);
+        //check if groupsJoined array is empty
+        if (groupsJoined.length === 0) {
+            return res.status(404).json({ message: 'No groups joined' });
+        }
+        res.json({ message: 'Groups joined retrieved successfully', groupsJoined });
+    } catch (error) {
+        console.error('Error fetching groups joined:', error);
+        res.status(500).json({ message: 'Failed to retrieve groups joined' });
+    }
+});
+
+
 
 module.exports = router;
