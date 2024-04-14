@@ -1,4 +1,4 @@
-const pool = require('./pg_connection');
+const pgPool = require('./pg_connection');
 
 const sql = {
     ADD_USER_TO_GROUP: 'INSERT INTO user_group_member (group_id, user_id) VALUES ($1, $2)',
@@ -8,17 +8,17 @@ const sql = {
 };
 
 async function addUserToGroup(group_id, user_id){
-    let result = await pool.query(sql.ADD_USER_TO_GROUP, [group_id, user_id]);
+    let result = await pgPool.query(sql.ADD_USER_TO_GROUP, [group_id, user_id]);
     return result;
 }
 
 async function removeUserFromGroup(group_id, user_id){
-    let result = await pool.query(sql.REMOVE_USER_FROM_GROUP, [group_id, user_id]);
+    let result = await pgPool.query(sql.REMOVE_USER_FROM_GROUP, [group_id, user_id]);
     return result;
 }
 
 async function getGroupMembers(group_id){
-    let result = await pool.query(sql.GET_GROUP_MEMBERS, [group_id]);
+    let result = await pgPool.query(sql.GET_GROUP_MEMBERS, [group_id]);
     return result.rows;
 }
 
