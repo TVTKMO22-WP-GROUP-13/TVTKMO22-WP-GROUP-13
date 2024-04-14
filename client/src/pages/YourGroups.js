@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSignals } from '@preact/signals-react/runtime';
 import { jwtToken } from '../components/AuSignal';
 import axios from 'axios';
-import './YourGroups.css'; // Make sure the path is correct
+import './YourGroups.css'; 
 
 export default function YourGroups() {
   useSignals();
