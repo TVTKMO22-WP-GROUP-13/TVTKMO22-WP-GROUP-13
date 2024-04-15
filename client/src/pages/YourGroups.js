@@ -26,7 +26,7 @@ export default function YourGroups() {
           setError('No groups found.');
         }
       } catch (error) {
-        setError('Error fetching groups.');
+        setError('You have not joined any groups.');
         console.error(error);
       }
     };
