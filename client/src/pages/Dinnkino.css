@@ -1,7 +1,7 @@
 .everything-wrapper {
   max-width: 1200px;
   margin: 0 auto;
-  
+  font-family: "Poppins", sans-serif;
 }
 
 
@@ -52,13 +52,15 @@
   margin: 10px;
   padding: 20px;
   background: #444;
-  color: #fff
+  color: #fff;
+  
 }
 
 .card-header {
   align-items: center;
   color: #fff;
   text-align: center;
+  
 }
 .card-header p {
   font-size: 10px;
