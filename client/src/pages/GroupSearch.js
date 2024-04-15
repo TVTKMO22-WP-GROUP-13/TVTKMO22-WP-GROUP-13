@@ -10,7 +10,6 @@ function GroupSearch() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Hae kaikki ryhmät
     const fetchGroups = async () => {
       const response = await fetch('http://localhost:3001/user_group/all', {
         headers: {
@@ -21,7 +20,6 @@ function GroupSearch() {
       setDisplayedGroups(data.groups);
     };
 
-    // Hae ryhmät, joissa käyttäjä on mukana
     const fetchInvolvedGroups = async () => {
       const response = await fetch('http://localhost:3001/group_request/user_involved_groups', {
         headers: {
@@ -36,16 +34,29 @@ function GroupSearch() {
     fetchInvolvedGroups();
   }, []);
 
+  const handleJoinRequest = async (groupId) => {
+    const response = await fetch('http://localhost:3001/group_request/add_request', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwtToken.value}`
+      },
+      body: JSON.stringify({ group_id: groupId })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      setInvolvedGroups(prev => [...prev, groupId]);  // Lisätään ryhmäID mukana oleviin ryhmiin
+    } else {
+      alert(data.message); // Näyttää virheviestin, jos pyyntö epäonnistuu
+    }
+  };
+
   useEffect(() => {
     const filteredGroups = displayedGroups.filter(group =>
       group.group_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setDisplayedGroups(filteredGroups);
   }, [searchTerm]);
-
-  const handleJoinRequest = async (groupId) => {
-    // join request logic
-  };
 
   return (
     <div className="group-list">
