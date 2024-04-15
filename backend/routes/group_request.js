@@ -1,5 +1,5 @@
 const { auth } = require('../middleware/auth');
-const {addGroupRequest, getGroupRequests, updateGroupRequest} = require('../database/group_request_db');
+const {addGroupRequest, getGroupRequests, updateGroupRequest, getUserRequests, getUserInvolvedGroups} = require('../database/group_request_db');
 
 const router = require('express').Router();
 
@@ -54,6 +54,40 @@ router.patch('/update_status', async (req, res) => {
     } catch (error) {
         console.error('Error updating group join request:', error);
         res.status(500).json({ message: 'Failed to update group join request' });
+    }
+});
+
+//endpoint to get user requests by user_id
+router.get('/user_requests', auth, async (req, res) => {
+    const user_id = res.locals.user_id;
+    console.log("user_id: ", user_id);
+
+    try {
+        const userRequests = await getUserRequests(user_id);
+        if (userRequests.length === 0) {
+            return res.status(404).json({ message: 'No user requests found' });
+        }
+        res.json({ message: 'User requests retrieved successfully', userRequests });
+    } catch (error) {
+        console.error('Error fetching user requests:', error);
+        res.status(500).json({ message: 'Failed to retrieve user requests' });
+    }
+});
+
+//endpoint to get user involved groups by user_id
+router.get('/user_involved_groups', auth, async (req, res) => {
+    const user_id = res.locals.user_id;
+    console.log("user_id: ", user_id);
+
+    try {
+        const involvedGroups = await getUserInvolvedGroups(user_id);
+        if (involvedGroups.length === 0) {
+            return res.status(404).json({ message: 'No groups found where user is involved' });
+        }
+        res.json({ message: 'User involved groups retrieved successfully', involvedGroups });
+    } catch (error) {
+        console.error('Error fetching user involved groups:', error);
+        res.status(500).json({ message: 'Failed to retrieve user involved groups' });
     }
 });
 
