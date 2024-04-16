@@ -41,14 +41,13 @@ router.get('/getGroup', async (req, res) => {
 router.post('/createGroup', auth, async (req, res) => {
     const group_name = req.body.group_name;
     const description = req.body.description;
-    const username = res.locals.username; // use the username from the auth middleware
+    const user_id = res.locals.user_id;
 
-    try {
-        const user = await getUser(username);
-        if (!user) {
+    try {      
+        if (!user_id) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const owner_id = user.user_id;
+        const owner_id = user_id;
 
         await createGroup(group_name, description, owner_id);
         res.status(201).json({ message: `Group "${group_name}" created successfully` });
@@ -60,15 +59,15 @@ router.post('/createGroup', auth, async (req, res) => {
 
 // endpoint to get all groups created by a user
 router.get('/getUserCreatedGroups', auth, async (req, res) => {
+    //const username = res.locals.username;
+    const user_id = res.locals.user_id;
     const username = res.locals.username;
 
     try {
-        const user = await getUser(username);
-        if (!user) {
+        if (!user_id) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const owner_id = user.user_id;
-
+        const owner_id = user_id;
         const groups = await getUserCreatedGroups(owner_id);
         //check if groups array is empty
         if (groups.length === 0) {

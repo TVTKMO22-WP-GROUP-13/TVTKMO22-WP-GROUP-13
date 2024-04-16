@@ -6,8 +6,10 @@ function auth(req, res, next){
     const token = req.headers.authorization?.split(' ')[1];
 
     try{
-        const username = jwt.verify(token, process.env.JWT_SECRET).username;
-        res.locals.username = username;
+        //verify the token and extract the user details (username, user_id)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        res.locals.username = decoded.username;
+        res.locals.user_id = decoded.user_id;
         next();
     }catch(err){
         res.status(403).json({error: 'Access forbidden.'})
