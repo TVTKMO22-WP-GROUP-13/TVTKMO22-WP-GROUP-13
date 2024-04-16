@@ -26,7 +26,7 @@ const MovieResults = ({ movies }) => {
 
 const Movies = () => {
   const [query, setQuery] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('');
+  const [selectedGenres, setSelectedGenres] = useState(new Set());
   const [year, setYear] = useState('');
   const [movies, setMovies] = useState([]);
 
@@ -35,8 +35,6 @@ const Movies = () => {
       const response = await axios.get('http://localhost:3001/tmdb/movie/search', {
         params: {
           query: query,
-          genre: selectedGenre,
-          year: year
         }
       });
       setMovies(response.data);
@@ -49,8 +47,16 @@ const Movies = () => {
     setQuery(event.target.value);
   };
 
-  const handleGenreChange = (genre) => {
-    setSelectedGenre(genre);
+  const toggleGenre = (genre) => {
+    setSelectedGenres((prevSelectedGenres) => {
+      const newSelectedGenres = new Set(prevSelectedGenres);
+      if (newSelectedGenres.has(genre)) {
+        newSelectedGenres.delete(genre);
+      } else {
+        newSelectedGenres.add(genre);
+      }
+      return newSelectedGenres;
+    });
   };
 
   const handleYearChange = (event) => {
@@ -72,17 +78,20 @@ const Movies = () => {
         </div>
 
         {/* Genre nappulat */}
+        <div>
+        <h2>Genres</h2>
         <div className="genre-container">
           {genresList.map((genre) => (
             <button
               key={genre}
-              className={`genre-button ${selectedGenre === genre ? 'selected' : ''}`}
-              onClick={() => handleGenreChange(genre)}
+              className={`genre-button ${selectedGenres.has(genre) ? 'selected' : ''}`}
+              onClick={() => toggleGenre(genre)}
             >
               {genre}
             </button>
           ))}
         </div>
+      </div>
 
         {/* Vuoden valinta */}
         <div className="year-container">

@@ -16,10 +16,40 @@ const tmdbApi = {
   async discoverMovies(sort_by = 'popularity.desc', page = 1, year = '', language = 'en', genreId = '') {
     const endpoint = tmdbEndpoints.discoverMovies(sort_by, page, year, language, genreId);
     const { data } = await axiosClient.get(endpoint);
-    return data.results;
+    return data.results.map(movie => new movieModel(
+      movie.id, 
+      movie.title, 
+      movie.poster_path, 
+      movie.overview
+  ));
   },
   async getMovieById(id) {
     const endpoint = tmdbEndpoints.getMovieById(id);
+    const { data } = await axiosClient.get(endpoint);
+    return data;
+  },
+  async searchTv(query, page = 1, year = '', language = 'en-US') {
+    const endpoint = tmdbEndpoints.searchTv(query, page, year, language);
+    const { data } = await axiosClient.get(endpoint);
+    return data.results.map(movie => new movieModel(
+        movie.id, 
+        movie.name, 
+        movie.poster_path, 
+        movie.overview
+    ));
+  },
+  async discoverTv(sort_by = 'popularity.desc', page = 1, year = '', language = 'en', genreId = '') {
+    const endpoint = tmdbEndpoints.discoverTv(sort_by, page, year, language, genreId);
+    const { data } = await axiosClient.get(endpoint);
+    return data.results.map(movie => new movieModel(
+      movie.id, 
+      movie.name, 
+      movie.poster_path, 
+      movie.overview
+  ));
+  },
+  async getTvById(id) {
+    const endpoint = tmdbEndpoints.getTvById(id);
     const { data } = await axiosClient.get(endpoint);
     return data;
   },
