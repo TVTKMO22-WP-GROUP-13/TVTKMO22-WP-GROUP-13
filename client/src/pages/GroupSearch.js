@@ -9,6 +9,7 @@ function GroupSearch() {
   const [involvedGroups, setInvolvedGroups] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [filteredGroups, setFilteredGroups] = useState([]); 
 
   useEffect(() => {
     const fetchGroupsAndStatus = async () => {
@@ -19,6 +20,7 @@ function GroupSearch() {
       });
       const groupsData = await groupResponse.json();
       setAllGroups(groupsData.groups);
+      setFilteredGroups(groupsData.groups);
 
       if (jwtToken.value) {
         const involvedResponse = await fetch('http://localhost:3001/group_request/user_involved_groups', {
@@ -29,20 +31,21 @@ function GroupSearch() {
         const involvedData = await involvedResponse.json();
         setInvolvedGroups(involvedData.involvedGroups.map(group => group.group_id));
       } else {
-        setInvolvedGroups([]); 
+        setInvolvedGroups([]);
       }
 
       setLoading(false);
     };
 
     fetchGroupsAndStatus();
-  }, [jwtToken.value]); 
+  }, [jwtToken.value]);
+
   useEffect(() => {
     const filteredGroups = allGroups.filter(group =>
       group.group_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setAllGroups(filteredGroups);
-  }, [searchTerm]);
+    setFilteredGroups(filteredGroups); 
+  }, [searchTerm, allGroups]);
 
   const handleJoinRequest = async (groupId) => {
     const response = await fetch('http://localhost:3001/group_request/add_request', {
@@ -68,11 +71,11 @@ function GroupSearch() {
           <form>
             <input type="text" placeholder="Search groups" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           </form>
-          {allGroups.map((group) => (
+          {filteredGroups.map((group) => (
             <div className="group-list-item" key={group.group_id}>
               <h2>{group.group_name}</h2>
               <p>Description: {group.description}</p>
-              {jwtToken.value && !involvedGroups.includes(group.group_id) && 
+              {jwtToken.value && !involvedGroups.includes(group.group_id) &&
                 <button onClick={() => handleJoinRequest(group.group_id)}>Send join request</button>
               }
             </div>
