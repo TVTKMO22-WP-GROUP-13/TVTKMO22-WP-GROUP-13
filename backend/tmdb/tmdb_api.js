@@ -17,6 +17,16 @@ const tmdbApi = {
     const { data } = await axiosClient.get(endpoint);
     return data;
   },
+  async topRatedMovies(top) {
+    const endpoint = tmdbEndpoints.topRatedMovies(top)
+    const {data} = await axiosClient.get(endpoint)
+    return data
+  },
+  async topRatedSeries(top) {
+    const endpoint = tmdbEndpoints.topRatedSeries(top)
+    const {data} = await axiosClient.get(endpoint)
+    return data
+  },
 };
 
 module.exports = tmdbApi;

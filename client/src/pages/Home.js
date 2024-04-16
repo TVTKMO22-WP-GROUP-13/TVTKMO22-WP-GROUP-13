@@ -26,7 +26,7 @@ export default function Home() {
           prodYear: eventti.querySelector('ProductionYear').textContent,
           synop: eventti.querySelector('ShortSynopsis').textContent
         }))
-        console.log("toimiiko array", eventtiArray)
+       // console.log("toimiiko array", eventtiArray)
           setNowInTheat(eventtiArray)
       })
       .catch(error => console.error('joku men vituiks taas'))
@@ -59,6 +59,8 @@ export default function Home() {
     }
 
     return (
+      <div>         
+        <h2>Finnkino coming soon</h2>
       
       <div className="konkkaa" ref={itemsRef}
       onMouseDown={handleMouseDown}
@@ -74,6 +76,7 @@ export default function Home() {
             <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">{movie.title}</a>
           </div>
         ))}
+      </div>
       </div>
       
     );

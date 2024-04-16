@@ -55,4 +55,24 @@ const getMovieById = async (req, res) => {
   }
 };
 
-module.exports = { searchMovies, discoverMovies, getMovieById };
+const topRatedMovies = async (req, res) =>{
+  try {
+    const { top } = req.params;
+    const movie = await tmdbApi.topRatedMovies(top);
+    responseHandler.ok(res, movie);
+  } catch (error) {
+    responseHandler.error(res, error.message);
+  }
+};
+
+const topRatedSeries = async (req, res) =>{
+  try {
+    const { top } = req.params;
+    const movie = await tmdbApi.topRatedSeries(top);
+    responseHandler.ok(res, movie);
+  } catch (error) {
+    responseHandler.error(res, error.message);
+  }
+};
+
+module.exports = { searchMovies, discoverMovies, getMovieById, topRatedMovies, topRatedSeries};

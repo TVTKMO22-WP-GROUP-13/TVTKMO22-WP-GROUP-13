@@ -6,5 +6,9 @@ const router = express.Router();
 router.get('/movie/search', mediaController.searchMovies);
 router.get('/movie/discover', mediaController.discoverMovies);
 router.get('/movie/:id', mediaController.getMovieById);
+router.get('/movie/:top', mediaController.topRatedMovies);
+router.get('/tv/:top', mediaController.topRatedSeries);
+
+
 
 module.exports = router;
