@@ -21,15 +21,14 @@ router.get('/all', async (req, res) => {
 });
 
 // endpoint to get a group by id
-router.get('/getGroup', async (req, res) => {
-    const group_id = req.body.group_id;
+router.get('/getGroup/:group_id', async (req, res) => {
+    const { group_id } = req.params;  // Extracting group_id from the route parameter
 
     try {
         const group = await getGroup(group_id);
         if (!group) {
             return res.status(404).json({ message: 'Group not found' });
         }
-        console.log(group);
         res.json({ message: 'Group retrieved successfully', group });
     } catch (error) {
         console.error('Error fetching group:', error);
