@@ -46,7 +46,7 @@ export default function YourGroups() {
       <div className="group-list">
         <h2>Your Created Groups</h2>
         {createdGroups.length > 0 ? createdGroups.map(group => (
-          <Link to={`/group/${group.group_id}`} key={group.group_id} className="group-list-item">
+          <Link to={`/group/${group.group_id}`} state={{ isOwner: true }} key={group.group_id} className="group-list-item">
             <h2 className="group-title">{group.group_name}</h2>
             <p className="group-description">Description: {group.description}</p>
           </Link>
@@ -55,7 +55,7 @@ export default function YourGroups() {
       <div className="group-list">
         <h2>Your Joined Groups</h2>
         {joinedGroups.length > 0 ? joinedGroups.map(group => (
-          <Link to={`/group/${group.group_id}`} key={group.group_id} className="group-list-item">
+          <Link to={`/group/${group.group_id}`} state={{ isOwner: false }} key={group.group_id} className="group-list-item">
             <h2 className="group-title">{group.group_name}</h2>
             <p className="group-description">Description: {group.description}</p>
           </Link>
