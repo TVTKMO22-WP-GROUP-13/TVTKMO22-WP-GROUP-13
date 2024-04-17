@@ -7,11 +7,10 @@ export default function Home() {
   const[isMouseDown, setIsMousedown] = useState(false)
   const[startX, setStartX] = useState(0)
   const[scrollLeft, setScrollLeft] = useState(0)
-  
-
   const [nowInTheat, setNowInTheat] = useState([])
-    useEffect(() =>{
 
+  
+    useEffect(() =>{
       axios.get('https://www.finnkino.fi/xml/Events/?listType=ComingSoon')
       .then(response =>{
         const parseri = new DOMParser()
@@ -59,8 +58,9 @@ export default function Home() {
     }
 
     return (
-      <div>         
-        <h2>Finnkino coming soon</h2>
+      <> 
+      <div className='container2'>         
+        <h2 className='FincomSon'>Finnkino coming soon</h2>
       
       <div className="konkkaa" ref={itemsRef}
       onMouseDown={handleMouseDown}
@@ -72,12 +72,30 @@ export default function Home() {
         {
             nowInTheat.map(movie => (
           <div key={movie.id} className="movie2">
+            <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">
+            <h2 className='movieTitle'>{movie.title} </h2>
             <img className='movieImage' src={movie.image} alt={movie.title} />
-            <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">{movie.title}</a>
+              
+              </a>
           </div>
         ))}
       </div>
       </div>
-      
+      <h2 className='FincomSon'>TMDB Trending series</h2>
+
+      <div className='toinenDiv'>
+      {
+            nowInTheat.map(movie => (
+          <div key={movie.id} className="movie2">
+            <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">
+            <h2 className='movieTitle'>{movie.title} </h2>
+            <img className='movieImage' src={movie.image} alt={movie.title} />
+              
+              </a>
+          </div>
+        ))}
+        
+         </div>   
+      </>  
     );
   }
