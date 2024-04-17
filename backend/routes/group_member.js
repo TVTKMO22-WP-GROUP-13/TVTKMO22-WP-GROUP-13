@@ -26,7 +26,7 @@ router.delete('/remove', async (req, res) => {
 });
 
 //endpoint to get all members of a group
-router.get('/group_members', async (req, res) => {
+router.get('/group_members', auth, async (req, res) => {
     try {
         const groupMembers = await getGroupMembers(req.query.group_id);
         //check if groupMembers array is empty

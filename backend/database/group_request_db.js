@@ -2,7 +2,8 @@ const pgPool = require('./pg_connection');
 
 const sql = {
     ADD_GROUP_REQUEST: 'INSERT INTO group_request (group_id, user_id) VALUES ($1, $2) RETURNING *;',
-    GET_GROUP_REQUESTS: 'SELECT user_id FROM group_request WHERE group_id = $1',
+    GET_GROUP_REQUESTS: 'SELECT request_id, user_id FROM group_request WHERE group_id = $1',
+    GET_PENDING_GROUP_REQUESTS: 'SELECT request_id, user_id FROM group_request WHERE group_id = $1 AND request_status = \'Pending\';',
     UPDATE_GROUP_REQUEST: 'UPDATE group_request SET request_status = $1 WHERE request_id = $2 RETURNING *;',
     GET_USER_REQUESTS: 'SELECT group_id FROM group_request WHERE user_id = $1',
     GET_USER_INVOLVED_GROUPS: `
@@ -75,6 +76,15 @@ async function getGroupRequests(group_id) {
     }
 }
 
+async function getPendingGroupRequests(group_id) {
+    try {
+        const result = await pgPool.query(sql.GET_PENDING_GROUP_REQUESTS, [group_id]);
+        return result.rows;
+    } catch (error) {
+        throw new Error('Error retrieving pending group requests: ' + error.message);
+    }
+}
+
 async function updateGroupRequest(request_status, request_id) {
     try {
         const result = await pgPool.query(sql.UPDATE_GROUP_REQUEST, [request_status, request_id]);
@@ -106,4 +116,4 @@ async function getUserInvolvedGroups(user_id) {
     }
 }
 
-module.exports = { addGroupRequest, getGroupRequests, updateGroupRequest, getUserRequests, getUserInvolvedGroups};
+module.exports = { addGroupRequest, getGroupRequests, updateGroupRequest, getUserRequests, getUserInvolvedGroups, getPendingGroupRequests};
