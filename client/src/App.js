@@ -11,6 +11,7 @@ import SeriesSearch from './pages/SeriesSearch';
 import TopSeries from './pages/TopSeries';
 import GroupSearch from './pages/GroupSearch';
 import YourGroups from './pages/YourGroups';
+import GroupView from './pages/GroupView';
 import ReviewsSearch from './pages/ReviewsSearch';
 import Dinnkino from './pages/Dinnkino';
 import Login from './pages/Login';
@@ -45,6 +46,7 @@ function App() {
         <Route path='/TopSeries' element={<TopSeries/>}/>
         <Route path='/GroupSearch' element={<GroupSearch/>}/>
         <Route path='/YourGroups' element={<YourGroups/>}/>
+        <Route path="/group/:group_id" element={<GroupView />} />
         <Route path='/YourReviews' element={<YourReviews/>}/>
         <Route path='/LogOut' element={<LogOut/>}/>
         <Route path='/ReviewsSearch' element={<ReviewsSearch/>}/>
