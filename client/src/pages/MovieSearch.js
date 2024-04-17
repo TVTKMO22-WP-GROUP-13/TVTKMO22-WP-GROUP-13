@@ -28,16 +28,33 @@ const Movies = () => {
   const [query, setQuery] = useState('');
   const [selectedGenres, setSelectedGenres] = useState(new Set());
   const [year, setYear] = useState('');
+  const [page, setPage] = useState(1); 
   const [movies, setMovies] = useState([]);
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/tmdb/movie/search', {
-        params: {
-          query: query,
-        }
-      });
-      setMovies(response.data);
+      let response;
+      if (query !== '') {
+        response = await axios.get('http://localhost:3001/tmdb/movie/search', {
+          params: {
+            query: query,
+            page: page,
+            year: year
+          }
+        });
+      } else {
+        const genreId = Array.from(selectedGenres).join(',');
+        response = await axios.get('http://localhost:3001/tmdb/movie/discover', {
+          params: {
+            with_genres: genreId, // Changed from 'genre' to 'with_genres' for correct parameter
+            sort_by: 'popularity.desc',
+            page: page,
+            year: year
+          }
+        });
+      }
+      console.log(response.data); 
+      setMovies(response.data); 
     } catch (error) {
       console.error('Hakuvirhe:', error);
     }
@@ -48,7 +65,7 @@ const Movies = () => {
   };
 
   const toggleGenre = (genre) => {
-    setSelectedGenres((prevSelectedGenres) => {
+    setSelectedGenres(prevSelectedGenres => {
       const newSelectedGenres = new Set(prevSelectedGenres);
       if (newSelectedGenres.has(genre)) {
         newSelectedGenres.delete(genre);
@@ -66,7 +83,6 @@ const Movies = () => {
   return (
     <div className="main-container">
       <div className="search-wrapper">
-        {/* Hakupalkki */}
         <div className="search-container">
           <input
             type="text"
@@ -77,11 +93,9 @@ const Movies = () => {
           />
         </div>
 
-        {/* Genre nappulat */}
-        <div>
-        <h2>Genres</h2>
         <div className="genre-container">
-          {genresList.map((genre) => (
+          <h2>Genres</h2>
+          <div></div> {genresList.map(genre => (
             <button
               key={genre}
               className={`genre-button ${selectedGenres.has(genre) ? 'selected' : ''}`}
@@ -91,9 +105,7 @@ const Movies = () => {
             </button>
           ))}
         </div>
-      </div>
 
-        {/* Vuoden valinta */}
         <div className="year-container">
           <h2>Year</h2>
           <input
@@ -104,7 +116,6 @@ const Movies = () => {
           />
         </div>
 
-        {/* Hakunappi */}
         <button className="search-button" onClick={handleSearch}>Search</button>
       </div>
 

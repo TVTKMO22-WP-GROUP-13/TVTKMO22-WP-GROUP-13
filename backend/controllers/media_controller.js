@@ -49,8 +49,8 @@ const searchMovies = async (req, res) => {
 };
 const discoverMovies = async (req, res) => {
   try {
-    const { sort_by, page, year, language, genre } = req.query;
-    const genreId = with_genres[genre] || '';
+    const { sort_by, page, year, language, genreId } = req.query;
+    const genre = with_genres[genre] || '';
     const movies = await tmdbApi.discoverMovies(sort_by, page, year, language, genreId);
     responseHandler.ok(res, movies);
   } catch (error) {
