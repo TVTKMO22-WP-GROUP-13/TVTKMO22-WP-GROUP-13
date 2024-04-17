@@ -4,8 +4,11 @@ const tmdbEndpoints = {
   discoverMovies: (sort_by, page, year, language, genreId) => 
     `/discover/movie?with_genres=${genreId}&sort_by=${sort_by}&page=${page}&primary_release_year=${year}&language=${language}`,
   getMovieById: (id) => `/movie/${id}`,
+    //getMovieProvidersById: (id) => `/movie/${id}/watch/providers`,
+  topRatedMovies: (top) => `/movie/${top}`,
+  topRatedSeries: (top) => `/tv/${top}`,
   
-  //getMovieProvidersById: (id) => `/movie/${id}/watch/providers`,
+
   //router.get('/media', mediaService.searchMedia);
 
   searchTv: (query, page, year, language) => 

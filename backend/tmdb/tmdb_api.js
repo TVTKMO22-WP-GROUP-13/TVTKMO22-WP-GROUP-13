@@ -27,7 +27,18 @@ const tmdbApi = {
     const endpoint = tmdbEndpoints.getMovieById(id);
     const { data } = await axiosClient.get(endpoint);
     return data;
-  },
+},
+async topRatedMovies(top) {
+  const endpoint = tmdbEndpoints.topRatedMovies(top)
+  const {data} = await axiosClient.get(endpoint)
+  return data
+},
+async topRatedSeries(top) {
+  const endpoint = tmdbEndpoints.topRatedSeries(top)
+  const {data} = await axiosClient.get(endpoint)
+  return data
+
+},
   async searchTv(query, page = 1, year = '', language = 'en-US') {
     const endpoint = tmdbEndpoints.searchTv(query, page, year, language);
     const { data } = await axiosClient.get(endpoint);

@@ -2,6 +2,7 @@ require('dotenv').config();
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const { register, getPassword, deleteUser } = require('../database/auth_db');
+const { getUser } = require('../database/user_data_db');
 const jwt = require('jsonwebtoken');
 const { auth } = require('../middleware/auth');
 
@@ -30,11 +31,16 @@ router.post('/login', async (req,res)=>{
     if(db_pw){
         const isAuth = await bcrypt.compare(pw, db_pw);
         if(isAuth){
+            //fetch user_id from user_data table
+            const user = await getUser(uname);
+            const userId = user.user_id;
             //create a token
-            const token = jwt.sign({username: uname }, process.env.JWT_SECRET);
+            const token = jwt.sign({username: uname, user_id: userId }, process.env.JWT_SECRET);
             //here we can set the token to expire in 30 minutes
             //const token = jwt.sign({username: uname }, process.env.JWT_SECRET, { expiresIn: '30m' });
             res.status(200).json({jwtToken: token });
+            console.log(uname);
+            console.log(userId);
         }else{
             res.status(401).json({error: 'Wrong password'});            
         }

@@ -31,7 +31,7 @@ useEffect(() => {
     .catch(error => console.error('Error fetching theatre areas:', error))
 }, [])
 
-  //Päivämäärät toiseen dropdowniin, näyttää 14 seuraavaa päivää milloin on näytöksiä valitussa teatterissa toiseen dropdowniin
+//Päivämäärät toiseen dropdowniin, näyttää 14 seuraavaa päivää milloin on näytöksiä valitussa teatterissa toiseen dropdowniin
 useEffect(() => {
   if (selectedKino) {
     //console.log("Kino", selectedKino)
@@ -167,23 +167,24 @@ return (
 
     {/* Search button */}
       <button onClick={handleSearch}>Search</button>
-        </div>  
-          {showShowtimeContainer && (
-          <>
-          {showtimeData.map((show, index) => (
-            <div className="card" key={index}>
-              <div className="card-header">
-                <h1>{show.showtime}</h1>
-                <p>Kesto: {show.MovieL}</p>
-              </div>
-              <div className="card-content">
-                <h2>{show.movieTitle}</h2>
-                <h3>{show.auditrium}</h3>
-              </div>
+    </div>  
+    
+    {showShowtimeContainer && (
+      <>
+      {showtimeData.map((show, index) => (
+        <div className="card" key={index}>
+          <div className="card-header">
+            <h1>{show.showtime}</h1>
+            <p>Kesto: {show.MovieL}</p>
+          </div>
+          <div className="card-content">
+            <h2>{show.movieTitle}</h2>
+            <h3>{show.auditrium}</h3>
+          </div>
           <img src={show.imageURL} alt="movie poster" />
         </div>
-          ))}
-          </>
-          )}
+       ))}
+       </>
+    )}
   </div>
 )}

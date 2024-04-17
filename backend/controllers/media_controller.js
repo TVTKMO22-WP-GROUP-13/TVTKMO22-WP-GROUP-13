@@ -98,6 +98,23 @@ const getTvById = async (req, res) => {
   try {
     const { id } = req.params;
     const movie = await tmdbApi.getTvById(id);
+  } catch (error) {
+    responseHandler.error(res, error.message);
+  }
+};
+const topRatedMovies = async (req, res) =>{
+  try {
+    const { top } = req.params;
+    const movie = await tmdbApi.topRatedMovies(top);
+    responseHandler.ok(res, movie);
+  } catch (error) {
+    responseHandler.error(res, error.message);
+  }
+};
+const topRatedSeries = async (req, res) =>{
+  try {
+    const { top } = req.params;
+    const movie = await tmdbApi.topRatedSeries(top);
     responseHandler.ok(res, movie);
   } catch (error) {
     responseHandler.error(res, error.message);
@@ -105,5 +122,4 @@ const getTvById = async (req, res) => {
 };
 
 module.exports = { searchMovies, discoverMovies, getMovieById,
-   searchTv, discoverTv, getTvById };
-
+   searchTv, discoverTv, getTvById, topRatedMovies, topRatedSeries }

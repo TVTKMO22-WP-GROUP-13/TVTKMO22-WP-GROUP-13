@@ -1,4 +1,4 @@
-import { Link, Navigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import React from 'react'
 import { useSignals } from '@preact/signals-react/runtime'
 import { jwtToken } from '../components/AuSignal';

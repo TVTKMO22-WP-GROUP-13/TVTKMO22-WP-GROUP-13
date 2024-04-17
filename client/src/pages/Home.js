@@ -7,11 +7,10 @@ export default function Home() {
   const[isMouseDown, setIsMousedown] = useState(false)
   const[startX, setStartX] = useState(0)
   const[scrollLeft, setScrollLeft] = useState(0)
-  
-
   const [nowInTheat, setNowInTheat] = useState([])
-    useEffect(() =>{
 
+  
+    useEffect(() =>{
       axios.get('https://www.finnkino.fi/xml/Events/?listType=ComingSoon')
       .then(response =>{
         const parseri = new DOMParser()
@@ -26,7 +25,7 @@ export default function Home() {
           prodYear: eventti.querySelector('ProductionYear').textContent,
           synop: eventti.querySelector('ShortSynopsis').textContent
         }))
-        console.log("toimiiko array", eventtiArray)
+       // console.log("toimiiko array", eventtiArray)
           setNowInTheat(eventtiArray)
       })
       .catch(error => console.error('joku men vituiks taas'))
@@ -59,6 +58,9 @@ export default function Home() {
     }
 
     return (
+      <> 
+      <div className='container2'>         
+        <h2 className='FincomSon'>Finnkino coming soon</h2>
       
       <div className="konkkaa" ref={itemsRef}
       onMouseDown={handleMouseDown}
@@ -70,13 +72,30 @@ export default function Home() {
         {
             nowInTheat.map(movie => (
           <div key={movie.id} className="movie2">
+            <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">
+            <h2 className='movieTitle'>{movie.title} </h2>
             <img className='movieImage' src={movie.image} alt={movie.title} />
-            <h2 className='elokuvaNimi'>{movie.title}</h2>
-            <p className=' elokuvaSynop'>{movie.synop}({movie.prodYear})</p>
-            <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">Lue lisää</a>
+              
+              </a>
           </div>
         ))}
       </div>
-      
+      </div>
+      <h2 className='FincomSon'>TMDB Trending series</h2>
+
+      <div className='toinenDiv'>
+      {
+            nowInTheat.map(movie => (
+          <div key={movie.id} className="movie2">
+            <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">
+            <h2 className='movieTitle'>{movie.title} </h2>
+            <img className='movieImage' src={movie.image} alt={movie.title} />
+              
+              </a>
+          </div>
+        ))}
+        
+         </div>   
+      </>  
     );
   }
