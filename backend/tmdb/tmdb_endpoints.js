@@ -7,6 +7,7 @@ const tmdbEndpoints = {
   //getMovieProvidersById: (id) => `/movie/${id}/watch/providers`,
   topRatedMovies: (top) => `/movie/${top}`,
   topRatedSeries: (top) => `/tv/${top}`,
+  trendingSeries: (tWindow) => `/trending/tv/${tWindow}`,
 };
 
 module.exports = tmdbEndpoints;
