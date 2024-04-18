@@ -75,4 +75,14 @@ const topRatedSeries = async (req, res) =>{
   }
 };
 
-module.exports = { searchMovies, discoverMovies, getMovieById, topRatedMovies, topRatedSeries};
+const trendingSeries = async (req, res) =>{
+  try {
+    const { tWindow } = req.params;
+    const series = await tmdbApi.trendingSeries(tWindow);
+    responseHandler.ok(res, series);
+  } catch (error) {
+    responseHandler.error(res, error.message);
+  }
+};
+
+module.exports = { searchMovies, discoverMovies, getMovieById, topRatedMovies, topRatedSeries, trendingSeries};

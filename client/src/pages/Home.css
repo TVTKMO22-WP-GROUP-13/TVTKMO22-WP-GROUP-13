@@ -1,5 +1,6 @@
 .container{
-    
+    margin-right: 0%;
+    margin-left: 0%;
 }
 .konkkaa{
     display: flex;
@@ -9,30 +10,28 @@
     scrollbar-color: transparent transparent;
     user-select: none;
     background-color: rgba(206, 28, 58, 0.404);
-    height: 220px;
+    height: auto;
     overflow: hidden;
+    flex: 1;
 }
 
 
-.elokuvaSynop{
-    overflow: hidden;
-}
+
 .movie2{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     align-content: flex-end;
-    background-color: rgba(148, 12, 37, 0.171);
     height: auto;
     width: auto;
     margin: 1%;
     flex-basis: 200px;
     text-decoration: none;
+    height: 250px;
 
 }
 .EventtiUrl{
-    font-size: large;
     text-decoration: none;
     color: rgb(17, 140, 240);
     
@@ -47,5 +46,46 @@
 
 .movieImage{
     max-width: 180px;
-    height: 180px;
+    max-height: 190px;
+}
+
+.toinenDiv{
+    display: flex;
+    height: 300px;
+    margin-top: 15px;
+    background-color: blue;
+
+}
+.movieTitle{
+    overflow: hidden;
+    white-space: normal;
+    font-size:medium
+    
+
+}
+
+.FincomSon{
+    text-align: center;
+    font-family:'Courier New', Courier, monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.weeklyButton{
+  color: black;
+  border: 2px solid #000000;
+  transition-duration: 0.4s;
+  width: 120px;
+  height: 40px; 
+  border-radius: 6px;
+
+  
+}
+.weeklyButton:hover{
+    background-color: #04AA6D;
+    color: white;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.24), 0 17px 10px 0 rgba(0,0,0,0.19);
+
 }

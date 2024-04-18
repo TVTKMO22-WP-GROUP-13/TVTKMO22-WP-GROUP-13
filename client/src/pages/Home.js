@@ -7,11 +7,12 @@ export default function Home() {
   const[isMouseDown, setIsMousedown] = useState(false)
   const[startX, setStartX] = useState(0)
   const[scrollLeft, setScrollLeft] = useState(0)
-  
-
   const [nowInTheat, setNowInTheat] = useState([])
-    useEffect(() =>{
+  const [trenDing, setTrenDing] = useState([])
+  const [weekly, setSweekly] = useState('day')
 
+
+    useEffect(() =>{
       axios.get('https://www.finnkino.fi/xml/Events/?listType=ComingSoon')
       .then(response =>{
         const parseri = new DOMParser()
@@ -28,9 +29,36 @@ export default function Home() {
         }))
        // console.log("toimiiko array", eventtiArray)
           setNowInTheat(eventtiArray)
+          trendingSer();
       })
       .catch(error => console.error('joku men vituiks taas'))
     }, [])
+
+    const trendingSer = () => {
+    
+     // https://api.themoviedb.org/3/trending/tv/day?api_key=ff47a1b37c1fd896de8d2445a40d77a1
+      axios.get(`http://localhost:3001/tmdb/trending/tv/${weekly}`)
+        .then(response => {
+          console.log("mitä täällä on", response.data)
+          const testi = response.data
+          const eventtiArray = testi.results.map(eventti => ({
+            id: eventti.id,
+            backdrop_path: eventti.backdrop_path,
+            name: eventti.title,
+            image: eventti.poster_path,
+            orgname: eventti.original_name,
+          }))
+          console.log("toimiiko array12", eventtiArray)
+          setTrenDing(eventtiArray)
+        })
+        .catch(error => console.error('joku men vituiks 2'))
+    };
+
+    const buttoni = () =>{
+      const newTimeWindow = weekly === 'week' ? 'day' : 'week';
+      setSweekly(newTimeWindow);
+      trendingSer();
+    }
 
     const handleMouseDown =(e) => {
         setIsMousedown(true)
@@ -59,8 +87,9 @@ export default function Home() {
     }
 
     return (
-      <div>         
-        <h2>Finnkino coming soon</h2>
+      <> 
+      <div className='container2'>         
+        <h2 className='FincomSon'>Finnkino coming soon</h2>
       
       <div className="konkkaa" ref={itemsRef}
       onMouseDown={handleMouseDown}
@@ -70,14 +99,33 @@ export default function Home() {
       onWheel={handleWheelScroll}
       >
         {
-            nowInTheat.map(movie => (
-          <div key={movie.id} className="movie2">
-            <img className='movieImage' src={movie.image} alt={movie.title} />
-            <a className='EventtiUrl' href={movie.eventtiUrl} target="_blank" rel="noopener noreferrer">{movie.title}</a>
+            nowInTheat.map(eventti => (
+          <div key={eventti.id} className="movie2">
+            <a className='EventtiUrl' href={eventti.eventtiUrl} target="_blank" rel="noopener noreferrer">
+            <h2 className='movieTitle'>{eventti.title} </h2>
+            <img className='movieImage' src={eventti.image} alt={eventti.title} />
+              
+              </a>
           </div>
         ))}
       </div>
       </div>
-      
+      <h2 className='FincomSon'> TMDB Trending series 
+        <button className='weeklyButton' onClick={buttoni}>Daily / Weekly</button> </h2>
+
+      <div className='toinenDiv'>
+      {
+            trenDing.map(movie => (
+          <div key={movie.id} className="movie2">
+            <a href={`https://www.themoviedb.org/tv/${movie.id}`} target="_blank" rel="noopener noreferrer">
+            
+            <img className='movieImage' src={`https://image.tmdb.org/t/p/w500/${movie.image}`} alt={movie.title} />
+              
+              </a>
+          </div>
+        ))}
+        
+         </div>   
+      </>  
     );
   }
