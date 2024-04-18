@@ -46,6 +46,7 @@ function App() {
         <Route path='/TopSeries' element={<TopSeries/>}/>
         <Route path='/GroupSearch' element={<GroupSearch/>}/>
         <Route path='/YourGroups' element={<YourGroups/>}/>
+        <Route path="/MakeGroup" element={<MakeGroup />} />
         <Route path="/group/:group_id" element={<GroupView />} />
         <Route path='/YourReviews' element={<YourReviews/>}/>
         <Route path='/LogOut' element={<LogOut/>}/>

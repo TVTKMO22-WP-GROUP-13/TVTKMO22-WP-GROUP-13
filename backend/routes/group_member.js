@@ -15,7 +15,7 @@ router.post('/add', async (req, res) => {
 });
 
 //endpoint to remove user from group
-router.delete('/remove', async (req, res) => {
+router.delete('/remove', auth, async (req, res) => {
     try {
         const result = await removeUserFromGroup(req.body.group_id, req.body.user_id);
         res.json({ message: 'User removed from group successfully', result });

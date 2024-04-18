@@ -33,7 +33,7 @@ export default function YourGroups() {
         }
       } catch (error) {
         console.error(`Error fetching ${groupType} groups:`, error);
-        setError(`You have not joined any ${groupType} groups.`);
+        setError(`You have not ${groupType} groups.`);
       } finally {
         setLoading(false);
       }
@@ -59,6 +59,9 @@ export default function YourGroups() {
     <div>
       <div className="group-list">
         <h2>Your Created Groups</h2>
+        <Link to="/MakeGroup">
+          <button className="create-group-button">Create a new group</button>
+        </Link>
         {createdGroups.length > 0 ? createdGroups.map(group => (
           <Link to={`/group/${group.group_id}`} state={{ isOwner: true }} key={group.group_id} className="group-list-item">
             <h2 className="group-title">{group.group_name}</h2>

@@ -5,7 +5,7 @@ const { getUser } = require('../database/user_data_db');
 const router = require('express').Router();
 
 // endpoint to get all groups
-router.get('/all', async (req, res) => {
+router.get('/all', auth, async (req, res) => {
     try {
         const groups = await getGroups();
         //check if groups array is empty
@@ -83,23 +83,9 @@ router.get('/getUserCreatedGroups', auth, async (req, res) => {
 // endpoint to delete a group
 router.delete('/deleteGroup', auth, async (req, res) => {
     const group_id = req.body.group_id;
-    const username = res.locals.username;
+    const owner_id = res.locals.user_id;
 
     try {
-        const user = await getUser(username);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        const owner_id = user.user_id;
-
-        const group = await getGroup(group_id);
-        if (!group) {
-            return res.status(404).json({ message: 'Group not found' });
-        }
-        if (group.owner_id !== owner_id) {
-            return res.status(403).json({ message: 'You are not the owner of this group' });
-        }
-
         await deleteGroup(group_id, owner_id);
         res.status(201).json({ message: 'Group deleted successfully' });
     } catch (error) {
