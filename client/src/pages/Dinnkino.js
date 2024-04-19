@@ -1,6 +1,9 @@
 import './Dinnkino.css'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import { isLoggedIN, fetchTheFknGroups } from './Dinnkino_profilecheck'
+
+
 
 
 export default function Dinnkino() {
@@ -12,9 +15,12 @@ export default function Dinnkino() {
   const [showdates, setshowDates] = useState([])
   const [moviesFinni, setMovies] = useState([])
   const [showtimeData, setShowtimeData] = useState([])
+  const [KKuserGroups, KKsetUserGroups] = useState('')
+  const [userGroups, setUserGroups] = useState([])
 
 
-  //Haetaan teatteri Id:t ensimmäiseen dropdowniin
+
+//Haetaan teatteri Id:t ensimmäiseen dropdowniin
 useEffect(() => {
   axios.get('https://www.finnkino.fi/xml/TheatreAreas/')
     .then(response => {
@@ -81,15 +87,18 @@ useEffect(() => {
  
 //Hakunappi, hakee valittujen asioiden avulla haussa näkyvät tiedot
 const handleSearch = () => {
-  if (selectedKino && selectedDate && selectedMovie) {
-    setShowtimeContainer(true)
+    if (selectedKino && selectedDate && selectedMovie) {
+      let groupsPromise = Promise.resolve([])
+      if (isLoggedIN()) {
+        groupsPromise = fetchTheFknGroups()
+      }
+      groupsPromise
+        .then((groups) => {
+          setUserGroups(groups)
+          setShowtimeContainer(true)
     const selectMovieDets = moviesFinni.find(movie => movie.eventId === selectedMovie)
         if(selectMovieDets) {
-          const movieTitteli = selectMovieDets.title
-          //const MovieImgaage = selectMovieDets.imageURL
-          //const scheduleURL = `https://www.finnkino.fi/xml/Schedule/?area=${selectedKino}&dt=${selectedDate}&eventID=${selectedMovie}`
-          //axios.get(scheduleURL)
-          //const eventURL = `https://www.finnkino.fi/xml/Events/`
+          const movie_title = selectMovieDets.title
           axios.get(`https://www.finnkino.fi/xml/Schedule/?area=${selectedKino}&dt=${selectedDate}&eventID=${selectedMovie}`)
             .then(response => {
               const parser = new DOMParser()
@@ -103,35 +112,60 @@ const handleSearch = () => {
                   //const rawShowEnd = show.querySelector('dtmmShowEnd').textContent
                   const showtime = new Date(rawShowtime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})
                   //const showend = new Date(rawShowEnd).toLocaleTimeString([],{hour: '2-digit', minute: '2-digit'})
-                  const theaterName = show.querySelector('Theatre').textContent
+                  const theater_name = show.querySelector('Theatre').textContent
                   const imageURL = show.querySelector('EventSmallImagePortrait').textContent
                   const auditrium = show.querySelector('TheatreAndAuditorium').textContent
                   const MovieLenght = show.querySelector('LengthInMinutes').textContent
                   const movieLenghtH = Math.floor(MovieLenght / 60)
                   const movieLenghtM = MovieLenght % 60
-                  const MovieL = `${movieLenghtH}h ${movieLenghtM}min`;
+                  const MovieL = `${movieLenghtH}h ${movieLenghtM}min`
 
                   const areaName = theatreAreas.find(area=>area.areaId === selectedKino)?.name || []
             
-                    showtimeData.push({
+                    const showtimeItem = { 
                     showtime: showtime,
-                    //showend: showend,
-                    movieTitle: movieTitteli,
-                    theaterName: theaterName,
+                    movie_title: movie_title,
+                    theater_name: theater_name,
                     areaName: areaName,
                     imageURL: imageURL,
                     auditrium: auditrium,
                     MovieL: MovieL
-                    })
-                }
+                    }
+               showtimeData.push(showtimeItem)
+              }
             setShowtimeData(showtimeData)
             //console.log("Showdata", showtimeData)
             })
         } else {
           setShowtimeContainer(false)
           }
+        })
   }
 }
+
+const handleSelectedShowtime = (showtimeItem, selectedGroupId) => {
+  const { showtime, theater_name, movie_title } = showtimeItem
+  console.log("ShowD", showtimeItem)
+
+  const showtimeData = {
+    showtime: showtime,
+    theater_name: theater_name,
+    group_id: selectedGroupId,
+    movie_title: movie_title
+  }
+  console.log("SHowPush", showtimeData)
+  axios.post('http://localhost:3001/showtime/addShowtime', showtimeData, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  } )
+    .then(response => {
+      console.log('Showtime added successfully:', response.data.message);
+    })
+    .catch(error => {
+      console.error('Error adding showtime:', error);
+    });
+};
 
 return (
   <div className="everything-wrapper">
@@ -176,10 +210,24 @@ return (
           <div className="card-header">
             <h1>{show.showtime}</h1>
             <p>Kesto: {show.MovieL}</p>
-          </div>
+           </div>
           <div className="card-content">
             <h2>{show.movieTitle}</h2>
             <h3>{show.auditrium}</h3>
+            <div className="ShowtimeSELECT-content">
+    {/* Select button - only visible if user is logged in and in a specific group */}
+    {userGroups.length > 0 && (
+    <div>
+        <button onClick={() => handleSelectedShowtime(show, KKuserGroups)}>Select</button>
+        <select value={KKuserGroups} onChange={(e) => KKsetUserGroups(e.target.value)}>
+            <option value="">Select a group</option>
+            {userGroups.map(group => (
+                <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
+            ))}
+        </select>
+    </div>
+)}
+  </div>
           </div>
           <img src={show.imageURL} alt="movie poster" />
         </div>
