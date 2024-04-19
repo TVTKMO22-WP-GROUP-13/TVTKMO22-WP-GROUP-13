@@ -5,7 +5,6 @@
 .konkkaa{
     display: flex;
     width: 100%;
-    gap: 30px;
     overflow-x: auto;
     scrollbar-color: transparent transparent;
     user-select: none;
