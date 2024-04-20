@@ -1,3 +1,4 @@
+//tmdb_api.js
 const axiosClient = require('../axios/axios_client');
 const movieModel = require('./movieModel');
 const tmdbEndpoints = require("./tmdb_endpoints");
@@ -13,15 +14,15 @@ const tmdbApi = {
         movie.overview
     ));
   },
-  async discoverMovies(sort_by = 'popularity.desc', page = 1, year = '', language = 'en', genreId = '') {
-    const endpoint = tmdbEndpoints.discoverMovies(sort_by, page, year, language, genreId);
+  async discoverMovies(sort_by = 'popularity.desc', page = 1, year = '', language = 'en-US', genreId = '') {
+    const endpoint = tmdbEndpoints.discoverMovies(sort_by, language, page, year, genreId);
     const { data } = await axiosClient.get(endpoint);
     return data.results.map(movie => new movieModel(
       movie.id, 
       movie.title, 
       movie.poster_path, 
       movie.overview
-  ));
+    ));
   },
   async getMovieById(id) {
     const endpoint = tmdbEndpoints.getMovieById(id);

@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 
 class movieModel {
     constructor(id, title, poster_path, overview) {

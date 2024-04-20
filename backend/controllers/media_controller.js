@@ -1,35 +1,30 @@
+//media_controller.js
 const responseHandler = require('../handlers/response_handler');
 const tmdbApi = require('../tmdb/tmdb_api');
 const movieModel = require('../tmdb/movieModel');
 
 const with_genres = {     
-  "action": 28,
-  "adventure": 12,
-  "animation": 16,
-  "comedy": 35,
-  "crime": 80,
-  "documentary": 99,
-  "drama": 18,
-  "family": 10751,
-  "fantasy": 14,
-  "history": 36,
-  "horror": 27,
-  "music": 10402,
-  "mystery": 9648,
-  "romance": 10749,
-  "science fiction": 878,
-  "tv": 10770,
-  "thriller": 53,
-  "war": 10752,
-  "western": 37,
-  "action & adventure": 10759,
-  "kids": 10762,
-  "news": 10763,
-  "reality": 10764,
-  "sci-fi & fantasy": 10765,
-  "soap": 10766,
-  "talk": 10767,
-  "war & politics": 10786
+    "action": [28], 
+    "adventure": [12],
+    "animation": [16],
+    "comedy": [35],
+    "crime": [80],
+    "documentary": [99],
+    "drama": [18],
+    "family": [10751],
+    "kids": [10762],
+    "fantasy": [14],
+    "history": [36],
+    "horror": [27],
+    "music": [10402],
+    "mystery": [9648],
+    "romance": [10749],
+    "science fiction": [878],
+    "tv": [10770],
+    "thriller": [53],
+    "war": [10752],
+    "western": [37],
+    "news": [10763]
 };
 
 const searchMovies = async (req, res) => {
@@ -49,10 +44,15 @@ const searchMovies = async (req, res) => {
 };
 const discoverMovies = async (req, res) => {
   try {
-    const { sort_by, page, year, language, genreId } = req.query;
-    const genre = with_genres[genre] || '';
-    const movies = await tmdbApi.discoverMovies(sort_by, page, year, language, genreId);
-    responseHandler.ok(res, movies);
+    const { sort_by = 'popularity.desc', page = 1, year, language = 'en-US', genre } = req.query;
+    const movies = await tmdbApi.discoverMovies(sort_by, page, year, language, genre);
+    const DiscoverMovies = movies.map(movie => ({
+      id: movie.id,
+      title: movie.title,
+      poster_path: movie.poster_path,
+      overview: movie.overview
+    }));   
+    responseHandler.ok(res, DiscoverMovies);
   } catch (error) {
     responseHandler.error(res, error.message);
   }

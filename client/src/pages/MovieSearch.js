@@ -1,12 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './MovieSearch.css';
 
 const genresList = [
-  'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary',
-  'Drama', 'Family', 'Fantasy', 'History', 'Horror', 'Music', 'Mystery',
-  'Romance', 'Science Fiction', 'TV Movie', 'Thriller', 'War', 'Western'
+  'action', 'adventure', 'animation', 'comedy', 'crime', 'documentary',
+  'drama', 'family', 'fantasy', 'history', 'horror', 'music', 'mystery',
+  'romance', 'science fiction', 'thriller', 'war', 'western'
 ];
+const genreIdsMap = {
+  "action": 28,
+  "adventure": 12,
+  "animation": 16,
+  "comedy": 35,
+  "crime": 80,
+  "documentary": 99,
+  "drama": 18,
+  "family": 10751,
+  "fantasy": 14,
+  "history": 36,
+  "horror": 27,
+  "music": 10402,
+  "mystery": 9648,
+  "romance": 10749,
+  "science fiction": 878,
+  "tv": 10770,
+  "thriller": 53,
+  "war": 10752,
+  "western": 37,
+  "action & adventure": 10759,
+  "kids": 10762,
+  "news": 10763,
+  "reality": 10764,
+  "sci-fi & fantasy": 10765,
+  "soap": 10766,
+  "talk": 10767,
+  "war & politics": 10786
+};
 
 const MovieResults = ({ movies }) => {
   return (
@@ -27,9 +56,15 @@ const MovieResults = ({ movies }) => {
 const Movies = () => {
   const [query, setQuery] = useState('');
   const [selectedGenres, setSelectedGenres] = useState(new Set());
+  const [genreQuery, setGenreQuery] = useState('');
   const [year, setYear] = useState('');
-  const [page, setPage] = useState(1); 
+  const [page, setPage] = useState(1);
   const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    const genreIds = Array.from(selectedGenres).map(genre => genreIdsMap[genre]).join('|');
+    setGenreQuery(genreIds);
+  }, [selectedGenres]);
 
   const handleSearch = async () => {
     try {
@@ -43,17 +78,17 @@ const Movies = () => {
           }
         });
       } else {
-        const genreId = Array.from(selectedGenres).join(',');
-        response = await axios.get('http://localhost:3001/tmdb/movie/discover', {
+        response = await axios.get('http://localhost:3001/tmdb/discover/movie', {
           params: {
-            with_genres: genreId, // Changed from 'genre' to 'with_genres' for correct parameter
+            with_genres: genreQuery,
             sort_by: 'popularity.desc',
             page: page,
             year: year
           }
         });
       }
-      console.log(response.data); 
+      console.log(response.data);
+      console.log('haku:',genreQuery); 
       setMovies(response.data); 
     } catch (error) {
       console.error('Hakuvirhe:', error);
@@ -66,13 +101,13 @@ const Movies = () => {
 
   const toggleGenre = (genre) => {
     setSelectedGenres(prevSelectedGenres => {
-      const newSelectedGenres = new Set(prevSelectedGenres);
-      if (newSelectedGenres.has(genre)) {
-        newSelectedGenres.delete(genre);
+      const updatedGenres = new Set(prevSelectedGenres);
+      if (updatedGenres.has(genre)) {
+        updatedGenres.delete(genre);
       } else {
-        newSelectedGenres.add(genre);
+        updatedGenres.add(genre);
       }
-      return newSelectedGenres;
+      return updatedGenres;
     });
   };
 
