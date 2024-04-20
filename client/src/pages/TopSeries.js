@@ -7,7 +7,6 @@ export default function TopSeries() {
 
     axios.get(`http://localhost:3001/tmdb/tv/top_rated`)
       .then(response => {
-        console.log("mitä täällä on", response.data)
         const testi = response.data
         const eventtiArray = testi.results.map(eventti => ({
           id: eventti.id,
@@ -17,7 +16,6 @@ export default function TopSeries() {
           orgname: eventti.original_name,
           first_air_date: eventti.first_air_date,
         }))
-        console.log("toimiiko array123", eventtiArray)
         setTopSer(eventtiArray)
       })
       .catch(error => console.error('joku men vituiks taas2'))

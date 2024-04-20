@@ -3,12 +3,10 @@ import axios from 'axios'
 
 export default function TopSeries() {
   const [topSer, setTopSer] = useState([])
- 
   useEffect(() => {
 
     axios.get(`http://localhost:3001/tmdb/movie/top_rated`)
       .then(response => {
-        console.log("mitä täällä on", response.data)
         const testi = response.data
         const eventtiArray = testi.results.map(eventti => ({
           id: eventti.id,
@@ -18,7 +16,6 @@ export default function TopSeries() {
           orgname: eventti.original_title,
           first_air_date: eventti.release_date,
         }))
-        console.log("toimiiko array12", eventtiArray)
         setTopSer(eventtiArray)
       })
       .catch(error => console.error('joku men vituiks taas2'))

@@ -1,4 +1,4 @@
-//media_controller.js
+
 const responseHandler = require('../handlers/response_handler');
 const tmdbApi = require('../tmdb/tmdb_api');
 const movieModel = require('../tmdb/movieModel');
@@ -120,6 +120,16 @@ const topRatedSeries = async (req, res) =>{
     responseHandler.error(res, error.message);
   }
 };
+const trendingSeries = async (req, res) =>{
+  try {
+    const { tWindow } = req.params;
+    const series = await tmdbApi.trendingSeries(tWindow);
+    responseHandler.ok(res, series);
+  } catch (error) {
+    responseHandler.error(res, error.message);
+  }
+};
+
 
 module.exports = { searchMovies, discoverMovies, getMovieById,
-   searchTv, discoverTv, getTvById, topRatedMovies, topRatedSeries }
+   searchTv, discoverTv, getTvById, topRatedMovies, topRatedSeries, trendingSeries }

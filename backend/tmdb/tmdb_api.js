@@ -65,6 +65,11 @@ async topRatedSeries(top) {
     const { data } = await axiosClient.get(endpoint);
     return data;
   },
+  async trendingSeries(tWindow) {
+    const endpoint = tmdbEndpoints.trendingSeries(tWindow)
+    const {data} = await axiosClient.get(endpoint)
+    return data
+  },
 };
 
 module.exports = tmdbApi;
