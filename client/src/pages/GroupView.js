@@ -2,10 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtToken } from '../components/AuSignal';
+import './GroupView.css';
 
 function GroupView() {
   const { group_id } = useParams()
-  const { navigate } = useNavigate();
+  const  navigate  = useNavigate();
   const location = useLocation();
   const { isOwner } = location.state || { isOwner: false };
   const [groupDetails, setGroupDetails] = useState(null);
@@ -51,6 +52,29 @@ function GroupView() {
       console.error(error);
     }
   }, [group_id]);
+
+  const handleLeaveGroup = async () => {
+    if (window.confirm("Are you sure you want to leave this group?")) {
+      setUpdating(true);
+      try {
+        const response = await axios.delete(`http://localhost:3001/group_member/leaveGroup`, {
+          data: { group_id },
+          headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+        });
+        if (response.status === 200) {
+          alert("You have successfully left the group.");
+          navigate('/'); // Redirect to homepage or dashboard after leaving
+        } else {
+          throw new Error('Failed to leave the group');
+        }
+      } catch (error) {
+        setError('Failed to leave the group. ' + error.message);
+        console.error(error);
+      } finally {
+        setUpdating(false);
+      }
+    }
+  };
 
   const handleAccept = async (request_id, user_id) => {
     setUpdating(true);
@@ -159,43 +183,41 @@ function GroupView() {
 
   return (
     <div className="group-details">
-      <h1>{groupDetails.group_name}</h1>
-      <p>Description: {groupDetails.description}</p>
-      {isOwner && <button onClick={handleDeleteGroup} style={{ margin: '10px', backgroundColor: 'red', color: 'white' }}>Delete Group</button>}
-      <div>
-        <h2>Members</h2>
-        {groupMembers.length > 0 ? (
-          <ul>
-            {groupMembers.map(member => (
-              <li key={member.user_id}>
-                User ID: {member.user_id}
-                {isOwner && <button onClick={() => handleRemoveMember(member.user_id)}>Remove</button>}
-              </li>
-            ))}
-          </ul>
-        ) : <p>No members found.</p>}
-      </div>
-      {isOwner && (
+        <h1>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
+        <p>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
+        {!isOwner && <button onClick={handleLeaveGroup} className="leave-btn">Leave Group</button>}
+        {isOwner && <button onClick={handleDeleteGroup} className="delete-btn">Delete Group</button>}
         <div>
-          <h2>Join Requests</h2>
-          {updating ? <p>Updating...</p> : groupJoinRequests.length > 0 ? (
-            <ul>
-              {groupJoinRequests.map(request => (
-                <li key={request.request_id}>
-                  User ID: {request.user_id}
-                  <button onClick={() => handleAccept(request.request_id, request.user_id)}>Accept</button>
-                  <button onClick={() => handleReject(request.request_id)}>Reject</button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No join requests.</p>
-          )}
+            <h2>Members</h2>
+            {groupMembers.length > 0 ? (
+                <ul>
+                    {groupMembers.map(member => (
+                        <li key={member.user_id}>
+                            User ID: {member.user_id}
+                            {isOwner && <button onClick={() => handleRemoveMember(member.user_id)} className="remove-btn">Remove</button>}
+                        </li>
+                    ))}
+                </ul>
+            ) : <p>No members found.</p>}
         </div>
-      )}
-      {!isOwner && <p>Group Member View</p>}
+        {isOwner && (
+            <div>
+                <h2>Join Requests</h2>
+                {updating ? <p>Updating...</p> : groupJoinRequests.length > 0 ? (
+                    <ul>
+                        {groupJoinRequests.map(request => (
+                            <li key={request.request_id}>
+                                User ID: {request.user_id}
+                                <button onClick={() => handleAccept(request.request_id, request.user_id)} className="accept-btn">Accept</button>
+                                <button onClick={() => handleReject(request.request_id)} className="reject-btn">Reject</button>
+                            </li>
+                        ))}
+                    </ul>
+                ) : <p>No join requests.</p>}
+            </div>
+        )}
+        {!isOwner && <p>Group Member View</p>}
     </div>
-  );
+);
 }
-
 export default GroupView;
