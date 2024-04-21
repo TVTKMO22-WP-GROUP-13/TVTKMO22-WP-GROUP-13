@@ -1,11 +1,12 @@
 .groupContainer {
-    background: #deceff; /* Setting this to white or a matching color to the items */
+    background: #deceff;
+    /* Setting this to white or a matching color to the items */
     border-radius: 8px;
     padding: 20px;
     margin: 20px auto;
     width: 90%;
     max-width: 800px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .groupHeader {
@@ -19,7 +20,8 @@
     margin-bottom: 20px;
 }
 
-.membersHeader, .requestsHeader {
+.membersHeader,
+.requestsHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,31 +35,45 @@
     margin-left: 10px;
 }
 
-.membersList, .requestsList {
+.membersList,
+.requestsList {
     list-style: none;
     padding: 0;
-    margin: 0; /* Reset margin around the list to ensure clean spacing */
-    background-color: #deceff; /* Ensures background matches item background */
-    overflow: hidden; /* Prevents content from overflowing the list boundaries */
+    margin: 0;
+    /* Reset margin around the list to ensure clean spacing */
+    background-color: #deceff;
+    /* Ensures background matches item background */
+    overflow: hidden;
+    /* Prevents content from overflowing the list boundaries */
 }
 
-.memberItem, .requestItem {
+.memberItem,
+.requestItem {
     background: #fff;
-    border-radius: 10px; /* Increased border-radius for rounded corners */
-    padding: 15px; /* Increased padding for better spacing and visual padding */
-    margin: 15px 0; /* Increased vertical margin to add space between items */
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* Slightly larger shadow for more depth */
+    border-radius: 10px;
+    /* Increased border-radius for rounded corners */
+    padding: 15px;
+    /* Increased padding for better spacing and visual padding */
+    margin: 15px 0;
+    /* Increased vertical margin to add space between items */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    /* Slightly larger shadow for more depth */
     display: flex;
     justify-content: space-between;
     align-items: center;
     transition: background-color 0.3s ease;
 }
 
-.memberItem:hover, .requestItem:hover {
-    background-color: #fff; /* Keeps background white */
-    color: #333; /* Keeps text color unchanged */
-    cursor: default; /* Keeps cursor default to avoid indicating interactivity */
-    box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* Consistent shadow on hover */
+.memberItem:hover,
+.requestItem:hover {
+    background-color: #fff;
+    /* Keeps background white */
+    color: #333;
+    /* Keeps text color unchanged */
+    cursor: default;
+    /* Keeps cursor default to avoid indicating interactivity */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    /* Consistent shadow on hover */
 }
 
 .actionButton {
@@ -74,9 +90,7 @@
     opacity: 0.9;
 }
 
-.leaveGroupButton, .deleteGroupButton, .removeMemberButton, .acceptRequestButton, .rejectRequestButton {
-    background-color: #f44336;; /* General red theme for action buttons */
-}
+
 
 .leaveGroupButton {
     background-color: #ff5722;
@@ -90,6 +104,7 @@
     padding: 5px 8px;
     margin-left: auto;
     font-size: 12px;
+    background-color: #f44336;
 }
 
 .acceptRequestButton {
@@ -101,6 +116,7 @@
 }
 
 .toggleVisibilityButton {
-    background-color: #2196F3; /* Blue background for visibility toggle */
+    background-color: #2196F3;
+    /* Blue background for visibility toggle */
     color: #FFFFFF;
 }
