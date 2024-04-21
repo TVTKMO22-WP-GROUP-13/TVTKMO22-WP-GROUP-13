@@ -1,84 +1,80 @@
 .header {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  .otsikko{
-    background-color: #913549;
-    font-size: 35px;
-    text-align: left;
-    padding: 5px;
-    font-family:'Times New Roman', Times, serif
- 
-  }
-  .profile{
-    background-color: rgb(55, 55, 78);
-    position: fixed;
-    top: 0;
-    right: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  }
-  
-  ul.UlProfile {
-    list-style-type: none;
-    background-color: #913549;
-    
-  }
-  ul :hover{
-    background-color: rgb(46, 46, 117);
-    color: white;
-  }
-  ul li {
-  
-    display: inline-block;
-    position: relative;
-  }
-  ul li a.Profiili {
-        display: block;
-        color: #f3f3f3;
-        padding: 10px 20px;
-        text-decoration: none;
-        text-align: center;
-        font-size: 15px;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        font-style:italic
+.otsikko {
+  background-color: #913549;
+  font-size: 35px;
+  text-align: left;
+  padding: 5px;
+  font-family: 'Times New Roman', Times, serif;
+}
 
-  
-  }
-  ul li ul.Droppi {
-    background: #22438c;
-    display: none;
-    width: 100%;
-    position: absolute;
-    z-index: 999;
+.profile {
+  background-color: rgb(55, 55, 78);
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+}
 
-    
-    
-  }
-  
-  ul li:hover ul.Droppi {
-    display: block;
+ul.UlProfile {
+  list-style-type: none;
+  background-color: #913549;
+}
 
-    
-  }
-  
-  .linkki{
-    color: rgb(27, 148, 255);
-    text-decoration: none;
-  }
-  .headermenu {
-    text-align: right;
-    
-  }
-  .headermenu button{
-    width: 200px;
-    min-height: 40px;
-    border-radius: 6px;
-    margin-right: 10px;
-    color: rgb(241, 8, 86);
-    font-size: 25px;
-    font-family:'Times New Roman', Times, serif;
-    font-weight: bold;
-  
-  }
-  .headermenu button:hover{
-    background-color: aqua;
-  }
+ul :hover {
+  background-color: rgb(46, 46, 117);
+  color: white;
+}
+
+ul li {
+  display: inline-block;
+  position: relative;
+}
+
+ul li a.Profiili {
+  display: block;
+  color: #f3f3f3;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 15px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-style: italic;
+}
+
+ul li ul.Droppi {
+  background: #22438c;
+  display: none;
+  width: 100%;
+  position: absolute;
+}
+
+ul li:hover ul.Droppi {
+  display: block;
+}
+
+.linkki {
+  color: rgb(27, 148, 255);
+  text-decoration: none;
+}
+
+.headermenu {
+  text-align: right;
+}
+
+.headermenu button {
+  width: 200px;
+  min-height: 40px;
+  border-radius: 6px;
+  margin-right: 10px;
+  color: rgb(241, 8, 86);
+  font-size: 25px;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+}
+
+.headermenu button:hover {
+  background-color: aqua;
+}
