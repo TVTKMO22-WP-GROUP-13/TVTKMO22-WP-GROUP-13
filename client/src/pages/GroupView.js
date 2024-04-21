@@ -197,11 +197,7 @@ function GroupView() {
   }, [fetchGroupDetails, fetchGroupJoinRequests, fetchGroupMembers]);
 
   if (!groupDetails) {
-    return (
-      <div className="loading-animation">
-        <div className="spinner"></div>
-      </div>
-    );
+    return <div className={styles.loadingAnimation}><div className="spinner"></div></div>;
   }
 
   return (
