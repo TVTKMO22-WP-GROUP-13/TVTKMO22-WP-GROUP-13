@@ -4,9 +4,6 @@ import React, { useState, useEffect } from 'react'
 import { jwtToken } from '../components/AuSignal';
 
 
-
-
-
 export default function Dinnkino() {
   const [selectedKino, setSelectedKino] = useState('')
   const [selectedDate, setSelectedDate] = useState('')
@@ -20,20 +17,10 @@ export default function Dinnkino() {
   const [KKuserGroups, KKsetUserGroups] = useState('')
   const [createdGroups, setCreatedGroups] = useState([]);
   const [joinedGroups, setJoinedGroups] = useState([]);
-  const [errorCreated, setErrorCreated] = useState('');
-  const [errorJoined, setErrorJoined] = useState('');
-
 
 useEffect(() => {
-/*  const jwtToken = localStorage.getItem("jwtToken")
-
-  const isLoggedIN = () => {
-    console.log("Tokeni", jwtToken);
-    return jwtToken !== null && jwtToken !== undefined;
-  };*/
-
-  const GetGroups = async (url, setUserGroups, setUserError, groupType) => {
-    console.log.apply(`Get ${groupType} groups`)
+  const GetGroups = async (url, setUserGroups, groupType) => {
+    console.log(`Get ${groupType} groups`)
     try {
       const response = await axios.get(url, {
         headers: {
@@ -46,25 +33,22 @@ useEffect(() => {
         setUserGroups(groupData)
         setShowtimeContainer(true)
       } else {
-        setUserError(`No ${groupType} groups found.`)
         console.log(`No ${groupType} groups found`)
       }    
     } catch (error) {
       console.error(`Error fetching ${groupType} groups:`, error)
-        setUserError(`You have not joined any ${groupType} groups.`)
     }
   }
+ 
   if(jwtToken.value) {
-    GetGroups('http://localhost:3001/user_group/getUserCreatedGroups', setCreatedGroups, setErrorCreated, 'created');
-    GetGroups('http://localhost:3001/group_member/groups_joined', setJoinedGroups, setErrorJoined, 'joined');
+    GetGroups('http://localhost:3001/user_group/getUserCreatedGroups', setCreatedGroups, 'created');
+    GetGroups('http://localhost:3001/group_member/groups_joined', setJoinedGroups, 'joined');
     setShowtimeSelectContainer(true)
   } else {
     console.log("no token")
     setShowtimeSelectContainer(false)
   }
 }, [])
-
-
 
 //Haetaan teatteri Id:t ensimmäiseen dropdowniin
 useEffect(() => {
@@ -195,7 +179,8 @@ const handleSelectedShowtime = (showtimeItem, selectedGroupId) => {
   console.log("SHowPush", showtimeData)
   axios.post('http://localhost:3001/showtime/addShowtime', showtimeData, {
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwtToken}`
     }
   } )
     .then(response => {
@@ -209,73 +194,73 @@ const handleSelectedShowtime = (showtimeItem, selectedGroupId) => {
 return (
   <div className="everything-wrapper">
     <div className='dropdown'>
-    {/* Kino dropdown */}
+      {/* Kino dropdown */}
       <select value={selectedKino} onChange={(e) => setSelectedKino(e.target.value)}>
-          {theatreAreas.map(area => (
-            <option key={area.areaId} value={area.areaId}>{area.name}</option>
-          ))}
+        {theatreAreas.map(area => (
+        <option key={area.areaId} value={area.areaId}>{area.name}</option>
+        ))}
       </select>
 
-    {/* Date dropdown */}
+      {/* Date dropdown */}
       <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}>
-        <option value="Pick a date">Pick a date</option>
+      <option value="Pick a date">Pick a date</option>
         {showdates.map(date => (
-          <option key={date} value={date}>{date}</option>
-          ))}
+        <option key={date} value={date}>{date}</option>
+        ))}
       </select>
 
-    {/* Movie dropdown */}
+      {/* Movie dropdown */}
       <select value={selectedMovie} onChange={(e) => setSelectedMovie(e.target.value)}>
-        <option value="Pick a movie">Pick a movie</option>
+      <option value="Pick a movie">Pick a movie</option>
         {moviesFinni.reduce((uniqueMovies, movie) => {
           if (!uniqueMovies.find(item => item.eventId === movie.eventId)) {
             uniqueMovies.push(movie)
           }
           // console.log("uniw", uniqueMovies)
-        return uniqueMovies
+          return uniqueMovies
         }, []).map(movie => (
-        <option key={movie.eventId} value={movie.eventId}>{movie.title}</option>
-        ))}
-    </select>
+      <option key={movie.eventId} value={movie.eventId}>{movie.title}</option>
+      ))}
+      </select>
 
-    {/* Search button */}
+      {/* Search button */}
       <button onClick={handleSearch}>Search</button>
     </div>  
     
     {showShowtimeContainer && (
-      <>
-      {showtimeData.map((show, index) => (
-        <div className="card" key={index}>
-          <div className="card-header">
-            <h1>{show.showtime}</h1>
-            <p>Kesto: {show.MovieL}</p>
-           </div>
-          <div className="card-content">
-            <h2>{show.movieTitle}</h2>
-            <h3>{show.auditrium}</h3>
-            <div className="ShowtimeSELECT-content">
-    {/* Select button - only visible if user is logged in and in a specific group */}
-    {console.log("showShowtimeSelectContainer:", showShowtimeSelectContainer)}
-    {showShowtimeSelectContainer && (
-    <div>
-        <button onClick={() => handleSelectedShowtime(show, KKuserGroups)}>Select</button>
-        <select value={KKuserGroups} onChange={(e) => KKsetUserGroups(e.target.value)}>
-            <option value="">Select a group</option>
-            {createdGroups.map(group => (
-        <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
-      ))}
-      {joinedGroups.map(group => (
-        <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
-      ))}
-        </select>
-    </div>
-)}
-  </div>
-          </div>
-          <img src={show.imageURL} alt="movie poster" />
+    <>
+    {showtimeData.map((show, index) => (
+      <div className="card" key={index}>
+        <div className="card-header">
+          <h1>{show.showtime}</h1>
+          <p>Kesto: {show.MovieL}</p>
         </div>
-       ))}
-       </>
+        <div className="card-content">
+          <h2>{show.movie_title}</h2>
+          <h3>{show.auditrium}</h3>
+
+          <div className="ShowtimeSELECT-content">
+          {/* Select button - only visible if user is logged in and in a specific group */}
+          {showShowtimeSelectContainer && (
+            <div>
+              <select value={KKuserGroups} onChange={(e) => KKsetUserGroups(e.target.value)}>
+              <option value="">Select a group</option>
+              {createdGroups.map(group => (
+              <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
+              ))}
+              {joinedGroups.map(group => (
+              <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
+              ))}
+              </select>
+              <button onClick={() => handleSelectedShowtime(show, KKuserGroups)}>Select</button>
+            </div>
+          )}
+          </div>
+        </div>
+        <img src={show.imageURL} alt="movie poster" />
+      </div>
+      ))}
+    </>
     )}
   </div>
 )}
