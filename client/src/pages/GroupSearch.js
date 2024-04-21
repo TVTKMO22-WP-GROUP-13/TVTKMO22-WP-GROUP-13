@@ -34,7 +34,7 @@ function GroupSearch() {
         } else {
           setInvolvedGroups([]);
           if (involvedData.message) {
-            console.log(involvedData.message);  // Voit näyttää viestin käyttäjälle, jos haluat
+            console.log(involvedData.message);
           }
         }
       } else {

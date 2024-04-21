@@ -26,20 +26,24 @@ export default function YourGroups() {
         if (groupData && groupData.length > 0) {
           setGroups(groupData);
         } else {
-          setError(`No ${groupType} groups found.`);
+          setError(response.data.message);
         }
       } catch (error) {
-        setError(`Failed to fetch ${groupType} groups.`);
+        if (error.response) {
+          setError(error.response.data.message || `Failed to fetch ${groupType} groups.`);
+        } else {
+          setError(`Failed to fetch ${groupType} groups.`);
+        }
       } finally {
         setLoading(false);
       }
     };
-
+  
     if (jwtToken.value) {
       fetchGroups('http://localhost:3001/user_group/getUserCreatedGroups', setCreatedGroups, setErrorCreated, 'created');
       fetchGroups('http://localhost:3001/group_member/groups_joined', setJoinedGroups, setErrorJoined, 'joined');
     }
-  }, []);
+  }, [jwtToken.value, setCreatedGroups, setErrorCreated, setJoinedGroups, setErrorJoined]);
 
   if (!jwtToken.value) {
     return <Navigate to='/login' />;
