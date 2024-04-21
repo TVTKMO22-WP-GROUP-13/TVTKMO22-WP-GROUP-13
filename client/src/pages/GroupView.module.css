@@ -1,5 +1,5 @@
 .groupContainer {
-    background: #d8d8d8;
+    background: #deceff; /* Setting this to white or a matching color to the items */
     border-radius: 8px;
     padding: 20px;
     margin: 20px auto;
@@ -36,17 +36,29 @@
 .membersList, .requestsList {
     list-style: none;
     padding: 0;
+    margin: 10 px; /* Ensure no external margins are causing gaps */
+    background-color: #fff; /* Optional: Set a specific background color if needed */
+    overflow: hidden; /* Cuts off any outside content from showing */
 }
 
 .memberItem, .requestItem {
     background: #fff;
     border-radius: 5px;
     padding: 10px;
-    margin-bottom: 10px;
+    margin: 10px 0; /* Adjust or remove margin if it creates unwanted gaps */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+/* Explicitly setting the hover state to have no change */
+.memberItem:hover, .requestItem:hover {
+    background-color: #fff; /* Keeps background white */
+    color: #333; /* Keeps text color unchanged */
+    cursor: default; /* Keeps cursor default to avoid indicating interactivity */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Maintain the same shadow on hover */
 }
 
 .actionButton {
@@ -64,7 +76,7 @@
 }
 
 .leaveGroupButton, .deleteGroupButton, .removeMemberButton, .acceptRequestButton, .rejectRequestButton {
-    background-color: #e91e63; /* General red theme for action buttons */
+    background-color: #f44336;; /* General red theme for action buttons */
 }
 
 .leaveGroupButton {
