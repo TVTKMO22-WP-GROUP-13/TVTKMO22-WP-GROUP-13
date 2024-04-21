@@ -70,7 +70,7 @@ router.get('/getUserCreatedGroups', auth, async (req, res) => {
         const groups = await getUserCreatedGroups(owner_id);
         //check if groups array is empty
         if (groups.length === 0) {
-            return res.status(404).json({ message: 'No groups found' });
+            return res.status(404).json({ message: 'You have not created any groups' });
         }
         console.log(groups);
         res.json({ message: `Groups created by "${username}  " retrieved successfully`, groups });
@@ -83,23 +83,9 @@ router.get('/getUserCreatedGroups', auth, async (req, res) => {
 // endpoint to delete a group
 router.delete('/deleteGroup', auth, async (req, res) => {
     const group_id = req.body.group_id;
-    const username = res.locals.username;
+    const owner_id = res.locals.user_id;
 
     try {
-        const user = await getUser(username);
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        const owner_id = user.user_id;
-
-        const group = await getGroup(group_id);
-        if (!group) {
-            return res.status(404).json({ message: 'Group not found' });
-        }
-        if (group.owner_id !== owner_id) {
-            return res.status(403).json({ message: 'You are not the owner of this group' });
-        }
-
         await deleteGroup(group_id, owner_id);
         res.status(201).json({ message: 'Group deleted successfully' });
     } catch (error) {
