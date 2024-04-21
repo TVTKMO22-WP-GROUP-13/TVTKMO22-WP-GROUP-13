@@ -1,4 +1,4 @@
-.group-details {
+.groupDetails {
     background: #d8d8d8;
     border-radius: 8px;
     padding: 20px;
@@ -8,18 +8,18 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.group-details h1, .group-details p, .group-details h2 {
+.header, .paragraph, .subHeader {
     color: #333;
     font-size: 24px;
 }
 
-.group-details p {
+.paragraph {
     color: #666;
     font-size: 16px;
     margin-bottom: 20px;
 }
 
-.group-details h2 {
+.subHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -29,16 +29,16 @@
     margin-bottom: 10px;
 }
 
-.group-details .section span {
+.sectionSpan {
     margin-left: 10px;
 }
 
-.group-details ul {
+.list {
     list-style: none;
     padding: 0;
 }
 
-.group-details li {
+.listItem {
     background: #fff;
     border-radius: 5px;
     padding: 10px;
@@ -49,7 +49,7 @@
     align-items: center;
 }
 
-.group-details button {
+.button {
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
@@ -59,37 +59,37 @@
     background-color: #2196F3;
 }
 
-.group-details button:hover {
+.button:hover {
     opacity: 0.9;
 }
 
-button.leave-btn, button.delete-btn, button.remove-btn, button.accept-btn, button.reject-btn {
+.leaveBtn, .deleteBtn, .removeBtn, .acceptBtn, .rejectBtn {
     background-color: #e91e63; /* General red theme for action buttons */
 }
 
-button.leave-btn {
+.leaveBtn {
     background-color: #ff5722;
 }
 
-button.delete-btn {
+.deleteBtn {
     background-color: #f44336;
 }
 
-button.remove-btn {
+.removeBtn {
     padding: 5px 8px;
     margin-left: auto;
     font-size: 12px;
 }
 
-button.accept-btn {
+.acceptBtn {
     background-color: #4caf50;
 }
 
-button.reject-btn {
+.rejectBtn {
     background-color: #f44336;
 }
 
-button.toggle-btn {
+.toggleBtn {
     background-color: #2196F3; /* Blue background for visibility toggle */
     color: #FFFFFF;
 }

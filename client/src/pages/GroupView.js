@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtToken } from '../components/AuSignal';
-import './GroupView.css';
+import styles from './GroupView.module.css'; // Import the module CSS
 
 function GroupView() {
   const { group_id } = useParams();
@@ -205,43 +205,43 @@ function GroupView() {
   }
 
   return (
-    <div className="group-details">
-      {!isOwner && <p>Group Member View</p>}
-      {isOwner && <p>Group Owner View</p>}
-      <h1>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
-      <p>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
+    <div className={styles.groupDetails}>
+      {!isOwner && <p className={styles.paragraph}>Group Member View</p>}
+      {isOwner && <p className={styles.paragraph}>Group Owner View</p>}
+      <h1 className={styles.header}>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
+      <p className={styles.paragraph}>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
 
-      <div className="section">
-        <h2>Members<span><button onClick={toggleMembersVisibility} className="toggle-btn">{showMembers ? 'Hide' : 'Show'}</button></span></h2>
+      <div className={styles.section}>
+        <h2 className={styles.subHeader}>Members<span className={styles.sectionSpan}><button onClick={toggleMembersVisibility} className={`${styles.button} ${styles.toggleBtn}`}>{showMembers ? 'Hide' : 'Show'}</button></span></h2>
         {showMembers && (
-          <ul>
+          <ul className={styles.list}>
             {groupMembers.length > 0 ? groupMembers.map(member => (
-              <li key={member.user_id} className="member-item">
+              <li key={member.user_id} className={styles.listItem}>
                 <span>{member.username}</span>
-                {isOwner && <button onClick={() => handleRemoveMember(member.user_id)} className="remove-btn">Remove</button>}
+                {isOwner && <button onClick={() => handleRemoveMember(member.user_id)} className={`${styles.button} ${styles.removeBtn}`}>Remove</button>}
               </li>
             )) : <p>No members found.</p>}
           </ul>
         )}
       </div>
       {isOwner && (
-        <div className="section">
-          <h2>Join Requests<span><button onClick={toggleJoinRequestsVisibility} className="toggle-btn">{showJoinRequests ? 'Hide' : 'Show'}</button></span></h2>
+        <div className={styles.section}>
+          <h2 className={styles.subHeader}>Join Requests<span className={styles.sectionSpan}><button onClick={toggleJoinRequestsVisibility} className={`${styles.button} ${styles.toggleBtn}`}>{showJoinRequests ? 'Hide' : 'Show'}</button></span></h2>
           {showJoinRequests && (updating ? <p>Updating...</p> : groupJoinRequests.length > 0 ? (
-            <ul>
+            <ul className={styles.list}>
               {groupJoinRequests.map(request => (
-                <li key={request.request_id} className="request-item">
+                <li key={request.request_id} className={styles.listItem}>
                   <span>{request.username}</span>
-                  <button onClick={() => handleAccept(request.request_id, request.user_id)} className="accept-btn">Accept</button>
-                  <button onClick={() => handleReject(request.request_id)} className="reject-btn">Reject</button>
+                  <button onClick={() => handleAccept(request.request_id, request.user_id)} className={`${styles.button} ${styles.acceptBtn}`}>Accept</button>
+                  <button onClick={() => handleReject(request.request_id)} className={`${styles.button} ${styles.rejectBtn}`}>Reject</button>
                 </li>
               ))}
             </ul>
           ) : <p>No join requests.</p>)}
         </div>
       )}
-      {!isOwner && <button onClick={handleLeaveGroup} className="leave-btn">Leave Group</button>}
-      {isOwner && <button onClick={handleDeleteGroup} className="delete-btn">Delete Group</button>}
+      {!isOwner && <button onClick={handleLeaveGroup} className={`${styles.button} ${styles.leaveBtn}`}>Leave Group</button>}
+      {isOwner && <button onClick={handleDeleteGroup} className={`${styles.button} ${styles.deleteBtn}`}>Delete Group</button>}
     </div>
   );
 }
