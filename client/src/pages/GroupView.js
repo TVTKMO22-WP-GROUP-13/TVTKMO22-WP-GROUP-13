@@ -2,18 +2,23 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtToken } from '../components/AuSignal';
-import './GroupView.css';
+import styles from './GroupView.module.css'; // Import the module CSS
 
 function GroupView() {
-  const { group_id } = useParams()
-  const  navigate  = useNavigate();
+  const { group_id } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const { isOwner } = location.state || { isOwner: false };
   const [groupDetails, setGroupDetails] = useState(null);
   const [groupJoinRequests, setGroupJoinRequests] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
+  const [showMembers, setShowMembers] = useState(false);
+  const [showJoinRequests, setShowJoinRequests] = useState(false);
   const [error, setError] = useState('');
   const [updating, setUpdating] = useState(false);
+
+  const toggleMembersVisibility = () => setShowMembers(!showMembers);
+  const toggleJoinRequestsVisibility = () => setShowJoinRequests(!showJoinRequests);
 
   const fetchGroupDetails = useCallback(async () => {
     try {
@@ -27,31 +32,45 @@ function GroupView() {
     }
   }, [group_id]);
 
+  const fetchGroupMembers = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/group_member/group_members?group_id=${group_id}`, {
+        headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+      });
+      const members = response.data.groupMembers || [];
+      const memberDetails = await Promise.all(members.map(async member => {
+        const userResponse = await axios.get(`http://localhost:3001/user_data/user_id?user_id=${member.user_id}`, {
+          headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+        });
+        return { ...member, username: userResponse.data.user.username }; // assuming the username field is available
+      }));
+      setGroupMembers(memberDetails);
+    } catch (error) {
+      setError('Failed to fetch group members.');
+      console.error(error);
+    }
+  }, [group_id]);
+
   const fetchGroupJoinRequests = useCallback(async () => {
     if (isOwner) {
       try {
         const response = await axios.get(`http://localhost:3001/group_request/getRequests/Pending/${group_id}`, {
           headers: { 'Authorization': `Bearer ${jwtToken.value}` }
         });
-        setGroupJoinRequests(response.data.groupRequests || []);
+        const requests = response.data.groupRequests || [];
+        const requestDetails = await Promise.all(requests.map(async request => {
+          const userResponse = await axios.get(`http://localhost:3001/user_data/user_id?user_id=${request.user_id}`, {
+            headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+          });
+          return { ...request, username: userResponse.data.user.username }; // assuming the username field is available
+        }));
+        setGroupJoinRequests(requestDetails);
       } catch (error) {
         setError('Failed to fetch join requests.');
         console.error(error);
       }
     }
   }, [group_id, isOwner]);
-
-  const fetchGroupMembers = useCallback(async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/group_member/group_members?group_id=${group_id}`, {
-        headers: { 'Authorization': `Bearer ${jwtToken.value}` }
-      });
-      setGroupMembers(response.data.groupMembers || []);
-    } catch (error) {
-      setError('Failed to fetch group members.');
-      console.error(error);
-    }
-  }, [group_id]);
 
   const handleLeaveGroup = async () => {
     if (window.confirm("Are you sure you want to leave this group?")) {
@@ -178,46 +197,71 @@ function GroupView() {
   }, [fetchGroupDetails, fetchGroupJoinRequests, fetchGroupMembers]);
 
   if (!groupDetails) {
-    return <p>{error || "Loading..."}</p>;
+    return <div className={styles.groupContainer}><div className="spinner"></div></div>;
   }
 
   return (
-    <div className="group-details">
-        <h1>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
-        <p>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
-        {!isOwner && <button onClick={handleLeaveGroup} className="leave-btn">Leave Group</button>}
-        {isOwner && <button onClick={handleDeleteGroup} className="delete-btn">Delete Group</button>}
-        <div>
-            <h2>Members</h2>
-            {groupMembers.length > 0 ? (
-                <ul>
-                    {groupMembers.map(member => (
-                        <li key={member.user_id}>
-                            User ID: {member.user_id}
-                            {isOwner && <button onClick={() => handleRemoveMember(member.user_id)} className="remove-btn">Remove</button>}
-                        </li>
-                    ))}
-                </ul>
-            ) : <p>No members found.</p>}
-        </div>
-        {isOwner && (
-            <div>
-                <h2>Join Requests</h2>
-                {updating ? <p>Updating...</p> : groupJoinRequests.length > 0 ? (
-                    <ul>
-                        {groupJoinRequests.map(request => (
-                            <li key={request.request_id}>
-                                User ID: {request.user_id}
-                                <button onClick={() => handleAccept(request.request_id, request.user_id)} className="accept-btn">Accept</button>
-                                <button onClick={() => handleReject(request.request_id)} className="reject-btn">Reject</button>
-                            </li>
-                        ))}
-                    </ul>
-                ) : <p>No join requests.</p>}
-            </div>
+    <div className={styles.groupContainer}>
+      {!isOwner && <p className={styles.groupDescription}>Group Member View</p>}
+      {isOwner && <p className={styles.groupDescription}>Group Owner View</p>}
+      <h1 className={styles.groupHeader}>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
+      <p className={styles.groupDescription}>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
+
+      <div>
+        <h2 className={styles.membersHeader}>
+          Members ({groupMembers.length})
+          <span className={styles.toggleButtonSpan}>
+            <button onClick={toggleMembersVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>
+              {showMembers ? 'Hide' : 'Show'}
+            </button>
+          </span>
+        </h2>
+        {showMembers && (
+          <ul className={styles.membersList}>
+            {groupMembers.length > 0 ? groupMembers.map(member => (
+              <li key={member.user_id} className={styles.memberItem}>
+                <span>{member.username}</span>
+                {isOwner && (
+                  <button onClick={() => handleRemoveMember(member.user_id)} className={`${styles.actionButton} ${styles.removeMemberButton}`}>
+                    Remove
+                  </button>
+                )}
+              </li>
+            )) : <p>No members found.</p>}
+          </ul>
         )}
-        {!isOwner && <p>Group Member View</p>}
+      </div>
+      {isOwner && (
+        <div>
+          <h2 className={styles.requestsHeader}>
+            Join Requests ({groupJoinRequests.length})
+            <span className={styles.toggleButtonSpan}>
+              <button onClick={toggleJoinRequestsVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>
+                {showJoinRequests ? 'Hide' : 'Show'}
+              </button>
+            </span>
+          </h2>
+          {showJoinRequests && (updating ? <p>Updating...</p> : groupJoinRequests.length > 0 ? (
+            <ul className={styles.requestsList}>
+              {groupJoinRequests.map(request => (
+                <li key={request.request_id} className={styles.requestItem}>
+                  <span>{request.username}</span>
+                  <button onClick={() => handleAccept(request.request_id, request.user_id)} className={`${styles.actionButton} ${styles.acceptRequestButton}`}>
+                    Accept
+                  </button>
+                  <button onClick={() => handleReject(request.request_id)} className={`${styles.actionButton} ${styles.rejectRequestButton}`}>
+                    Reject
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : <p>No join requests.</p>)}
+        </div>
+      )}
+      {!isOwner && <button onClick={handleLeaveGroup} className={`${styles.actionButton} ${styles.leaveGroupButton}`}>Leave Group</button>}
+      {isOwner && <button onClick={handleDeleteGroup} className={`${styles.actionButton} ${styles.deleteGroupButton}`}>Delete Group</button>}
     </div>
-);
+  );
 }
+
 export default GroupView;

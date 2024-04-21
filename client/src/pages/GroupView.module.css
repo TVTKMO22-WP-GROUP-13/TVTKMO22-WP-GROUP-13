@@ -1,0 +1,107 @@
+.groupContainer {
+    background: #deceff;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.groupHeader {
+    color: #333;
+    font-size: 24px;
+}
+
+.groupDescription {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.membersHeader,
+.requestsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #0056b3;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.toggleButtonSpan {
+    margin-left: 10px;
+}
+
+.membersList,
+.requestsList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #deceff;
+    overflow: hidden;
+}
+
+.memberItem,
+.requestItem {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.memberItem:hover,
+.requestItem:hover {
+    background-color: #fff;
+    color: #333;
+    cursor: default;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.actionButton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+    background-color: #2196F3;
+}
+
+.actionButton:hover {
+    opacity: 0.9;
+}
+
+.leaveGroupButton {
+    background-color: #ff5722;
+}
+
+.deleteGroupButton {
+    background-color: #f44336;
+}
+
+.removeMemberButton {
+    padding: 5px 8px;
+    margin-left: auto;
+    font-size: 12px;
+    background-color: #f44336;
+}
+
+.acceptRequestButton {
+    background-color: #4caf50;
+}
+
+.rejectRequestButton {
+    background-color: #f44336;
+}
+
+.toggleVisibilityButton {
+    background-color: #2196F3;
+    color: #FFFFFF;
+}
