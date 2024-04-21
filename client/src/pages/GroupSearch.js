@@ -29,7 +29,14 @@ function GroupSearch() {
           }
         });
         const involvedData = await involvedResponse.json();
-        setInvolvedGroups(involvedData.involvedGroups.map(group => group.group_id));
+        if (involvedData.involvedGroups) {
+          setInvolvedGroups(involvedData.involvedGroups.map(group => group.group_id));
+        } else {
+          setInvolvedGroups([]);
+          if (involvedData.message) {
+            console.log(involvedData.message);  // Voit näyttää viestin käyttäjälle, jos haluat
+          }
+        }
       } else {
         setInvolvedGroups([]);
       }
