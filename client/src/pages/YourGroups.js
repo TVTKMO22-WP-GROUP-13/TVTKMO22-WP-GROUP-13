@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSignals } from '@preact/signals-react/runtime';
 import { jwtToken } from '../components/AuSignal';
 import axios from 'axios';
-import styles from './YourGroups.module.css'; 
+import styles from './YourGroups.module.css';
 
 export default function YourGroups() {
   useSignals();
@@ -51,11 +51,12 @@ export default function YourGroups() {
 
   return (
     <div>
+      <Link to="/MakeGroup">
+        <button className={styles['create-group-button']}>Create a new group</button>
+      </Link>
       <div className={styles['group-list']}>
         <h2>Your Created Groups</h2>
-        <Link to="/MakeGroup">
-          <button className={styles['create-group-button']}>Create a new group</button>
-        </Link>
+
         {createdGroups.length > 0 ? createdGroups.map(group => (
           <Link to={`/group/${group.group_id}`} state={{ isOwner: true }} key={group.group_id} className={styles['group-list-item']}>
             <h2 className={styles['group-title']}>{group.group_name}</h2>
