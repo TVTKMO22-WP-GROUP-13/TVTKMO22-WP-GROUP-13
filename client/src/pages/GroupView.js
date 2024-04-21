@@ -34,43 +34,43 @@ function GroupView() {
 
   const fetchGroupMembers = useCallback(async () => {
     try {
-        const response = await axios.get(`http://localhost:3001/group_member/group_members?group_id=${group_id}`, {
-            headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+      const response = await axios.get(`http://localhost:3001/group_member/group_members?group_id=${group_id}`, {
+        headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+      });
+      const members = response.data.groupMembers || [];
+      const memberDetails = await Promise.all(members.map(async member => {
+        const userResponse = await axios.get(`http://localhost:3001/user_data/user_id?user_id=${member.user_id}`, {
+          headers: { 'Authorization': `Bearer ${jwtToken.value}` }
         });
-        const members = response.data.groupMembers || [];
-        const memberDetails = await Promise.all(members.map(async member => {
-            const userResponse = await axios.get(`http://localhost:3001/user_data/user_id?user_id=${member.user_id}`, {
-                headers: { 'Authorization': `Bearer ${jwtToken.value}` }
-            });
-            return { ...member, username: userResponse.data.user.username }; // assuming the username field is available
-        }));
-        setGroupMembers(memberDetails);
+        return { ...member, username: userResponse.data.user.username }; // assuming the username field is available
+      }));
+      setGroupMembers(memberDetails);
     } catch (error) {
-        setError('Failed to fetch group members.');
-        console.error(error);
+      setError('Failed to fetch group members.');
+      console.error(error);
     }
-}, [group_id]);
+  }, [group_id]);
 
-const fetchGroupJoinRequests = useCallback(async () => {
+  const fetchGroupJoinRequests = useCallback(async () => {
     if (isOwner) {
-        try {
-            const response = await axios.get(`http://localhost:3001/group_request/getRequests/Pending/${group_id}`, {
-                headers: { 'Authorization': `Bearer ${jwtToken.value}` }
-            });
-            const requests = response.data.groupRequests || [];
-            const requestDetails = await Promise.all(requests.map(async request => {
-                const userResponse = await axios.get(`http://localhost:3001/user_data/user_id?user_id=${request.user_id}`, {
-                    headers: { 'Authorization': `Bearer ${jwtToken.value}` }
-                });
-                return { ...request, username: userResponse.data.user.username }; // assuming the username field is available
-            }));
-            setGroupJoinRequests(requestDetails);
-        } catch (error) {
-            setError('Failed to fetch join requests.');
-            console.error(error);
-        }
+      try {
+        const response = await axios.get(`http://localhost:3001/group_request/getRequests/Pending/${group_id}`, {
+          headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+        });
+        const requests = response.data.groupRequests || [];
+        const requestDetails = await Promise.all(requests.map(async request => {
+          const userResponse = await axios.get(`http://localhost:3001/user_data/user_id?user_id=${request.user_id}`, {
+            headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+          });
+          return { ...request, username: userResponse.data.user.username }; // assuming the username field is available
+        }));
+        setGroupJoinRequests(requestDetails);
+      } catch (error) {
+        setError('Failed to fetch join requests.');
+        console.error(error);
+      }
     }
-}, [group_id, isOwner]);
+  }, [group_id, isOwner]);
 
   const handleLeaveGroup = async () => {
     if (window.confirm("Are you sure you want to leave this group?")) {
@@ -210,10 +210,9 @@ const fetchGroupJoinRequests = useCallback(async () => {
       {isOwner && <p>Group Owner View</p>}
       <h1>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
       <p>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
-      {!isOwner && <button onClick={handleLeaveGroup} className="leave-btn">Leave Group</button>}
-      {isOwner && <button onClick={handleDeleteGroup} className="delete-btn">Delete Group</button>}
-      <div>
-        <h2>Members <button onClick={toggleMembersVisibility} className="toggle-btn">{showMembers ? 'Hide' : 'Show'}</button></h2>
+
+      <div className="section">
+        <h2>Members<span><button onClick={toggleMembersVisibility} className="toggle-btn">{showMembers ? 'Hide' : 'Show'}</button></span></h2>
         {showMembers && (
           <ul>
             {groupMembers.length > 0 ? groupMembers.map(member => (
@@ -226,8 +225,8 @@ const fetchGroupJoinRequests = useCallback(async () => {
         )}
       </div>
       {isOwner && (
-        <div>
-          <h2>Join Requests <button onClick={toggleJoinRequestsVisibility} className="toggle-btn">{showJoinRequests ? 'Hide' : 'Show'}</button></h2>
+        <div className="section">
+          <h2>Join Requests<span><button onClick={toggleJoinRequestsVisibility} className="toggle-btn">{showJoinRequests ? 'Hide' : 'Show'}</button></span></h2>
           {showJoinRequests && (updating ? <p>Updating...</p> : groupJoinRequests.length > 0 ? (
             <ul>
               {groupJoinRequests.map(request => (
@@ -241,6 +240,8 @@ const fetchGroupJoinRequests = useCallback(async () => {
           ) : <p>No join requests.</p>)}
         </div>
       )}
+      {!isOwner && <button onClick={handleLeaveGroup} className="leave-btn">Leave Group</button>}
+      {isOwner && <button onClick={handleDeleteGroup} className="delete-btn">Delete Group</button>}
     </div>
   );
 }

@@ -20,10 +20,17 @@
 }
 
 .group-details h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     color: #0056b3;
     font-size: 20px;
     margin-top: 20px;
     margin-bottom: 10px;
+}
+
+.group-details .section span {
+    margin-left: 10px;
 }
 
 .group-details ul {
@@ -49,16 +56,15 @@
     cursor: pointer;
     font-size: 14px;
     color: #fff;
-}
-
-.group-details button.toggle-btn {
-    background-color: #2196F3; /* A different color for visibility toggle buttons */
-    color: #FFFFFF;
-    margin-left: 10px; /* Spacing from the header */
+    background-color: #2196F3;
 }
 
 .group-details button:hover {
     opacity: 0.9;
+}
+
+button.leave-btn, button.delete-btn, button.remove-btn, button.accept-btn, button.reject-btn {
+    background-color: #e91e63; /* General red theme for action buttons */
 }
 
 button.leave-btn {
@@ -70,15 +76,9 @@ button.delete-btn {
 }
 
 button.remove-btn {
-    background-color: #e91e63;
-    padding: 5px 8px; /* Smaller padding for a smaller button */
-    margin-left: auto; /* Pushes the button to the right */
-    font-size: 12px; /* Smaller font size for the button */
-}
-
-button.accept-btn, button.reject-btn {
+    padding: 5px 8px;
+    margin-left: auto;
     font-size: 12px;
-    padding: 5px 10px;
 }
 
 button.accept-btn {
@@ -87,4 +87,9 @@ button.accept-btn {
 
 button.reject-btn {
     background-color: #f44336;
+}
+
+button.toggle-btn {
+    background-color: #2196F3; /* Blue background for visibility toggle */
+    color: #FFFFFF;
 }
