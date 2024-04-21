@@ -197,47 +197,47 @@ function GroupView() {
   }, [fetchGroupDetails, fetchGroupJoinRequests, fetchGroupMembers]);
 
   if (!groupDetails) {
-    return <div className={styles.loadingAnimation}><div className="spinner"></div></div>;
+    return <div className={styles.groupContainer}><div className="spinner"></div></div>;
   }
 
   return (
-    <div className={styles.groupDetails}>
-      {!isOwner && <p className={styles.paragraph}>Group Member View</p>}
-      {isOwner && <p className={styles.paragraph}>Group Owner View</p>}
-      <h1 className={styles.header}>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
-      <p className={styles.paragraph}>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
+    <div className={styles.groupContainer}>
+      {!isOwner && <p className={styles.groupDescription}>Group Member View</p>}
+      {isOwner && <p className={styles.groupDescription}>Group Owner View</p>}
+      <h1 className={styles.groupHeader}>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
+      <p className={styles.groupDescription}>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
 
-      <div className={styles.section}>
-        <h2 className={styles.subHeader}>Members<span className={styles.sectionSpan}><button onClick={toggleMembersVisibility} className={`${styles.button} ${styles.toggleBtn}`}>{showMembers ? 'Hide' : 'Show'}</button></span></h2>
+      <div>
+        <h2 className={styles.membersHeader}>Members<span className={styles.toggleButtonSpan}><button onClick={toggleMembersVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>{showMembers ? 'Hide' : 'Show'}</button></span></h2>
         {showMembers && (
-          <ul className={styles.list}>
+          <ul className={styles.membersList}>
             {groupMembers.length > 0 ? groupMembers.map(member => (
-              <li key={member.user_id} className={styles.listItem}>
+              <li key={member.user_id} className={styles.memberItem}>
                 <span>{member.username}</span>
-                {isOwner && <button onClick={() => handleRemoveMember(member.user_id)} className={`${styles.button} ${styles.removeBtn}`}>Remove</button>}
+                {isOwner && <button onClick={() => handleRemoveMember(member.user_id)} className={`${styles.actionButton} ${styles.removeMemberButton}`}>Remove</button>}
               </li>
             )) : <p>No members found.</p>}
           </ul>
         )}
       </div>
       {isOwner && (
-        <div className={styles.section}>
-          <h2 className={styles.subHeader}>Join Requests<span className={styles.sectionSpan}><button onClick={toggleJoinRequestsVisibility} className={`${styles.button} ${styles.toggleBtn}`}>{showJoinRequests ? 'Hide' : 'Show'}</button></span></h2>
+        <div>
+          <h2 className={styles.requestsHeader}>Join Requests<span className={styles.toggleButtonSpan}><button onClick={toggleJoinRequestsVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>{showJoinRequests ? 'Hide' : 'Show'}</button></span></h2>
           {showJoinRequests && (updating ? <p>Updating...</p> : groupJoinRequests.length > 0 ? (
-            <ul className={styles.list}>
+            <ul className={styles.requestsList}>
               {groupJoinRequests.map(request => (
-                <li key={request.request_id} className={styles.listItem}>
+                <li key={request.request_id} className={styles.requestItem}>
                   <span>{request.username}</span>
-                  <button onClick={() => handleAccept(request.request_id, request.user_id)} className={`${styles.button} ${styles.acceptBtn}`}>Accept</button>
-                  <button onClick={() => handleReject(request.request_id)} className={`${styles.button} ${styles.rejectBtn}`}>Reject</button>
+                  <button onClick={() => handleAccept(request.request_id, request.user_id)} className={`${styles.actionButton} ${styles.acceptRequestButton}`}>Accept</button>
+                  <button onClick={() => handleReject(request.request_id)} className={`${styles.actionButton} ${styles.rejectRequestButton}`}>Reject</button>
                 </li>
               ))}
             </ul>
           ) : <p>No join requests.</p>)}
         </div>
       )}
-      {!isOwner && <button onClick={handleLeaveGroup} className={`${styles.button} ${styles.leaveBtn}`}>Leave Group</button>}
-      {isOwner && <button onClick={handleDeleteGroup} className={`${styles.button} ${styles.deleteBtn}`}>Delete Group</button>}
+      {!isOwner && <button onClick={handleLeaveGroup} className={`${styles.actionButton} ${styles.leaveGroupButton}`}>Leave Group</button>}
+      {isOwner && <button onClick={handleDeleteGroup} className={`${styles.actionButton} ${styles.deleteGroupButton}`}>Delete Group</button>}
     </div>
   );
 }

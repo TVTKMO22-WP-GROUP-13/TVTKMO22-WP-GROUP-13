@@ -1,4 +1,4 @@
-.groupDetails {
+.groupContainer {
     background: #d8d8d8;
     border-radius: 8px;
     padding: 20px;
@@ -8,18 +8,18 @@
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.header, .paragraph, .subHeader {
+.groupHeader {
     color: #333;
     font-size: 24px;
 }
 
-.paragraph {
+.groupDescription {
     color: #666;
     font-size: 16px;
     margin-bottom: 20px;
 }
 
-.subHeader {
+.membersHeader, .requestsHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -29,16 +29,16 @@
     margin-bottom: 10px;
 }
 
-.sectionSpan {
+.toggleButtonSpan {
     margin-left: 10px;
 }
 
-.list {
+.membersList, .requestsList {
     list-style: none;
     padding: 0;
 }
 
-.listItem {
+.memberItem, .requestItem {
     background: #fff;
     border-radius: 5px;
     padding: 10px;
@@ -49,7 +49,7 @@
     align-items: center;
 }
 
-.button {
+.actionButton {
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
@@ -59,37 +59,37 @@
     background-color: #2196F3;
 }
 
-.button:hover {
+.actionButton:hover {
     opacity: 0.9;
 }
 
-.leaveBtn, .deleteBtn, .removeBtn, .acceptBtn, .rejectBtn {
+.leaveGroupButton, .deleteGroupButton, .removeMemberButton, .acceptRequestButton, .rejectRequestButton {
     background-color: #e91e63; /* General red theme for action buttons */
 }
 
-.leaveBtn {
+.leaveGroupButton {
     background-color: #ff5722;
 }
 
-.deleteBtn {
+.deleteGroupButton {
     background-color: #f44336;
 }
 
-.removeBtn {
+.removeMemberButton {
     padding: 5px 8px;
     margin-left: auto;
     font-size: 12px;
 }
 
-.acceptBtn {
+.acceptRequestButton {
     background-color: #4caf50;
 }
 
-.rejectBtn {
+.rejectRequestButton {
     background-color: #f44336;
 }
 
-.toggleBtn {
+.toggleVisibilityButton {
     background-color: #2196F3; /* Blue background for visibility toggle */
     color: #FFFFFF;
 }
