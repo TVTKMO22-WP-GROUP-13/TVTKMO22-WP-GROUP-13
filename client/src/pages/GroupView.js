@@ -208,13 +208,24 @@ function GroupView() {
       <p className={styles.groupDescription}>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
 
       <div>
-        <h2 className={styles.membersHeader}>Members<span className={styles.toggleButtonSpan}><button onClick={toggleMembersVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>{showMembers ? 'Hide' : 'Show'}</button></span></h2>
+        <h2 className={styles.membersHeader}>
+          Members ({groupMembers.length})
+          <span className={styles.toggleButtonSpan}>
+            <button onClick={toggleMembersVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>
+              {showMembers ? 'Hide' : 'Show'}
+            </button>
+          </span>
+        </h2>
         {showMembers && (
           <ul className={styles.membersList}>
             {groupMembers.length > 0 ? groupMembers.map(member => (
               <li key={member.user_id} className={styles.memberItem}>
                 <span>{member.username}</span>
-                {isOwner && <button onClick={() => handleRemoveMember(member.user_id)} className={`${styles.actionButton} ${styles.removeMemberButton}`}>Remove</button>}
+                {isOwner && (
+                  <button onClick={() => handleRemoveMember(member.user_id)} className={`${styles.actionButton} ${styles.removeMemberButton}`}>
+                    Remove
+                  </button>
+                )}
               </li>
             )) : <p>No members found.</p>}
           </ul>
@@ -222,14 +233,25 @@ function GroupView() {
       </div>
       {isOwner && (
         <div>
-          <h2 className={styles.requestsHeader}>Join Requests<span className={styles.toggleButtonSpan}><button onClick={toggleJoinRequestsVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>{showJoinRequests ? 'Hide' : 'Show'}</button></span></h2>
+          <h2 className={styles.requestsHeader}>
+            Join Requests ({groupJoinRequests.length})
+            <span className={styles.toggleButtonSpan}>
+              <button onClick={toggleJoinRequestsVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>
+                {showJoinRequests ? 'Hide' : 'Show'}
+              </button>
+            </span>
+          </h2>
           {showJoinRequests && (updating ? <p>Updating...</p> : groupJoinRequests.length > 0 ? (
             <ul className={styles.requestsList}>
               {groupJoinRequests.map(request => (
                 <li key={request.request_id} className={styles.requestItem}>
                   <span>{request.username}</span>
-                  <button onClick={() => handleAccept(request.request_id, request.user_id)} className={`${styles.actionButton} ${styles.acceptRequestButton}`}>Accept</button>
-                  <button onClick={() => handleReject(request.request_id)} className={`${styles.actionButton} ${styles.rejectRequestButton}`}>Reject</button>
+                  <button onClick={() => handleAccept(request.request_id, request.user_id)} className={`${styles.actionButton} ${styles.acceptRequestButton}`}>
+                    Accept
+                  </button>
+                  <button onClick={() => handleReject(request.request_id)} className={`${styles.actionButton} ${styles.rejectRequestButton}`}>
+                    Reject
+                  </button>
                 </li>
               ))}
             </ul>

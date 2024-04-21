@@ -1,104 +1,109 @@
 .search-form {
-  margin: 5px auto; /* Centers the form with a moderate top margin */
+  margin: 5px auto;
   display: flex;
   justify-content: center;
-  width: 65%; 
-  height: 40px; 
-  border-radius: 10px; /* Smooths the corners  */
+  width: 65%;
+  height: 40px;
+  border-radius: 10px;
 }
 
 .search-form input {
-  width: 100%; /* Expands input to fill its container */
-  height: 100%; /* Matches input height to its container */
-  padding: 0 10px; /* Horizontal padding to keep text from the edges */
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
   border: 1px solid #ccc;
-  border-radius: 10px; /* Matches container's corners */
-  box-sizing: border-box; /* Ensures padding and border are included in the total width/height */
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
 .group-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 360px)); /* Creates a responsive column layout */
-  gap: 20px; /* Space between columns */
-  padding: 10px; /* Padding around the grid */
-  width: 100%; /* Full width to maximize content display */
-  justify-content: center; /* Aligns content in the center when there's extra space */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 360px));
+  gap: 20px;
+  padding: 10px;
+  width: 100%;
+  justify-content: center;
 }
 
 .group-list-item {
   display: flex;
-  flex-direction: column; /* Organizes content vertically within each item */
-  justify-content: space-between; /* Maximizes space around items, anchoring the button at the bottom */
-  background-color: #deceff; /* Soft pastel background color */
-  border-radius: 10px; 
-  padding: 15px; /* Internal spacing around content */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #deceff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  width: 360px; /* Consistent item width */
-  height: 260px; /* Consistent item height */
+  width: 360px;
+  height: 260px;
 }
-  
+
 .group-title {
-  font-size: 25px; /* Prominent title size */
+  font-size: 25px;
   font-weight: bold;
-  margin-bottom: 10px; /* Separates title from content below */
-  color: #000000; /* Ensures high contrast for readability */
-  text-align: center; /* Centers title text */
+  margin-bottom: 10px;
+  color: #000000;
+  text-align: center;
 }
 
 .group-description {
-  font-size: 18px; /* Clear, readable font size */
-  color: #181818; /* Soft color for reading comfort */
-  overflow: hidden; /* Prevents text overflow */
-  text-overflow: ellipsis; /* Indicates clipped text */
+  font-size: 18px;
+  color: #181818;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
-  line-height: 1.4; /* Enhances text legibility */
-  max-height: 8em; /* Caps description height at a fixed measure */
+  line-height: 1.4;
+  max-height: 8em;
 }
 
 .join-request-btn {
-  margin-top: auto; /* Positions button at the bottom of its container */
+  margin-top: auto;
   padding: 10px 20px;
-  background-color: #4CAF50; /* Vibrant, inviting button color */
+  background-color: #4CAF50;
   color: white;
   border: none;
   border-radius: 5px;
-  cursor: pointer; /* Visual cue for interactivity */
-  transition: background-color 0.3s, transform 0.2s; /* Smooth visual feedback on interaction */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .join-request-btn:hover {
-  background-color: #45a049; /* Darker shade on hover for visual feedback */
+  background-color: #45a049;
 }
 
 .join-request-btn:active {
-  transform: scale(0.98); /* Subtle click effect */
+  transform: scale(0.98);
 }
 
 .error-message {
-  color: #cc0000; /* Alerts users to problems */
-  font-size: 16px; /* Sufficient size for visibility */
-  text-align: center; /* Ensures message is prominently centered */
+  color: #cc0000;
+  font-size: 16px;
+  text-align: center;
 }
 
 .loading-animation {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px; /* Fixed height to maintain layout during loading */
+  height: 300px;
 }
 
 .spinner {
-  border: 4px solid rgba(0,0,0,0.1);
+  border: 4px solid rgba(0, 0, 0, 0.1);
   width: 100px;
   height: 100px;
-  border-radius: 50%; /* Perfect circle */
-  border-left-color: #6f36e9; /* Color accent on the spinner */
-  animation: spin 1s linear infinite; /* Continuous rotation effect */
+  border-radius: 50%;
+  border-left-color: #6f36e9;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

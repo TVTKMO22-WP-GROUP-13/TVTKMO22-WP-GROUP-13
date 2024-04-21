@@ -1,6 +1,5 @@
 .groupContainer {
     background: #deceff;
-    /* Setting this to white or a matching color to the items */
     border-radius: 8px;
     padding: 20px;
     margin: 20px auto;
@@ -40,24 +39,17 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    /* Reset margin around the list to ensure clean spacing */
     background-color: #deceff;
-    /* Ensures background matches item background */
     overflow: hidden;
-    /* Prevents content from overflowing the list boundaries */
 }
 
 .memberItem,
 .requestItem {
     background: #fff;
     border-radius: 10px;
-    /* Increased border-radius for rounded corners */
     padding: 15px;
-    /* Increased padding for better spacing and visual padding */
     margin: 15px 0;
-    /* Increased vertical margin to add space between items */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-    /* Slightly larger shadow for more depth */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -67,13 +59,9 @@
 .memberItem:hover,
 .requestItem:hover {
     background-color: #fff;
-    /* Keeps background white */
     color: #333;
-    /* Keeps text color unchanged */
     cursor: default;
-    /* Keeps cursor default to avoid indicating interactivity */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-    /* Consistent shadow on hover */
 }
 
 .actionButton {
@@ -89,8 +77,6 @@
 .actionButton:hover {
     opacity: 0.9;
 }
-
-
 
 .leaveGroupButton {
     background-color: #ff5722;
@@ -117,6 +103,5 @@
 
 .toggleVisibilityButton {
     background-color: #2196F3;
-    /* Blue background for visibility toggle */
     color: #FFFFFF;
 }

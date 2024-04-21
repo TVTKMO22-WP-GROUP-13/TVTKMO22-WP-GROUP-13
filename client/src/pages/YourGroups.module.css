@@ -1,105 +1,108 @@
 .create-group-button {
-  background-color: #ffffff; /* Blue color for the button */
-  color: rgb(0, 0, 0); /* White text color for better readability */
-  border: none; /* No border for cleaner look */
-  width: 65%; /* Matches the width of the search form */
-  height: 40px; /* Matches the height of the search form input */
-  border-radius: 10px; /* Rounded corners to match the search form input */
-  padding: 0 10px; /* Horizontal padding to keep text from the edges */
-  font-size: 16px; /* Font size for better readability */
-  cursor: pointer; /* Cursor changes to pointer on hover */
-  display: block; /* Ensures the button is a block element if not already */
-  margin: 5px auto; /* Centers the button horizontally with a moderate top margin */
-  box-sizing: border-box; /* Includes padding and border in the width/height calculations */
-  text-decoration: none; /* Removes underline from links */
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: none;
+  width: 65%;
+  height: 40px;
+  border-radius: 10px;
+  padding: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+  margin: 5px auto;
+  box-sizing: border-box;
+  text-decoration: none;
 }
 
 .create-group-button:hover {
-  background-color: #28ab2d; /* Lighter blue color on hover */
-  text-decoration: none; /* Removes underline from links */
+  background-color: #28ab2d;
+  text-decoration: none;
 }
 
-/* Section Heading Styling */
 .section-heading {
-  font-size: 24px; /* Sets a prominent size for section titles */
-  font-weight: bold; /* Makes the font bold */
-  color: #333; /* Dark grey for good readability */
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
   background-color: #9793ba;
-  text-align: center; /* Centers the text horizontally */
-  margin-top: 20px; /* Adds space above the title */
-  margin-bottom: 10px; /* Adds space below the title */
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .group-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 360px)); /* Creates a responsive column layout */
-  gap: 20px; /* Space between columns */
-  padding: 10px; /* Padding around the grid */
-  width: 100%; /* Full width to maximize content display */
-  justify-content: center; /* Aligns content in the center when there's extra space */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 360px));
+  gap: 20px;
+  padding: 10px;
+  width: 100%;
+  justify-content: center;
 }
 
 .group-list-item {
   display: flex;
-  flex-direction: column; /* Organizes content vertically within each item */
-  background-color: #deceff; /* Soft pastel background color */
-  border-radius: 10px; 
-  padding: 15px; /* Internal spacing around content */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  flex-direction: column;
+  background-color: #deceff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  width: 360px; /* Consistent item width */
-  height: 260px; /* Consistent item height */
-  text-decoration: none; /* Removes underline from links */
+  width: 360px;
+  height: 260px;
+  text-decoration: none;
 }
 
 .group-list-item:hover {
   background-color: #af9cd3;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Darker shadow on hover for depth */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-  
+
 .group-title {
-  font-size: 25px; /* Prominent title size */
+  font-size: 25px;
   font-weight: bold;
-  margin-bottom: 10px; /* Separates title from content below */
-  color: #000000; /* Ensures high contrast for readability */
-  text-align: center; /* Centers title text */
+  margin-bottom: 10px;
+  color: #000000;
+  text-align: center;
 }
 
 .group-description {
-  font-size: 18px; /* Clear, readable font size */
-  color: #181818; /* Soft color for reading comfort */
-  overflow: hidden; /* Prevents text overflow */
-  text-overflow: ellipsis; /* Indicates clipped text */
+  font-size: 18px;
+  color: #181818;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: horizontal;
-  line-height: 1.4; /* Enhances text legibility */
-  max-height: 8em; /* Caps description height at a fixed measure */
+  line-height: 1.4;
+  max-height: 8em;
 }
-  
-  /* Error messages styling */
-  .error-message {
-    color: #cc0000; /* Red color for errors to catch user's attention */
-    font-size: 16px;
-    text-align: center; /* Centering error message */
+
+.error-message {
+  color: #cc0000;
+  font-size: 16px;
+  text-align: center;
+}
+
+.loading-animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border-left-color: #6f36e9;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  .loading-animation {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px; /* Fixed height to maintain layout during loading */
+
+  100% {
+    transform: rotate(360deg);
   }
-  
-  .spinner {
-    border: 4px solid rgba(0,0,0,0.1);
-    width: 100px;
-    height: 100px;
-    border-radius: 50%; /* Perfect circle */
-    border-left-color: #6f36e9; /* Color accent on the spinner */
-    animation: spin 1s linear infinite; /* Continuous rotation effect */
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
+}
