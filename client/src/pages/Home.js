@@ -4,6 +4,7 @@ import axios from 'axios'
 
 export default function Home() {
   const itemsRef = useRef(null)
+  const ItemsRef2 = useRef(null)
   const[isMouseDown, setIsMousedown] = useState(false)
   const[startX, setStartX] = useState(0)
   const[scrollLeft, setScrollLeft] = useState(0)
@@ -65,6 +66,11 @@ export default function Home() {
         setStartX(e.pageX - - itemsRef.current.offsetLeft)
         setScrollLeft(itemsRef.current.scrollLeft)
     }
+    const handleMouseDown2 =(e) => {
+      setIsMousedown(true)
+      setStartX(e.pageX - - ItemsRef2.current.offsetLeft)
+      setScrollLeft(ItemsRef2.current.scrollLeft)
+  }
     const handleMouseLeave =() => {
      
       setIsMousedown(false)
@@ -81,9 +87,21 @@ export default function Home() {
      const speed = (x-startX)*1 //vauhti
      itemsRef.current.scrollLeft=scrollLeft - speed
     }
+    const handleMouseMove2 =(e) => {
+     
+      if(!isMouseDown) return;
+      e.preventDefault()
+      const x=e.pageX - ItemsRef2.current.offsetLeft
+      const speed = (x-startX)*1 //vauhti
+      ItemsRef2.current.scrollLeft=scrollLeft - speed
+     }
     const handleWheelScroll =(event) =>{
       const delta = Math.sign(event.deltaY)
       itemsRef.current.scrollLeft += delta *100; //vauhtijälleen
+    }
+    const handleWheelScroll2 =(event) =>{
+      const delta = Math.sign(event.deltaY)
+      ItemsRef2.current.scrollLeft += delta *100; //vauhtijälleen
     }
 
     return (
@@ -102,18 +120,25 @@ export default function Home() {
             nowInTheat.map(eventti => (
           <div key={eventti.id} className="movie2">
             <a className='EventtiUrl' href={eventti.eventtiUrl} target="_blank" rel="noopener noreferrer">
-            <h2 className='movieTitle'>{eventti.title} </h2>
+            {/* <h2 className='movieTitle'>{eventti.title} </h2>*/}
             <img className='movieImage' src={eventti.image} alt={eventti.title} />
-              
+            
               </a>
           </div>
         ))}
       </div>
       </div>
+     
       <h2 className='FincomSon'> TMDB Trending series 
         <button className='weeklyButton' onClick={buttoni}>Daily / Weekly</button> </h2>
 
-      <div className='toinenDiv'>
+      <div className='konkkaa' ref={ItemsRef2}
+            onMouseDown={handleMouseDown2}
+            onMouseLeave={handleMouseLeave}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMove2}
+            onWheel={handleWheelScroll2}
+>
       {
             trenDing.map(movie => (
           <div key={movie.id} className="movie2">
