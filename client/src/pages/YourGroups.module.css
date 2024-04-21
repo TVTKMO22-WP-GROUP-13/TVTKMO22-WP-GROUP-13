@@ -1,22 +1,19 @@
-/* Styles for the overall container of the groups */
 .group-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 10px;
-    margin: 20px;
-  }
-  
-  /* Styles for each group item in the list */
-  .group-list-item {
-    background-color: #d3d3d3; /* Light grey background */
-    border-radius: 5px;        /* Rounded corners */
-    padding: 15px;             /* Padding around the content */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);  /* Subtle shadow for depth */
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* This should create columns at least 240px wide */
+  gap: 20px;
+  padding: 10px;
+  width: 100%;
+  border: 2px solid red; /* Debug: Borders to visualize the grid container */
+}
+
+.group-list-item {
+  background-color: #d3d3d3;
+  border-radius: 5px;
+  padding: 10px;
+  height: 200px;
+  border: 2px solid blue; /* Debug: Borders to visualize each grid item */
+}
   
   /* Heading for each group, could be adjusted for better typography */
   .group-title {
@@ -28,7 +25,7 @@
   
   /* Description of each group */
   .group-description {
-    font-size: 16px;
+    font-size: 18px;
     color: #666; /* Lighter text color for descriptions */
   }
   

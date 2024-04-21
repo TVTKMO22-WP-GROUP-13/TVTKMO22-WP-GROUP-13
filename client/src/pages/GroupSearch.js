@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './GroupSearch.css'
+import styles from './GroupSearch.module.css';
 import { useSignals } from '@preact/signals-react/runtime';
 import { jwtToken } from '../components/AuSignal';
 
@@ -65,25 +65,31 @@ function GroupSearch() {
   };
 
   return (
-    <div className="group-list">
-      {loading ? <p>Loading groups...</p> : (
-        <>
-          <form>
+    <>
+        <form className={styles['search-form']}>
             <input type="text" placeholder="Search groups" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-          </form>
-          {filteredGroups.map((group) => (
-            <div className="group-list-item" key={group.group_id}>
-              <h2>{group.group_name}</h2>
-              <p>Description: {group.description}</p>
-              {jwtToken.value && !involvedGroups.includes(group.group_id) &&
-                <button onClick={() => handleJoinRequest(group.group_id)}>Send join request</button>
-              }
-            </div>
-          ))}
-        </>
-      )}
-    </div>
-  );
+        </form>
+        <div className={styles['group-list']}>
+            {loading ? <p>Loading groups...</p> : (
+                <>
+                    {filteredGroups.map((group) => (
+                        <div className={styles['group-list-item']} key={group.group_id}>
+                            <div className={styles['group-content']}>
+                                <h2>{group.group_name}</h2>
+                                <p>Description: {group.description}</p>
+                            </div>
+                            {jwtToken.value && !involvedGroups.includes(group.group_id) &&
+                                <button className={styles['join-request-btn']} onClick={() => handleJoinRequest(group.group_id)}>
+                                    Send join request
+                                </button>
+                            }
+                        </div>
+                    ))}
+                </>
+            )}
+        </div>
+    </>
+);
 }
 
 export default GroupSearch;
