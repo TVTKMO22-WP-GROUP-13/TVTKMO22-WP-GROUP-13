@@ -54,9 +54,8 @@ export default function YourGroups() {
       <Link to="/MakeGroup">
         <button className={styles['create-group-button']}>Create a new group</button>
       </Link>
+      <h2>Your Created Groups</h2>
       <div className={styles['group-list']}>
-        <h2>Your Created Groups</h2>
-
         {createdGroups.length > 0 ? createdGroups.map(group => (
           <Link to={`/group/${group.group_id}`} state={{ isOwner: true }} key={group.group_id} className={styles['group-list-item']}>
             <h2 className={styles['group-title']}>{group.group_name}</h2>
@@ -64,8 +63,8 @@ export default function YourGroups() {
           </Link>
         )) : <p className={styles['error-message']}>{errorCreated}</p>}
       </div>
+      <h2>Your Joined Groups</h2>
       <div className={styles['group-list']}>
-        <h2>Your Joined Groups</h2>
         {joinedGroups.length > 0 ? joinedGroups.map(group => (
           <Link to={`/group/${group.group_id}`} state={{ isOwner: false }} key={group.group_id} className={styles['group-list-item']}>
             <h2 className={styles['group-title']}>{group.group_name}</h2>
