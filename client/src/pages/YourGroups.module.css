@@ -19,6 +19,16 @@
   text-decoration: none; /* Removes underline from links */
 }
 
+/* Section Heading Styling */
+.section-heading {
+  font-size: 24px; /* Sets a prominent size for section titles */
+  font-weight: bold; /* Makes the font bold */
+  color: #333; /* Dark grey for good readability */
+  text-align: center; /* Centers the text horizontally */
+  margin-top: 20px; /* Adds space above the title */
+  margin-bottom: 10px; /* Adds space below the title */
+}
+
 .group-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 360px)); /* Creates a responsive column layout */
@@ -39,6 +49,11 @@
   width: 360px; /* Consistent item width */
   height: 260px; /* Consistent item height */
   text-decoration: none; /* Removes underline from links */
+}
+
+.group-list-item:hover {
+  background-color: #af9cd3;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Darker shadow on hover for depth */
 }
   
 .group-title {
