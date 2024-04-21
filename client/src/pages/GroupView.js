@@ -178,11 +178,17 @@ function GroupView() {
   }, [fetchGroupDetails, fetchGroupJoinRequests, fetchGroupMembers]);
 
   if (!groupDetails) {
-    return <p>{error || "Loading..."}</p>;
+    return (
+      <div className="loading-animation">
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   return (
     <div className="group-details">
+      {!isOwner && <p>Group Member View</p>}
+      {isOwner && <p>Group Owner View</p>}
         <h1>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
         <p>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
         {!isOwner && <button onClick={handleLeaveGroup} className="leave-btn">Leave Group</button>}
@@ -216,7 +222,6 @@ function GroupView() {
                 ) : <p>No join requests.</p>}
             </div>
         )}
-        {!isOwner && <p>Group Member View</p>}
     </div>
 );
 }
