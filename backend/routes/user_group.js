@@ -5,7 +5,7 @@ const { getUser } = require('../database/user_data_db');
 const router = require('express').Router();
 
 // endpoint to get all groups
-router.get('/all', auth, async (req, res) => {
+router.get('/all', async (req, res) => {
     try {
         const groups = await getGroups();
         //check if groups array is empty
