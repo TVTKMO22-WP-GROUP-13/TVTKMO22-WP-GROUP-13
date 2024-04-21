@@ -1,3 +1,16 @@
+.actionButton, .leaveGroupButton, .deleteGroupButton, .removeMemberButton, .acceptRequestButton, .rejectRequestButton, .toggleVisibilityButton {
+    display: inline-flex;  /* Overrides inline-block and allows better alignment features */
+    width: auto;           /* Resets width to only be as wide as necessary */
+    padding: 8px 10px;     /* Adjusts padding, make sure it's suitable for your design */
+    border-radius: 4px;    /* Maintains visual consistency with rounded corners */
+    cursor: pointer;       /* Ensures cursor changes to pointer on hover */
+    font-size: 12px;       /* Adjusts font size to fit smaller buttons */
+    color: #fff;           /* Text color */
+    background-color: #2196F3; /* Background color */
+    margin-left: 10px;     /* Adds spacing between buttons */
+    justify-content: center; /* Centers text and icons inside the button */
+}
+
 .groupContainer {
     background: #deceff;
     border-radius: 8px;
@@ -43,18 +56,23 @@
     overflow: hidden;
 }
 
-.memberItem,
-.requestItem {
+.memberItem, .requestItem {
     background: #fff;
     border-radius: 10px;
     padding: 15px;
-    margin: 15px 0;
+    margin: 10px 0;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
     display: flex;
     justify-content: space-between;
     align-items: center;
     transition: background-color 0.3s ease;
 }
+
+/* Flexbox setup for layout */
+.memberItem > span, .requestItem > span {
+    flex-grow: 1; /* Allows the username span to take up any extra space */
+}
+
 
 .memberItem:hover,
 .requestItem:hover {
@@ -65,13 +83,14 @@
 }
 
 .actionButton {
-    padding: 8px 16px;
+    padding: 8px 10px; /* Adjust horizontal padding to make buttons narrower */
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px; /* Optionally adjust font size for smaller buttons */
     color: #fff;
     background-color: #2196F3;
+    margin-left: 10px; /* Ensures spacing between buttons if next to each other */
 }
 
 .actionButton:hover {
@@ -87,9 +106,6 @@
 }
 
 .removeMemberButton {
-    padding: 5px 8px;
-    margin-left: auto;
-    font-size: 12px;
     background-color: #f44336;
 }
 
@@ -105,3 +121,4 @@
     background-color: #2196F3;
     color: #FFFFFF;
 }
+
