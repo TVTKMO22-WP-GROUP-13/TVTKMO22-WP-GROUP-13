@@ -1,71 +1,104 @@
 .search-form {
-  margin: 0 auto 5px auto;
+  margin: 5px auto; /* Centers the form with a moderate top margin */
   display: flex;
-  justify-content: center; /* center the box to middle of the screen */
+  justify-content: center;
+  width: 65%; 
+  height: 40px; 
+  border-radius: 10px; /* Smooths the corners  */
+}
+
+.search-form input {
+  width: 100%; /* Expands input to fill its container */
+  height: 100%; /* Matches input height to its container */
+  padding: 0 10px; /* Horizontal padding to keep text from the edges */
+  border: 1px solid #ccc;
+  border-radius: 10px; /* Matches container's corners */
+  box-sizing: border-box; /* Ensures padding and border are included in the total width/height */
 }
 
 .group-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 360px)); /* fit columns between 240px and 300px */
-  gap: 20px; /* padding between items */
-  padding: 10px; /* padding up */
-  width: 100%;
-  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 360px)); /* Creates a responsive column layout */
+  gap: 20px; /* Space between columns */
+  padding: 10px; /* Padding around the grid */
+  width: 100%; /* Full width to maximize content display */
+  justify-content: center; /* Aligns content in the center when there's extra space */
 }
 
 .group-list-item {
   display: flex;
-  flex-direction: column; /* Stacks the title, description, and button vertically */
-  justify-content: space-between; /* Ensures spacing is distributed, and button stays at the bottom */
-  background-color: #6f36e9;
-  border-radius: 5px; 
-  padding: 15px; /* Padding around the content */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  flex-direction: column; /* Organizes content vertically within each item */
+  justify-content: space-between; /* Maximizes space around items, anchoring the button at the bottom */
+  background-color: #deceff; /* Soft pastel background color */
+  border-radius: 10px; 
+  padding: 15px; /* Internal spacing around content */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
   position: relative;
-  width: 360px; /* Fixed width for each item */
-  height: 260px; /* Fixed height for each item */
+  width: 360px; /* Consistent item width */
+  height: 260px; /* Consistent item height */
 }
   
 .group-title {
-  font-size: 25px;
+  font-size: 25px; /* Prominent title size */
   font-weight: bold;
-  margin-bottom: 10px; /* Space between title and description */
-  color: #000000; /* Darker text color for better readability */
-  text-align: center; /* Center the title */
+  margin-bottom: 10px; /* Separates title from content below */
+  color: #000000; /* Ensures high contrast for readability */
+  text-align: center; /* Centers title text */
 }
 
 .group-description {
-  font-size: 18px;
-  color: #181818; /* Lighter text color for descriptions */
-  overflow: hidden; /* Hides text that exceeds the height */
-  text-overflow: ellipsis; /* Adds '...' to indicate more text */
+  font-size: 18px; /* Clear, readable font size */
+  color: #181818; /* Soft color for reading comfort */
+  overflow: hidden; /* Prevents text overflow */
+  text-overflow: ellipsis; /* Indicates clipped text */
   display: -webkit-box;
   -webkit-box-orient: horizontal;
-  line-height: 1.4; /* Adjust line height for better readability */
-  max-height: 8em; /* Max height = line-height * number of lines */
+  line-height: 1.4; /* Enhances text legibility */
+  max-height: 8em; /* Caps description height at a fixed measure */
 }
 
 .join-request-btn {
-  margin-top: auto; /* Pushes the button to the bottom of the container */
+  margin-top: auto; /* Positions button at the bottom of its container */
   padding: 10px 20px;
-  background-color: #4CAF50; /* A nice green */
+  background-color: #4CAF50; /* Vibrant, inviting button color */
   color: white;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s; /* Smooth transitions for interaction */
+  cursor: pointer; /* Visual cue for interactivity */
+  transition: background-color 0.3s, transform 0.2s; /* Smooth visual feedback on interaction */
 }
 
 .join-request-btn:hover {
-  background-color: #45a049; /* A slightly darker green on hover */
+  background-color: #45a049; /* Darker shade on hover for visual feedback */
 }
 
 .join-request-btn:active {
-  transform: scale(0.98); /* Slightly shrink when the button is clicked */
+  transform: scale(0.98); /* Subtle click effect */
 }
 
 .error-message {
-  color: #cc0000; /* Red color for errors to catch user's attention */
-  font-size: 16px;
-  text-align: center; /* Centering error message */
+  color: #cc0000; /* Alerts users to problems */
+  font-size: 16px; /* Sufficient size for visibility */
+  text-align: center; /* Ensures message is prominently centered */
+}
+
+.loading-animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px; /* Fixed height to maintain layout during loading */
+}
+
+.spinner {
+  border: 4px solid rgba(0,0,0,0.1);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* Perfect circle */
+  border-left-color: #6f36e9; /* Color accent on the spinner */
+  animation: spin 1s linear infinite; /* Continuous rotation effect */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
