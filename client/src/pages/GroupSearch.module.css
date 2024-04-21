@@ -1,72 +1,71 @@
 .search-form {
-  margin: 0 auto 20px auto;
-  width: 90%; /* Adjust based on layout needs */
+  margin: 0 auto 5px auto;
   display: flex;
-  justify-content: center; /* Centering the input in the form */
+  justify-content: center; /* center the box to middle of the screen */
 }
 
 .group-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 300px)); /* minimum width 240px, maximum 300px */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 300px)); /* fit columns between 240px and 300px */
   gap: 20px;
   padding: 10px;
   width: 100%;
-  align-items: start;
+  align-items: start; /* Align items at the start of the column */
+  justify-content: center;
 }
 
 .group-list-item {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* This will ensure the button stays at the bottom if present */
-  background-color: #d3d3d3;
+  justify-content: space-between; /* This ensures the button stays at the bottom if present */
+  background-color: #6f36e9;
   border-radius: 5px;
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   position: relative;
-  height: 100%; /* Adjust height as necessary */
+  width: 300px; /* Fixed width for each item */
+  height: 200px; /* Fixed height for each item */
 }
 
 .group-content {
-  flex-grow: 1; /* This makes the content container grow to use available space, pushing the button to the bottom */
+  flex-grow: 1; /* Allows content container to fill available space, pushing the button to the bottom */
 }
   
-  /* Heading for each group, could be adjusted for better typography */
-  .group-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px; /* Space between title and description */
-    color: #333; /* Darker text color for better readability */
-  }
-  
-  /* Description of each group */
-  .group-description {
-    font-size: 18px;
-    color: #666; /* Lighter text color for descriptions */
-  }
+.group-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px; /* Space between title and description */
+  color: #333; /* Darker text color for better readability */
+  text-align: center; /* Center the title */
+}
 
-  .join-request-btn {
-    align-self: center; /* Center the button within the item */
-    margin-top: 20px; /* Adds a top margin to the button, separate it from content */
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-  }
-  
-  .join-request-btn:hover {
-    background-color: #45a049; /* A slightly darker green on hover */
-  }
-  
-  .join-request-btn:active {
-    transform: scale(0.98); /* Slightly shrink when the button is clicked */
-  }
-  
-  /* Error messages styling */
-  .error-message {
-    color: #cc0000; /* Red color for errors to catch user's attention */
-    font-size: 16px;
-    text-align: center; /* Centering error message */
-  }
+.group-description {
+  font-size: 18px;
+  color: #666; /* Lighter text color for descriptions */
+}
+
+.join-request-btn {
+  align-self: center; /* Center the button within the item */
+  margin-top: 20px; /* Adds a top margin to separate it from the content above */
+  padding: 10px 20px;
+  background-color: #4CAF50; /* A nice green */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Smooth transitions for interaction */
+}
+
+.join-request-btn:hover {
+  background-color: #45a049; /* A slightly darker green on hover */
+}
+
+.join-request-btn:active {
+  transform: scale(0.98); /* Slightly shrink when the button is clicked */
+}
+
+.error-message {
+  color: #cc0000; /* Red color for errors to catch user's attention */
+  font-size: 16px;
+  text-align: center; /* Centering error message */
+}
