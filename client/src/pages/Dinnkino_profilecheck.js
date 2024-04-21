@@ -1,9 +1,9 @@
-import { jwtToken } from "../components/AuSignal";
+/*import { jwtToken } from "../components/AuSignal";
 import axios from 'axios';
 
 
 export const isLoggedIN = () => {
-    console.log("Toimii")
+    console.log("Toimii", jwtToken.value)
     return jwtToken.value.length === 0 ? null : jwtToken.value
 }
 
@@ -36,7 +36,7 @@ export const fetchTheFknGroups = async () => {
             new Error ('Ei vitus')
         }
     
-}
+}*/
 
 /*const getUserGroups = async (url) => {
     try {

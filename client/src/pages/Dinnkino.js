@@ -1,7 +1,8 @@
 import './Dinnkino.css'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { isLoggedIN, fetchTheFknGroups } from './Dinnkino_profilecheck'
+import { jwtToken } from '../components/AuSignal';
+
 
 
 
@@ -15,8 +16,53 @@ export default function Dinnkino() {
   const [showdates, setshowDates] = useState([])
   const [moviesFinni, setMovies] = useState([])
   const [showtimeData, setShowtimeData] = useState([])
+  const [showShowtimeSelectContainer, setShowtimeSelectContainer] = useState(false)
   const [KKuserGroups, KKsetUserGroups] = useState('')
-  const [userGroups, setUserGroups] = useState([])
+  const [createdGroups, setCreatedGroups] = useState([]);
+  const [joinedGroups, setJoinedGroups] = useState([]);
+  const [errorCreated, setErrorCreated] = useState('');
+  const [errorJoined, setErrorJoined] = useState('');
+
+
+useEffect(() => {
+/*  const jwtToken = localStorage.getItem("jwtToken")
+
+  const isLoggedIN = () => {
+    console.log("Tokeni", jwtToken);
+    return jwtToken !== null && jwtToken !== undefined;
+  };*/
+
+  const GetGroups = async (url, setUserGroups, setUserError, groupType) => {
+    console.log.apply(`Get ${groupType} groups`)
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'Authorization': `Bearer ${jwtToken.value}`
+        }
+      })
+      console.log(`${groupType} groups`, response.data)
+      const groupData = groupType === 'created' ? response.data.groups : response.data.groupsJoined
+      if (groupData && groupData.length > 0) {
+        setUserGroups(groupData)
+        setShowtimeContainer(true)
+      } else {
+        setUserError(`No ${groupType} groups found.`)
+        console.log(`No ${groupType} groups found`)
+      }    
+    } catch (error) {
+      console.error(`Error fetching ${groupType} groups:`, error)
+        setUserError(`You have not joined any ${groupType} groups.`)
+    }
+  }
+  if(jwtToken.value) {
+    GetGroups('http://localhost:3001/user_group/getUserCreatedGroups', setCreatedGroups, setErrorCreated, 'created');
+    GetGroups('http://localhost:3001/group_member/groups_joined', setJoinedGroups, setErrorJoined, 'joined');
+    setShowtimeSelectContainer(true)
+  } else {
+    console.log("no token")
+    setShowtimeSelectContainer(false)
+  }
+}, [])
 
 
 
@@ -88,13 +134,6 @@ useEffect(() => {
 //Hakunappi, hakee valittujen asioiden avulla haussa näkyvät tiedot
 const handleSearch = () => {
     if (selectedKino && selectedDate && selectedMovie) {
-      let groupsPromise = Promise.resolve([])
-      if (isLoggedIN()) {
-        groupsPromise = fetchTheFknGroups()
-      }
-      groupsPromise
-        .then((groups) => {
-          setUserGroups(groups)
           setShowtimeContainer(true)
     const selectMovieDets = moviesFinni.find(movie => movie.eventId === selectedMovie)
         if(selectMovieDets) {
@@ -139,7 +178,7 @@ const handleSearch = () => {
         } else {
           setShowtimeContainer(false)
           }
-        })
+        
   }
 }
 
@@ -216,14 +255,18 @@ return (
             <h3>{show.auditrium}</h3>
             <div className="ShowtimeSELECT-content">
     {/* Select button - only visible if user is logged in and in a specific group */}
-    {userGroups.length > 0 && (
+    {console.log("showShowtimeSelectContainer:", showShowtimeSelectContainer)}
+    {showShowtimeSelectContainer && (
     <div>
         <button onClick={() => handleSelectedShowtime(show, KKuserGroups)}>Select</button>
         <select value={KKuserGroups} onChange={(e) => KKsetUserGroups(e.target.value)}>
             <option value="">Select a group</option>
-            {userGroups.map(group => (
-                <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
-            ))}
+            {createdGroups.map(group => (
+        <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
+      ))}
+      {joinedGroups.map(group => (
+        <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
+      ))}
         </select>
     </div>
 )}
