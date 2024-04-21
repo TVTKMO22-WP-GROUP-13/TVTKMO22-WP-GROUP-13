@@ -36,29 +36,28 @@
 .membersList, .requestsList {
     list-style: none;
     padding: 0;
-    margin: 10 px; /* Ensure no external margins are causing gaps */
-    background-color: #fff; /* Optional: Set a specific background color if needed */
-    overflow: hidden; /* Cuts off any outside content from showing */
+    margin: 0; /* Reset margin around the list to ensure clean spacing */
+    background-color: #deceff; /* Ensures background matches item background */
+    overflow: hidden; /* Prevents content from overflowing the list boundaries */
 }
 
 .memberItem, .requestItem {
     background: #fff;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0; /* Adjust or remove margin if it creates unwanted gaps */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 10px; /* Increased border-radius for rounded corners */
+    padding: 15px; /* Increased padding for better spacing and visual padding */
+    margin: 15px 0; /* Increased vertical margin to add space between items */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* Slightly larger shadow for more depth */
     display: flex;
     justify-content: space-between;
     align-items: center;
     transition: background-color 0.3s ease;
 }
 
-/* Explicitly setting the hover state to have no change */
 .memberItem:hover, .requestItem:hover {
     background-color: #fff; /* Keeps background white */
     color: #333; /* Keeps text color unchanged */
     cursor: default; /* Keeps cursor default to avoid indicating interactivity */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Maintain the same shadow on hover */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* Consistent shadow on hover */
 }
 
 .actionButton {
