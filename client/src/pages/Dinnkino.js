@@ -115,8 +115,95 @@ useEffect(() => {
   }
 }, [selectedKino, selectedDate])
  
-//Hakunappi, hakee valittujen asioiden avulla haussa näkyvät tiedot
+
+const fetchSelectedMovie = () => {
+  const selectMovieDets = moviesFinni.find(movie => movie.eventId === selectedMovie)
+  if(selectMovieDets) {
+    const movie_title = selectMovieDets.title
+    axios.get(`https://www.finnkino.fi/xml/Schedule/?area=${selectedKino}&dt=${selectedDate}&eventID=${selectedMovie}`)
+      .then(response => {
+        const parser = new DOMParser()
+        const xmlDoc = parser.parseFromString(response.data, 'text/xml')
+        const showElements = xmlDoc.getElementsByTagName('Show')
+      
+        const showtimeData = parseShowElements(showElements, movie_title)
+        setShowtimeData(showtimeData)
+        setShowtimeContainer(true)
+      })
+      .catch(error => {
+        console.error('Error fetching selected movie:', error)
+      })
+  } else {
+    setShowtimeContainer(false)
+  }
+}
+
+const fetchAllMovies = () => {
+  axios.get(`https://www.finnkino.fi/xml/Schedule/?area=${selectedKino}&dt=${selectedDate}&eventID=ALL`)
+    .then(response => {
+      const parser = new DOMParser()
+      const xmlDoc = parser.parseFromString(response.data, 'text/xml')
+      const showElements = xmlDoc.getElementsByTagName('Show')
+      
+      // Parse and set showtime data for all movies
+      const allMoviesShowtimeData = parseShowElements(showElements, "All movies")
+      setShowtimeData(allMoviesShowtimeData)
+      setShowtimeContainer(true)
+    })
+    .catch(error => {
+      console.error('Error fetching all movies:', error)
+    })
+}
+
+const parseShowElements = (showElements) => {
+  const showtimeData = []
+
+  for (let i = 0; i < showElements.length; i++) {
+    const show = showElements[i]
+    const rawShowtime = show.querySelector('dttmShowStart').textContent;
+    const showtime = new Date(rawShowtime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})
+    const theater_name = show.querySelector('Theatre').textContent
+    const movie_title = show.querySelector('Title').textContent
+    const imageURL = show.querySelector('EventSmallImagePortrait').textContent
+    const auditrium = show.querySelector('TheatreAndAuditorium').textContent
+    const MovieLenght = show.querySelector('LengthInMinutes').textContent
+    const movieLenghtH = Math.floor(MovieLenght / 60)
+    const movieLenghtM = MovieLenght % 60
+    const MovieL = `${movieLenghtH}h ${movieLenghtM}min`
+
+    const areaName = theatreAreas.find(area=>area.areaId === selectedKino)?.name || []
+
+    const showtimeItem = { 
+      showtime: showtime,
+      movie_title: movie_title,
+      theater_name: theater_name,
+      areaName: areaName,
+      imageURL: imageURL,
+      auditrium: auditrium,
+      MovieL: MovieL
+    }
+
+    showtimeData.push(showtimeItem)
+  }
+
+  return showtimeData;
+}
+
+
 const handleSearch = () => {
+  if (selectedKino && selectedDate && selectedMovie) {
+    if (selectedMovie === "All movies") {
+      fetchAllMovies()
+
+    } else {
+      fetchSelectedMovie()
+    }
+  }
+}
+
+
+//Hakunappi, hakee valittujen asioiden avulla haussa näkyvät tiedot
+/*const handleSearch = () => {
     if (selectedKino && selectedDate && selectedMovie) {
           setShowtimeContainer(true)
     const selectMovieDets = moviesFinni.find(movie => movie.eventId === selectedMovie)
@@ -164,7 +251,7 @@ const handleSearch = () => {
           }
         
   }
-}
+}*/
 
 const handleSelectedShowtime = (showtimeItem, selectedGroupId) => {
   const { showtime, theater_name, movie_title } = showtimeItem
@@ -203,7 +290,7 @@ return (
 
       {/* Date dropdown */}
       <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}>
-      <option value="Pick a date">Pick a date</option>
+      <option value="Pick a date">Valitse päivä</option>
         {showdates.map(date => (
         <option key={date} value={date}>{date}</option>
         ))}
@@ -211,7 +298,8 @@ return (
 
       {/* Movie dropdown */}
       <select value={selectedMovie} onChange={(e) => setSelectedMovie(e.target.value)}>
-      <option value="Pick a movie">Pick a movie</option>
+      <option value="Pick a movie">Valitse elokuva</option>
+      <option value="All movies">Kaikki elokuvat</option>
         {moviesFinni.reduce((uniqueMovies, movie) => {
           if (!uniqueMovies.find(item => item.eventId === movie.eventId)) {
             uniqueMovies.push(movie)
@@ -224,7 +312,7 @@ return (
       </select>
 
       {/* Search button */}
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch}>Etsi</button>
     </div>  
     
     {showShowtimeContainer && (
@@ -244,7 +332,7 @@ return (
           {showShowtimeSelectContainer && (
             <div>
               <select value={KKuserGroups} onChange={(e) => KKsetUserGroups(e.target.value)}>
-              <option value="">Select a group</option>
+              <option value="">Valitse ryhmä</option>
               {createdGroups.map(group => (
               <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
               ))}
@@ -252,12 +340,12 @@ return (
               <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
               ))}
               </select>
-              <button onClick={() => handleSelectedShowtime(show, KKuserGroups)}>Select</button>
+              <button onClick={() => handleSelectedShowtime(show, KKuserGroups)}>Valitse</button>
             </div>
           )}
           </div>
         </div>
-        <img src={show.imageURL} alt="movie poster" />
+        <img src={show.imageURL} alt="movie poster"/>
       </div>
       ))}
     </>
