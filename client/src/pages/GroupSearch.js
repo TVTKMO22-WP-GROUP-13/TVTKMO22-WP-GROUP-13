@@ -75,8 +75,8 @@ function GroupSearch() {
                     {filteredGroups.map((group) => (
                         <div className={styles['group-list-item']} key={group.group_id}>
                             <div className={styles['group-content']}>
-                                <h2>{group.group_name}</h2>
-                                <p>Description: {group.description}</p>
+                                <h2 className={styles['group-title']}>{group.group_name}</h2>
+                                <p className={styles['group-description']}>Description: {group.description}</p>
                             </div>
                             {jwtToken.value && !involvedGroups.includes(group.group_id) &&
                                 <button className={styles['join-request-btn']} onClick={() => handleJoinRequest(group.group_id)}>

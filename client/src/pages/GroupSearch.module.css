@@ -7,41 +7,36 @@
 .group-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 300px)); /* fit columns between 240px and 300px */
-  gap: 20px;
-  padding: 10px;
+  gap: 20px; /* padding between items */
+  padding: 10px; /* padding up */
   width: 100%;
-  align-items: start; /* Align items at the start of the column */
   justify-content: center;
 }
 
 .group-list-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stacks the title, description, and button vertically */
   justify-content: space-between; /* This ensures the button stays at the bottom if present */
   background-color: #6f36e9;
-  border-radius: 5px;
-  padding: 15px;
+  border-radius: 5px; 
+  padding: 15px; /* Padding around the content */
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   position: relative;
   width: 300px; /* Fixed width for each item */
   height: 200px; /* Fixed height for each item */
 }
-
-.group-content {
-  flex-grow: 1; /* Allows content container to fill available space, pushing the button to the bottom */
-}
   
 .group-title {
-  font-size: 18px;
+  font-size: 25px;
   font-weight: bold;
   margin-bottom: 10px; /* Space between title and description */
-  color: #333; /* Darker text color for better readability */
+  color: #000000; /* Darker text color for better readability */
   text-align: center; /* Center the title */
 }
 
 .group-description {
   font-size: 18px;
-  color: #666; /* Lighter text color for descriptions */
+  color: #181818; /* Lighter text color for descriptions */
 }
 
 .join-request-btn {
