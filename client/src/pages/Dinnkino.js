@@ -18,16 +18,17 @@ export default function Dinnkino() {
   const [createdGroups, setCreatedGroups] = useState([]);
   const [joinedGroups, setJoinedGroups] = useState([]);
 
+//Katsoo onko käyttäjä kirjautunut sisään ja jos on -> hakee käyttäjän omat ja joined ryhmät
 useEffect(() => {
   const GetGroups = async (url, setUserGroups, groupType) => {
-    console.log(`Get ${groupType} groups`)
+    //console.log(`Get ${groupType} groups`)
     try {
       const response = await axios.get(url, {
         headers: {
           'Authorization': `Bearer ${jwtToken.value}`
         }
       })
-      console.log(`${groupType} groups`, response.data)
+      //console.log(`${groupType} groups`, response.data)
       const groupData = groupType === 'created' ? response.data.groups : response.data.groupsJoined
       if (groupData && groupData.length > 0) {
         setUserGroups(groupData)
@@ -115,7 +116,7 @@ useEffect(() => {
   }
 }, [selectedKino, selectedDate])
  
-
+//Jos valitaan kolmannesta valikosta tietty elokuva, etsitään sen elokuvan näytösajat sinä päivänä siinä teatterissa
 const fetchSelectedMovie = () => {
   const selectMovieDets = moviesFinni.find(movie => movie.eventId === selectedMovie)
   if(selectMovieDets) {
@@ -137,7 +138,7 @@ const fetchSelectedMovie = () => {
     setShowtimeContainer(false)
   }
 }
-
+//Jos valittu valikosta "Kaikki elokuvat", etsitään kaikkien elokuvien näytösajat sinä päivänä siinä teatterissa
 const fetchAllMovies = () => {
   axios.get(`https://www.finnkino.fi/xml/Schedule/?area=${selectedKino}&dt=${selectedDate}&eventID=ALL`)
     .then(response => {
@@ -145,7 +146,7 @@ const fetchAllMovies = () => {
       const xmlDoc = parser.parseFromString(response.data, 'text/xml')
       const showElements = xmlDoc.getElementsByTagName('Show')
       
-      // Parse and set showtime data for all movies
+      // Parsi ja aseta showtimedata kaikille elokuville
       const allMoviesShowtimeData = parseShowElements(showElements, "All movies")
       setShowtimeData(allMoviesShowtimeData)
       setShowtimeContainer(true)
@@ -200,58 +201,6 @@ const handleSearch = () => {
     }
   }
 }
-
-
-//Hakunappi, hakee valittujen asioiden avulla haussa näkyvät tiedot
-/*const handleSearch = () => {
-    if (selectedKino && selectedDate && selectedMovie) {
-          setShowtimeContainer(true)
-    const selectMovieDets = moviesFinni.find(movie => movie.eventId === selectedMovie)
-        if(selectMovieDets) {
-          const movie_title = selectMovieDets.title
-          axios.get(`https://www.finnkino.fi/xml/Schedule/?area=${selectedKino}&dt=${selectedDate}&eventID=${selectedMovie}`)
-            .then(response => {
-              const parser = new DOMParser()
-              const xmlDoc = parser.parseFromString(response.data, 'text/xml')
-              const showElements = xmlDoc.getElementsByTagName('Show')
-              const showtimeData = []
-
-                for (let i = 0; i < showElements.length; i++) {
-                  const show = showElements[i]
-                  const rawShowtime = show.querySelector('dttmShowStart').textContent
-                  //const rawShowEnd = show.querySelector('dtmmShowEnd').textContent
-                  const showtime = new Date(rawShowtime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})
-                  //const showend = new Date(rawShowEnd).toLocaleTimeString([],{hour: '2-digit', minute: '2-digit'})
-                  const theater_name = show.querySelector('Theatre').textContent
-                  const imageURL = show.querySelector('EventSmallImagePortrait').textContent
-                  const auditrium = show.querySelector('TheatreAndAuditorium').textContent
-                  const MovieLenght = show.querySelector('LengthInMinutes').textContent
-                  const movieLenghtH = Math.floor(MovieLenght / 60)
-                  const movieLenghtM = MovieLenght % 60
-                  const MovieL = `${movieLenghtH}h ${movieLenghtM}min`
-
-                  const areaName = theatreAreas.find(area=>area.areaId === selectedKino)?.name || []
-            
-                    const showtimeItem = { 
-                    showtime: showtime,
-                    movie_title: movie_title,
-                    theater_name: theater_name,
-                    areaName: areaName,
-                    imageURL: imageURL,
-                    auditrium: auditrium,
-                    MovieL: MovieL
-                    }
-               showtimeData.push(showtimeItem)
-              }
-            setShowtimeData(showtimeData)
-            //console.log("Showdata", showtimeData)
-            })
-        } else {
-          setShowtimeContainer(false)
-          }
-        
-  }
-}*/
 
 const handleSelectedShowtime = (showtimeItem, selectedGroupId) => {
   const { showtime, theater_name, movie_title } = showtimeItem
@@ -328,7 +277,7 @@ return (
           <h3>{show.auditrium}</h3>
 
           <div className="ShowtimeSELECT-content">
-          {/* Select button - only visible if user is logged in and in a specific group */}
+          {/* Group dropdown and select button, only visible when user in group(s) */}
           {showShowtimeSelectContainer && (
             <div>
               <select value={KKuserGroups} onChange={(e) => KKsetUserGroups(e.target.value)}>
