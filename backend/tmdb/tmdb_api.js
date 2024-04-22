@@ -14,15 +14,29 @@ const tmdbApi = {
         movie.overview
     ));
   },
-  async discoverMovies(sort_by = 'popularity.desc', page = 1, year = '', language = 'en-US', genreId = '') {
-    const endpoint = tmdbEndpoints.discoverMovies(sort_by, language, page, year, genreId);
-    const { data } = await axiosClient.get(endpoint);
-    return data.results.map(movie => new movieModel(
-      movie.id, 
-      movie.title, 
-      movie.poster_path, 
-      movie.overview
-    ));
+  async discoverMovies(sort_by, page = 1, year = '', genreQuery = '') {
+    //console.log(genreQuery)
+    //console.log("tmdb api discoveM")
+    const targetYear = parseInt(year, 10) || undefined;
+    const endpoint = tmdbEndpoints.discoverMovies(sort_by, page, targetYear, genreQuery);
+    console.log(endpoint)
+    try {
+      //console.log("api.themoviedb.org/3/discover/movies + endpoint)
+      const { data } = await axiosClient.get(endpoint);
+      if (!data || !data.results) {
+        throw new Error("No results found or invalid API response");
+      }
+  
+      return data.results.map(movie => new movieModel(
+        movie.id, 
+        movie.title, 
+        movie.poster_path, 
+        movie.overview
+      ));
+    } catch (error) {
+      console.error("Error fetching movies from TMDB API:", error.message);
+      throw error;
+    }
   },
   async getMovieById(id) {
     const endpoint = tmdbEndpoints.getMovieById(id);
@@ -73,3 +87,4 @@ async topRatedSeries(top) {
 };
 
 module.exports = tmdbApi;
+

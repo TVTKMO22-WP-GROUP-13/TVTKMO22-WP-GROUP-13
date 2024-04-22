@@ -62,7 +62,7 @@ const Movies = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    const genreIds = Array.from(selectedGenres).map(genre => genreIdsMap[genre]).join('|');
+    const genreIds = Array.from(selectedGenres).map(genre => genreIdsMap[genre]).join(',');
     setGenreQuery(genreIds);
   }, [selectedGenres]);
 
@@ -88,6 +88,7 @@ const Movies = () => {
         });
       }
       console.log(response.data);
+      console.log('haku:',query);
       console.log('haku:',genreQuery); 
       setMovies(response.data); 
     } catch (error) {
