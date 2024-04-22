@@ -6,8 +6,8 @@ export const fetchMovies = async (searchTerm) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/movie/search`, {
             params: {
-                query: searchTerm,
-                // Voit lisätä muita parametreja, jos tarpeen
+                query: searchTerm
+                //muita parametreja, jos tarpeen
             },
         });
         return response.data;
@@ -15,3 +15,4 @@ export const fetchMovies = async (searchTerm) => {
         console.error('Fetching movies failed:', error);
     }
 };
+
