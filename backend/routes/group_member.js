@@ -15,13 +15,24 @@ router.post('/add', async (req, res) => {
 });
 
 //endpoint to remove user from group
-router.delete('/remove', async (req, res) => {
+router.delete('/remove', auth, async (req, res) => {
     try {
         const result = await removeUserFromGroup(req.body.group_id, req.body.user_id);
         res.json({ message: 'User removed from group successfully', result });
     } catch (error) {
         console.error('Error removing user from group:', error);
         res.status(500).json({ message: 'Failed to remove user from group' });
+    }
+});
+
+//endpoint to remove user from group with user_id from token
+router.delete('/leaveGroup', auth, async (req, res) => {
+    try {
+        const result = await removeUserFromGroup(req.body.group_id, res.locals.user_id);
+        res.json({ message: 'You leaved from the group successfully', result });
+    } catch (error) {
+        console.error('Error leaving from the group:', error);
+        res.status(500).json({ message: 'Failed to leave the group' });
     }
 });
 
@@ -48,7 +59,7 @@ router.get('/groups_joined', auth, async (req, res) => {
         const groupsJoined = await getGroupsJoined(res.locals.user_id);
         //check if groupsJoined array is empty
         if (groupsJoined.length === 0) {
-            return res.status(404).json({ message: 'No groups joined' });
+            return res.status(404).json({ message: 'You have not joined any groups' });
         }
         res.json({ message: 'Groups joined retrieved successfully', groupsJoined });
     } catch (error) {

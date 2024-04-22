@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './GroupSearch.css'
+import styles from './GroupSearch.module.css';
 import { useSignals } from '@preact/signals-react/runtime';
 import { jwtToken } from '../components/AuSignal';
 
@@ -9,7 +9,7 @@ function GroupSearch() {
   const [involvedGroups, setInvolvedGroups] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
-  const [filteredGroups, setFilteredGroups] = useState([]); 
+  const [filteredGroups, setFilteredGroups] = useState([]);
 
   useEffect(() => {
     const fetchGroupsAndStatus = async () => {
@@ -29,7 +29,14 @@ function GroupSearch() {
           }
         });
         const involvedData = await involvedResponse.json();
-        setInvolvedGroups(involvedData.involvedGroups.map(group => group.group_id));
+        if (involvedData.involvedGroups) {
+          setInvolvedGroups(involvedData.involvedGroups.map(group => group.group_id));
+        } else {
+          setInvolvedGroups([]);
+          if (involvedData.message) {
+            console.log(involvedData.message);
+          }
+        }
       } else {
         setInvolvedGroups([]);
       }
@@ -44,7 +51,7 @@ function GroupSearch() {
     const filteredGroups = allGroups.filter(group =>
       group.group_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setFilteredGroups(filteredGroups); 
+    setFilteredGroups(filteredGroups);
   }, [searchTerm, allGroups]);
 
   const handleJoinRequest = async (groupId) => {
@@ -58,31 +65,42 @@ function GroupSearch() {
     });
     const data = await response.json();
     if (response.ok) {
-      setInvolvedGroups(prev => [...prev, groupId]);  
+      setInvolvedGroups(prev => [...prev, groupId]);
     } else {
       alert(data.message);
     }
   };
 
   return (
-    <div className="group-list">
-      {loading ? <p>Loading groups...</p> : (
-        <>
-          <form>
-            <input type="text" placeholder="Search groups" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-          </form>
-          {filteredGroups.map((group) => (
-            <div className="group-list-item" key={group.group_id}>
-              <h2>{group.group_name}</h2>
-              <p>Description: {group.description}</p>
-              {jwtToken.value && !involvedGroups.includes(group.group_id) &&
-                <button onClick={() => handleJoinRequest(group.group_id)}>Send join request</button>
-              }
-            </div>
-          ))}
-        </>
-      )}
-    </div>
+    <>
+      <form className={styles['search-form']}>
+        <input type="text" placeholder="Search groups" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+      </form>
+      <div className={styles['group-list']}>
+        {loading ? (
+          <div className={styles['loading-animation']}>
+            <div className={styles['spinner']}></div>
+            <p>Loading groups...</p>
+          </div>
+        ) : (
+          <>
+            {filteredGroups.map((group) => (
+              <div className={styles['group-list-item']} key={group.group_id}>
+                <div className={styles['group-content']}>
+                  <h2 className={styles['group-title']}>{group.group_name}</h2>
+                  <p className={styles['group-description']}><strong>Description: </strong> {group.description}</p>
+                </div>
+                {jwtToken.value && !involvedGroups.includes(group.group_id) &&
+                  <button className={styles['join-request-btn']} onClick={() => handleJoinRequest(group.group_id)}>
+                    Send join request
+                  </button>
+                }
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
