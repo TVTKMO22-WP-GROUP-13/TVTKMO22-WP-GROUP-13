@@ -86,7 +86,30 @@
 /* Style for images inside the card */
 .card img {
   border-radius: 8px;
-  margin-left: auto;
+  margin-left: 5px;
   max-height: 200px;
   max-width: 100%;
+}
+
+.ShowtimeSELECT-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.ShowtimeSELECT-content select {
+  background-color: #666; 
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px;
+}
+.ShowtimeSELECT-content button {
+  background-color: #c7370b;
+  border: none;
+  border-radius: 5px;
+  color: #fff; 
+  cursor: pointer;
+  padding: 10px;
+  width: auto;
+  margin-left: 5px;
 }
