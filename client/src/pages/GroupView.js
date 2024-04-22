@@ -15,7 +15,7 @@ function GroupView() {
   const [groupMembers, setGroupMembers] = useState([]);
   const [showMembers, setShowMembers] = useState(false);
   const [showJoinRequests, setShowJoinRequests] = useState(false);
-  const [showShowtimes, setShowShowtimes] = useState(true);
+  const [showShowtimes, setShowShowtimes] = useState(false);
   const [error, setError] = useState('');
   const [updating, setUpdating] = useState(false);
 
