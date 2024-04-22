@@ -46,7 +46,7 @@ router.post('/addShowtime', auth, async (req, res) => {
     }
 });
 
-router.get('/getShowtimeByGroup:group_id', async (req, res) => {
+router.get('/getShowtimeByGroup/:group_id', async (req, res) => {
    
     const { group_id } = req.params;
 
@@ -64,7 +64,7 @@ router.get('/getShowtimeByGroup:group_id', async (req, res) => {
     }
 })
 
-router.get('/showtime:showtime_id', async (req, res) => {
+router.get('/showtime/:showtime_id', async (req, res) => {
     
    const { showtime_id } = req.params;
    //const showtime_id = req.body.showtime_id
