@@ -6,10 +6,19 @@ const { getUser } = require('../database/user_data_db');
 const jwt = require('jsonwebtoken');
 const { auth } = require('../middleware/auth');
 
-//endpoint to register a new user
 router.post('/register', async (req, res) => {
     const username = req.body.username;
     const pw = req.body.pw;
+
+    //check lenght of username
+    if (username.length < 4) {
+        return res.status(400).json({ error: 'Username must be at least 4 characters long' });
+    }
+
+    //check length of password
+    if (pw.length < 4) {
+        return res.status(400).json({ error: 'Password must be at least 4 characters long' });
+    }
 
     const hashPw = await bcrypt.hash(pw, 10);
 
@@ -17,8 +26,13 @@ router.post('/register', async (req, res) => {
         await register(username, hashPw);
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
+        //check if username is already taken (code 23505 is unique_violation in postgres)
+        if (error.code === '23505') {
+            console.log(`Registration error: Username "${username}" is already taken`);
+            return res.status(409).json({ error: 'Username is already taken' });           
+        }
         console.error('Registration error:', error);
-        res.status(400).json({ error: 'Registration failed' });
+        res.status(500).json({ error: 'Registration failed due to an internal error' });
     }
 });
 //endpoint to login
