@@ -12,6 +12,7 @@ export default function Login({setAccountName, setPassu}) {
     const [username2, setUsername2] = useState('')
     const [Password2, setPassword2] = useState('')
     const [regiStatus, setRegiStatus] = useState(null); // rekistöröitmys tila alussa null
+    const [regiError, setRegiError] = useState('');
 
     const navigate = useNavigate()
     const validate = (e) =>{
@@ -35,11 +36,13 @@ export default function Login({setAccountName, setPassu}) {
     
        
     }
+    
     const accountmake = (e) => {
         e.preventDefault();
         axios.post('http://localhost:3001/authentication/register', {username: username2, pw: Password2})
             .then(() => {
                 setRegiStatus(true); //  onnistui
+                setRegiError('');
                 // Suorita kirjautuminen rekisteröinnin jälkeen
                 axios.post('http://localhost:3001/authentication/login', {username: username2, pw: Password2})
                     .then(resp => {
@@ -49,11 +52,16 @@ export default function Login({setAccountName, setPassu}) {
                         setPassu({ passu: Password2 });
                     })
                     .catch(err => console.log(err.message));
-            })
-            .catch(err => {
-                setRegiStatus(false); //  epäonnistui
-                console.log(err.message);
-            });
+                })
+                .catch(err => {
+                    setRegiStatus(false); // Epäonnistui
+                    if (err.response && err.response.data.error) {
+                        setRegiError(err.response.data.error);
+                    } else {
+                        setRegiError('Registration failed due to an internal error');
+                    }
+                    console.log(err.message);
+                });
     };
 
   return (
