@@ -10,15 +10,18 @@ function GroupView() {
   const location = useLocation();
   const { isOwner } = location.state || { isOwner: false };
   const [groupDetails, setGroupDetails] = useState(null);
+  const [groupShowtimes, setGroupShowtimes] = useState([]);
   const [groupJoinRequests, setGroupJoinRequests] = useState([]);
   const [groupMembers, setGroupMembers] = useState([]);
   const [showMembers, setShowMembers] = useState(false);
   const [showJoinRequests, setShowJoinRequests] = useState(false);
+  const [showShowtimes, setShowShowtimes] = useState(true);
   const [error, setError] = useState('');
   const [updating, setUpdating] = useState(false);
 
   const toggleMembersVisibility = () => setShowMembers(!showMembers);
   const toggleJoinRequestsVisibility = () => setShowJoinRequests(!showJoinRequests);
+  const toggleShowtimesVisibility = () => setShowShowtimes(!showShowtimes);
 
   const fetchGroupDetails = useCallback(async () => {
     try {
@@ -31,6 +34,29 @@ function GroupView() {
       console.error(error);
     }
   }, [group_id]);
+
+  const fetchGroupShowtimes = useCallback(async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/showtime/getShowtimeByGroup/${group_id}`, {
+        headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+      });
+      const showtimes = response.data.GroupShowtimes || [];
+  
+      const showtimeDetails = await Promise.all(showtimes.map(async showtime => {
+        const userResponse = await axios.get(`http://localhost:3001/user_data/user_id?user_id=${showtime.added_by_user_id}`, {
+          headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+        });
+        return { ...showtime, username: userResponse.data.user.username }; // appending username to each showtime
+      }));
+  
+      setGroupShowtimes(showtimeDetails);
+    } catch (error) {
+      setError('Failed to fetch group showtimes.');
+      console.error(error);
+    }
+  }, [group_id]);
+
+
 
   const fetchGroupMembers = useCallback(async () => {
     try {
@@ -194,7 +220,8 @@ function GroupView() {
     fetchGroupDetails();
     fetchGroupJoinRequests();
     fetchGroupMembers();
-  }, [fetchGroupDetails, fetchGroupJoinRequests, fetchGroupMembers]);
+    fetchGroupShowtimes();
+  }, [fetchGroupDetails, fetchGroupJoinRequests, fetchGroupMembers, fetchGroupShowtimes]);
 
   if (!groupDetails) {
     return <div className={styles.groupContainer}><div className="spinner"></div></div>;
@@ -206,6 +233,29 @@ function GroupView() {
       {isOwner && <p className={styles.groupDescription}>Group Owner View</p>}
       <h1 className={styles.groupHeader}>{groupDetails ? groupDetails.group_name : "Loading..."}</h1>
       <p className={styles.groupDescription}>Description: {groupDetails ? groupDetails.description : "No description available"}</p>
+
+      <div>
+        <h2 className={styles.showtimesHeader}>
+          Showtimes ({groupShowtimes.length})
+          <span className={styles.toggleButtonSpan}>
+            <button onClick={toggleShowtimesVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>
+              {showShowtimes ? 'Hide' : 'Show'}
+            </button>
+          </span>
+        </h2>
+        {showShowtimes && (
+          <ul className={styles.showtimesList}>
+            {groupShowtimes.length > 0 ? groupShowtimes.map(showtime => (
+              <li key={showtime.showtime_id} className={styles.showtimeItem}>
+                <span>{showtime.showtime}</span>
+                <span>{showtime.theater_name}</span>
+                <span>{showtime.movie_title}</span>
+                <span>{showtime.username}</span>
+              </li>
+            )) : <p>No showtimes found.</p>}
+          </ul>
+        )}
+      </div>
 
       <div>
         <h2 className={styles.membersHeader}>

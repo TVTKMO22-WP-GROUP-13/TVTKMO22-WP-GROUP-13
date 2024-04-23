@@ -1,3 +1,8 @@
+.main-container {
+  display: flex;
+  justify-content: start;
+  gap: 20px;
+}
 
 .wrapper {
     display: flex;
@@ -11,16 +16,31 @@
     margin-bottom: 340px;
   }
   
-  .genre-container,
-  .certification-container {
+  .movie-results-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-left: 20px; /* Adjust as needed */
+  }
+  
+  .movie-result {
+    width: 200px; /* Or any other width you prefer */
+    margin-bottom: 20px;
+  }
+  .movie-result img {
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .genre-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-bottom: 20px;
   }
   
-  .genre-button,
-  .certification-button {
+  .genre-button {
     padding: 10px;
     border: 1px solid #ddd;
     background-color: #f0f0f0;
@@ -29,13 +49,11 @@
     outline: none;
   }
   
-  .genre-button:hover,
-  .certification-button:hover {
+  .genre-button:hover {
     background-color: #e2e2e2;
   }
   
-  .genre-button.selected,
-  .certification-button.selected {
+  .genre-button.selected {
     background-color: #007bff;
     color: white;
     border-color: #0056b3; 
@@ -68,24 +86,4 @@
   input[type="range"] {
     width: 100%; 
     margin: 8px 0;
-  }
-
-  .search-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .search-input {
-    flex-grow: 1;
-    height: 40px;
-    padding: 0 15px;
-    font-size: 16px;
-    border: 2px solid #cccccc;
-    border-radius: 20px;
-    outline: none;
-  }
-  
-  .search-input:focus {
-    border-color: #007bff;
   }
