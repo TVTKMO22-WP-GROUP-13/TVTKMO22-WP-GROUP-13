@@ -1,14 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const { getUser, getFavorites, addFavorite, removeFavorite } = require('../database/favorites_db');
+const { getAllFavorites, getFavorites, addFavorite, removeFavorite } = require('../database/favorites_db');
+const { auth } = require('../middleware/auth');
+const { getUser } = require('../database/user_data_db');
 
+//get all favorites
+
+router.get('/all', async (req, res) => {
+    try {
+        const favorites = await getAllFavorites();
+
+        if (favorites.length === 0) {
+            return res.status(404).json({ message: 'No favorites found' });
+        }
+        res.json(favorites);
+    } catch (error) {
+        console.error('Error fetching favorites:', error);
+        res.status(500).json({ message: 'Failed to retrieve favorites' });
+    }
+}
+);
 
 // endpoint to get users favorites
 router.get('/favorites', async (req, res) => {
     const user_id = res.locals.user_id;
 
     try {
-        const user = await getUser();
+        const user = await getUser(user_id);
         if (!user_id) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -22,9 +40,13 @@ router.get('/favorites', async (req, res) => {
 });
 
 // endpoint to add a movie to favorites
-router.post('/addFavorite', async (req, res) => {
-    const { media_id } = req.body;
+router.post('/addFavorite', auth, async (req, res) => {
+    const media_id = req.body.media_id;
     const user_id = res.locals.user_id;
+    const list_type = 'favorite';
+    const group_id = null;
+    const status = null;
+    const added_by_user_id = user_id;
 
     try {
         const user = await getUser(user_id);
@@ -38,7 +60,7 @@ router.post('/addFavorite', async (req, res) => {
         }
 
         // add movie to user's favorites in the database
-        await addFavorite(user_id, media_id);
+        await addFavorite(user_id, media_id, list_type, group_id, status, added_by_user_id);
         res.json({ success: true, message: 'Movie added to favorites' });
     } catch (error) {
         console.error('Error adding movie to favorites:', error);

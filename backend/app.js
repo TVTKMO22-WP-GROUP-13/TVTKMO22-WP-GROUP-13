@@ -6,6 +6,7 @@ const tmdb = require('./routes/tmdb');
 const group_member = require('./routes/group_member');
 const group_request = require('./routes/group_request');
 const showtime = require('./routes/showtime');
+const favorites = require('./routes/favorites');
 const cors = require('cors');
 
 const express = require('express');
@@ -27,7 +28,8 @@ app.use('/tmdb', tmdb);
 app.use('/user_group', user_group);
 app.use('/group_member', group_member);
 app.use('/group_request', group_request);
-app.use('/showtime', showtime); 
+app.use('/showtime', showtime);
+app.use('/favorites', favorites);
 
 const PORT = process.env.PORT || 3001;
 
