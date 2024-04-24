@@ -1,4 +1,4 @@
-const { getAllMedia, getMediaById, addMedia, deleteMedia } = require('../database/media_db');
+const { getAllMedia, getMediaById, getMediaByTmdbId, addMedia, deleteMedia } = require('../database/media_db');
 
 const router = require('express').Router();
 
@@ -33,6 +33,23 @@ router.get('/getMedia/:media_id', async (req, res) => {
     }
 });
 
+router.get('/getMediaByTmdbId/:tmdb_id', async (req, res) => {
+    
+    const { tmdb_id } = req.params;
+    
+    console.log('TMDB ID:', tmdb_id);
+    try {
+        const media = await getMediaByTmdbId(tmdb_id);
+        if (!media) {
+            return res.status(404).json({ message: 'Media not found' });
+        }
+        res.json({ message: 'Media retrieved successfully', media });
+    } catch (error) {
+        console.error('Error fetching media:', error);
+        res.status(500).json({ message: 'Failed to retrieve media' });
+    }
+}); 
+
 router.post('/addMedia', async (req, res) => {
     const tmdb_id = req.body.tmdb_id;
     const media_type = req.body.media_type;
@@ -41,11 +58,17 @@ router.post('/addMedia', async (req, res) => {
         return res.status(400).json({ error: 'Invalid media type' });
     }
     try {
+        // Check if media with the same tmdb_id already exists
+        const existingMedia = await getMediaByTmdbId(tmdb_id);
+        if (existingMedia) {
+            return res.status(400).json({ error: `Media with tmdb_id "${tmdb_id}" already exists` });
+        }
+        // If media doesn't exist, proceed to add it
         await addMedia(tmdb_id, media_type);
         res.status(201).json({ message: `Media with tmdb_id "${tmdb_id}" added successfully` });
     } catch (error) {
         console.error('Media addition error:', error);
-        res.status(400).json({ error: 'Media addition failed' });
+        res.status(500).json({ error: 'Media addition failed' });
     }
 });
 
