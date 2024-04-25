@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getAllListEntries, getListEntries, addListEntry, removeListEntry } = require('../database/list_entry_db');
+const { getAllListEntries, getListEntriesByGroup, getListEntriesByUser, addListEntry, removeListEntry } = require('../database/list_entry_db');
 const { getMediaByTmdbId, addMedia } = require('../database/media_db');
 const { auth } = require('../middleware/auth');
 const { getUser } = require('../database/user_data_db');
@@ -42,7 +42,7 @@ router.get('/getUserFavorites', auth, async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const favorites = await getListEntries(user_id, 'Favorite');
+        const favorites = await getListEntriesByUser(user_id, 'Favorite');
         console.log("Favorites", favorites) 
         if (favorites.length === 0) {
             return res.json({ message: 'No favorites found' })
@@ -54,15 +54,18 @@ router.get('/getUserFavorites', auth, async (req, res) => {
     }
 });
 
-router.get('/getUserGroupMedia', async (req, res) => {
+router.get('/getUserGroupMedia/:group_id', async (req, res) => {
     
-    //const { group_id } = req.params;
-    const group_id = res.locals.group_id;
+    const { group_id } = req.params;
+    //const group_id = req.body.group_id;
+    console.log("Group_id", group_id)
 
     try {
-        const groupMedia = await getListEntries(group_id, 'GroupMedia');
+        console.log("Group_id", group_id)
+        const groupMedia = await getListEntriesByGroup(group_id, 'GroupMedia');
+        console.log("Group Media", groupMedia)
         if (groupMedia.length === 0) {
-            return res.status(404).json({ message: 'No group media found' });
+            return res.json({ message: 'No group media found' });
         }
         res.json({ message: 'Group media retrieved successfully', groupMedia });
     } catch (error) {
@@ -76,7 +79,7 @@ router.post('/addEntry', auth, async (req, res) => {
     const tmdb_id = req.body.tmdb_id;
     const media_type = req.body.media_type;
     const list_type = req.body.list_type;
-    const group_id = res.locals.group_id;
+    const group_id = req.body.group_id;
 
     console.log('Body:', req.body);  
     console.log("UUUSERID", user_id);
@@ -112,6 +115,15 @@ router.post('/addEntry', auth, async (req, res) => {
         // Check if the provided list type is valid
         if (!validListTypes.includes(list_type)) {
             return res.status(400).json({ message: 'Invalid list type' });
+        }
+
+        // Check if the group_id is required for the list type
+        if (list_type === 'GroupMedia' && !group_id) {
+            return res.status(400).json({ message: 'Group ID required for GroupMedia list type' });
+        }
+
+        if(list_type === 'Favorite' && group_id) {
+            return res.status(400).json({ message: 'Group ID not required for Favorite list type' });
         }
 
         const finalGroupId = group_id || null

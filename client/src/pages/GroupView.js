@@ -18,10 +18,13 @@ function GroupView() {
   const [showShowtimes, setShowShowtimes] = useState(false);
   const [error, setError] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [showMedia, setShowMedia] = useState(false);
+  const [media, setMedia] = useState([])
 
   const toggleMembersVisibility = () => setShowMembers(!showMembers);
   const toggleJoinRequestsVisibility = () => setShowJoinRequests(!showJoinRequests);
   const toggleShowtimesVisibility = () => setShowShowtimes(!showShowtimes);
+  const toggleMediaVisibility = () => setShowMedia(!showMedia);
 
   const fetchGroupDetails = useCallback(async () => {
     try {
@@ -56,7 +59,44 @@ function GroupView() {
     }
   }, [group_id]);
 
+  const fetchGroupMedia = useCallback(async () => {
+    
+    try {
+      const response = await axios.get(`http://localhost:3001/list_entry/getUserGroupMedia/${group_id}`)
+      const mediaData = response.data;
 
+      if (!mediaData || !mediaData.groupMedia || mediaData.groupMedia.length === 0) {
+        setError('No group media found.');
+        //console.log('Poikkee')
+        return
+      }
+      const allMedia = await Promise.all(mediaData.groupMedia.map(async (mediaItem) => {
+      const { media_id, entry_id, added_by_user_id } = mediaItem;
+      console.log("added_by_user_id", added_by_user_id)
+      const mediaResponse = await axios.get(`http://localhost:3001/media/getMedia/${media_id}`);
+      const { tmdb_id, media_type } = mediaResponse.data.media;
+      
+      const mediaDetailsResponse = await axios.get(`http://localhost:3001/tmdb/${media_type}/${tmdb_id}`);
+      const MEDIAresponseData = mediaDetailsResponse.data;
+        const userResponse = await axios.get(`http://localhost:3001/user_data/user_id?user_id=${mediaItem.added_by_user_id}`, {
+          headers: { 'Authorization': `Bearer ${jwtToken.value}` }
+        });
+        const username = userResponse.data.user.username;
+      return {
+        id: MEDIAresponseData.id,
+        title: MEDIAresponseData.title || MEDIAresponseData.name,
+        poster_path: MEDIAresponseData.poster_path,
+        release_date: MEDIAresponseData.release_date || MEDIAresponseData.first_air_date,
+        number_of_seasons: MEDIAresponseData.number_of_seasons,
+        entry_id,
+        username: username
+      };
+    }));
+    setMedia(allMedia);
+  } catch (error) {
+    setError('Failed to fetch group media.');
+    console.error(error);
+  }},[group_id]);
 
   const fetchGroupMembers = useCallback(async () => {
     try {
@@ -215,13 +255,50 @@ function GroupView() {
     }
   };
 
+  const handleDeleteFav = async (entry_id) => {
+    try {
+      await  axios.delete('http://localhost:3001/list_entry/removeEntry', {
+        headers: {
+          Authorization: `Bearer ${jwtToken.value}`,
+        },
+        data: {
+          entry_id,
+          list_type: 'GroupMedia',
+        },
+      })
+      setMedia((prevMedia) => prevMedia.filter((mediaItem) => mediaItem.entry_id !== entry_id))
+    } catch (error) {
+      console.error('Error deleting favorite:', error)
+      setError('Failed to delete favorite')
+    } }
+
+  const handleDeleteShowtime = async (showtime_id) => { 
+    try {
+      await axios.delete('http://localhost:3001/showtime/deleteShowtime', {
+        headers: {
+          Authorization: `Bearer ${jwtToken.value}`,
+        },
+        data: {
+          showtime_id,
+          group_id
+        },
+      })
+      setGroupShowtimes((prevShowtimes) => prevShowtimes.filter((showtime) => showtime.showtime_id !== showtime_id))
+    } catch (error) {
+      console.error('Error deleting showtime:', error)
+      setError('Failed to delete showtime')
+    }
+  
+  }
+
 
   useEffect(() => {
     fetchGroupDetails();
     fetchGroupJoinRequests();
     fetchGroupMembers();
     fetchGroupShowtimes();
-  }, [fetchGroupDetails, fetchGroupJoinRequests, fetchGroupMembers, fetchGroupShowtimes]);
+    fetchGroupMedia();
+  }, [fetchGroupDetails, fetchGroupJoinRequests, fetchGroupMembers, fetchGroupShowtimes, fetchGroupMedia]);
 
   if (!groupDetails) {
     return <div className={styles.groupContainer}><div className="spinner"></div></div>;
@@ -251,8 +328,37 @@ function GroupView() {
                 <span>{showtime.theater_name}</span>
                 <span>{showtime.movie_title}</span>
                 <span>{showtime.username}</span>
+                <button onClick={() => handleDeleteShowtime(showtime.showtime_id)} className={`${styles.actionButton} ${styles.removeMediaButton}`}>
+                  Remove
+                  </button>
               </li>
             )) : <p>No showtimes found.</p>}
+          </ul>
+        )}
+      </div>
+
+      <div>
+        <h2 className={styles.groupMediaHeader}>
+          Saved shows and movies ({media.length})
+          <span className={styles.toggleButtonSpan}>
+            <button onClick={toggleMediaVisibility} className={`${styles.actionButton} ${styles.toggleVisibilityButton}`}>
+              {showMedia ? 'Hide' : 'Show'}
+            </button>
+          </span>
+        </h2>
+        {showMedia && (
+          <ul className={styles.mediaList}>
+            {media.length > 0 ? media.map(mediaItem => (
+              <li key={mediaItem.id} className={styles.showtimeItem}>
+                <span>Release date: {mediaItem.release_date || mediaItem.first_air_date}</span>
+                <span>{mediaItem.title || mediaItem.name}</span>
+                {mediaItem.number_of_seasons && <span> Seasons: {mediaItem.number_of_seasons} </span>}
+                <span>{mediaItem.username}</span>
+                <button onClick={() => handleDeleteFav(mediaItem.entry_id)} className={`${styles.actionButton} ${styles.removeMediaButton}`}>
+                  Remove
+                  </button>
+              </li>
+            )) : <p>No saved shows or movies.</p>}
           </ul>
         )}
       </div>
@@ -272,7 +378,7 @@ function GroupView() {
               <li key={member.user_id} className={styles.memberItem}>
                 <span>{member.username}</span>
                 {isOwner && (
-                  <button onClick={() => handleRemoveMember(member.user_id)} className={`${styles.actionButton} ${styles.removeMemberButton}`}>
+                  <button onClick={() => handleRemoveMember(member.user_id)} className={`${styles.actionButton} ${styles.deleteGroupButton}`}>
                     Remove
                   </button>
                 )}

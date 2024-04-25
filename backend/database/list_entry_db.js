@@ -12,15 +12,14 @@ async function getAllListEntries(){
     let result = await pgPool.query(sql.GET_ALL_LIST_ENTRY);
     return result.rows;
 }
-async function getListEntries(user_id, list_type, group_id = null){
-    let result;
-    if (group_id) {
-        result = await pgPool.query(sql.GET_LIST_ENTRY_BY_GROUP, [group_id, list_type]);
-    } else {
-        result = await pgPool.query(sql.GET_LIST_ENTRY_BY_USER, [user_id, list_type]);
-    }
+async function getListEntriesByUser(user_id, list_type){
+    let  result = await pgPool.query(sql.GET_LIST_ENTRY_BY_USER, [user_id, list_type]);
     return result.rows;
 } 
+async function getListEntriesByGroup(group_id, list_type){
+    let  result = await pgPool.query(sql.GET_LIST_ENTRY_BY_GROUP, [group_id, list_type]);
+    return result.rows;
+}
 async function addListEntry(user_id, media_id, list_type, group_id, added_by_user_id){
     await pgPool.query(sql.ADD_LIST_ENTRY, [user_id, media_id, list_type, group_id, added_by_user_id]);
 }
@@ -28,4 +27,4 @@ async function removeListEntry(user_id, entry_id, list_type){
     await pgPool.query(sql.REMOVE_LIST_ENTRY, [user_id, entry_id, list_type]);
 }
 
-module.exports = {getAllListEntries, getListEntries, addListEntry, removeListEntry};
+module.exports = {getAllListEntries, getListEntriesByGroup, getListEntriesByUser, addListEntry, removeListEntry};

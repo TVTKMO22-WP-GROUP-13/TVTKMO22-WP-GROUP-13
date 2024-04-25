@@ -87,11 +87,6 @@ router.delete('/deleteShowtime', auth, async (req, res) => {
     const showtime_id = req.body.showtime_id;
    
     try {
-        const group = await getGroup(group_id);
-        if (!group) {
-            return res.status(404).json({ message: 'Group not found' });
-        }
-
         await deleteShowtime(group_id, showtime_id);
         res.status(201).json({ message: 'Show deleted successfully' });
         } catch (error) {

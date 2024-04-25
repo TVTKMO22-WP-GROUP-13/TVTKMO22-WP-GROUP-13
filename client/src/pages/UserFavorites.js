@@ -17,7 +17,6 @@ export default function UserFavorites() {
           },
         })
         const favoritesData = response.data
-        
         if (!favoritesData || !favoritesData.favorites || favoritesData.favorites.length === 0) {
           setLoading(false)
           return
