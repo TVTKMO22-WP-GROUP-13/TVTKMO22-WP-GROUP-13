@@ -2,13 +2,16 @@
   max-width: 1200px;
   margin: 0 auto;
   font-family: "Poppins", sans-serif;
+  background-color: #22438c;
+  border-radius: 8px;
+  color: #fff
 }
 
 
 /* Container for dropdowns */
 .dropdown {
   align-items: center;
-  background: #444;
+  background: #913549;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -18,10 +21,9 @@
 
 /* Style for dropdowns */
 .dropdown select {
-  background-color: #666; 
+  background-color: #fff; 
   border: none;
   border-radius: 5px;
-  color: #fff;
   margin-right: 15px;
   padding: 10px;
   width: 30%;
@@ -29,7 +31,7 @@
 
 /* Style for search button */
 .dropdown button {
-  background-color: #c7370b;
+  background-color: #22438c;
   border: none;
   border-radius: 5px;
   color: #fff; 
@@ -40,7 +42,7 @@
 
 /* Hover effect for search button */
 .dropdown button:hover {
-  background-color: #f30909; 
+  background-color: rgb(46, 46, 117); 
 }
 
 /* Card container */
@@ -51,7 +53,7 @@
   display: flex;
   margin: 10px;
   padding: 20px;
-  background: #444;
+  background: #913549;
   color: #fff;
   
 }
@@ -91,25 +93,27 @@
   max-width: 100%;
 }
 
-.ShowtimeSELECT-content {
+.SELECT-content {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
-.ShowtimeSELECT-content select {
-  background-color: #666; 
+.SELECT-content select {
+  background-color: #fff; 
   border: none;
   border-radius: 5px;
-  color: #fff;
-  padding: 10px;
+  padding: 15px;
 }
-.ShowtimeSELECT-content button {
-  background-color: #c7370b;
+.SELECT-content button {
+  background-color: #22438c;
   border: none;
   border-radius: 5px;
   color: #fff; 
   cursor: pointer;
-  padding: 10px;
+  padding: 15px;
   width: auto;
   margin-left: 5px;
+}
+.SELECT-content button:hover {
+  background-color: rgb(46, 46, 117); 
 }

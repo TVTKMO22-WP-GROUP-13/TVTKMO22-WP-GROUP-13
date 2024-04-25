@@ -43,9 +43,9 @@ router.get('/getUserFavorites', auth, async (req, res) => {
         }
 
         const favorites = await getListEntries(user_id, 'Favorite');
-        
+        console.log("Favorites", favorites) 
         if (favorites.length === 0) {
-            return res.status(404).json({ message: 'No favorites found' });
+            return res.json({ message: 'No favorites found' })
         }
         res.json({ message: 'Favorites retrieved successfully', favorites });
     } catch (error) {
@@ -54,8 +54,10 @@ router.get('/getUserFavorites', auth, async (req, res) => {
     }
 });
 
-router.get('/getUserGroupMedia/:group_id', async (req, res) => {
-    const { group_id } = req.params;
+router.get('/getUserGroupMedia', async (req, res) => {
+    
+    //const { group_id } = req.params;
+    const group_id = res.locals.group_id;
 
     try {
         const groupMedia = await getListEntries(group_id, 'GroupMedia');
@@ -124,17 +126,17 @@ router.post('/addEntry', auth, async (req, res) => {
 });
 
 router.delete('/removeEntry', auth, async (req, res) => {
-   const username = res.locals.username;
-   const media_id = req.body.media_id;
+   
+    const user_id = res.locals.user_id;
+   const entry_id = req.body.entry_id;
    const list_type = req.body.list_type;
    
    try {
-        const user = await getUser(username);
-         if (!user) {
+        if (!user_id) {
         return res.status(404).json({ message: 'User not found' });
-        }
-        const user_id = user.user_id;
-       await removeListEntry(user_id, media_id, list_type);
+    }
+        
+       await removeListEntry(user_id, entry_id, list_type);
        res.json({ message: 'List entry removed successfully' });
     } catch (error) { 
         console.error('Error removing list entry:', error);
