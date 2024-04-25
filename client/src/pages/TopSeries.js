@@ -5,7 +5,7 @@ export default function TopSeries() {
   const [topSer, setTopSer] = useState([])
   useEffect(() => {
 
-    axios.get(`http://localhost:3001/tmdb/tv/top_rated`)
+    axios.get(`http://localhost:3001/tmdb/tv/topseries/top_rated`)
       .then(response => {
         const testi = response.data
         const eventtiArray = testi.results.map(eventti => ({
