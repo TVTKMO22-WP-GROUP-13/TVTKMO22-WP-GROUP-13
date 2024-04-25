@@ -42,7 +42,7 @@ const MovieResults = ({ movies }) => {
     <div className="movie-results-wrapper">
       {movies.map((movie) => (
         <div key={movie.id} className="movie-result">
-          <img src={`https://image.tmdb.org/t/p/w342${movie.poster_path}`} alt={movie.title} />
+          <img src={movie.poster_path} alt={movie.title} />
           <div className="movie-info">
             <h3>{movie.title}</h3>
             <p>{movie.overview}</p>
