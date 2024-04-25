@@ -59,7 +59,7 @@ router.get('/groups_joined', auth, async (req, res) => {
         const groupsJoined = await getGroupsJoined(res.locals.user_id);
         //check if groupsJoined array is empty
         if (groupsJoined.length === 0) {
-            return res.status(404).json({ message: 'No groups joined' });
+            return res.status(404).json({ message: 'You have not joined any groups' });
         }
         res.json({ message: 'Groups joined retrieved successfully', groupsJoined });
     } catch (error) {

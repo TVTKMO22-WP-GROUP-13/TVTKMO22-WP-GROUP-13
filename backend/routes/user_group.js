@@ -70,7 +70,7 @@ router.get('/getUserCreatedGroups', auth, async (req, res) => {
         const groups = await getUserCreatedGroups(owner_id);
         //check if groups array is empty
         if (groups.length === 0) {
-            return res.status(404).json({ message: 'No groups found' });
+            return res.status(404).json({ message: 'You have not created any groups' });
         }
         console.log(groups);
         res.json({ message: `Groups created by "${username}  " retrieved successfully`, groups });
