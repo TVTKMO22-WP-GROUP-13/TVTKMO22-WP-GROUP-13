@@ -54,8 +54,8 @@ async topRatedSeries(top) {
   return data
 
 },
-  async searchTv(query, page = 1, year = '', language = 'en-US') {
-    const endpoint = tmdbEndpoints.searchTv(query, page, year, language);
+  async searchTv(query, page = 1, year = '',) {
+    const endpoint = tmdbEndpoints.searchTv(query, page, year);
     const { data } = await axiosClient.get(endpoint);
     return data.results.map(movie => new movieModel(
         movie.id, 
@@ -64,15 +64,29 @@ async topRatedSeries(top) {
         movie.overview
     ));
   },
-  async discoverTv(sort_by = 'popularity.desc', page = 1, year = '', language = 'en', genreId = '') {
-    const endpoint = tmdbEndpoints.discoverTv(sort_by, page, year, language, genreId);
-    const { data } = await axiosClient.get(endpoint);
-    return data.results.map(movie => new movieModel(
-      movie.id, 
-      movie.name, 
-      movie.poster_path, 
-      movie.overview
-  ));
+  async discoverTv(sort_by, page = 1, year = '', genreQuery = '') {
+    console.log(genreQuery)
+    console.log("tmdb api discoveM")
+    const targetYear = parseInt(year, 10) || undefined;
+    const endpoint = tmdbEndpoints.discoverTv(sort_by, page, targetYear, genreQuery);
+    console.log(endpoint)
+    try {
+      //console.log("api.themoviedb.org/3/discover/movies + endpoint)
+      const { data } = await axiosClient.get(endpoint);
+      if (!data || !data.results) {
+        throw new Error("No results found or invalid API response");
+      }
+  
+      return data.results.map(movie => new movieModel(
+        movie.id, 
+        movie.name, 
+        movie.poster_path, 
+        movie.overview
+      ));
+    } catch (error) {
+      console.error("Error fetching movies from TMDB API:", error.message);
+      throw error;
+    }
   },
   async getTvById(id) {
     const endpoint = tmdbEndpoints.getTvById(id);

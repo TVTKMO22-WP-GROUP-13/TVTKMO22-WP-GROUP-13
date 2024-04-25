@@ -82,27 +82,35 @@ const getMovieById = async (req, res) => {
 
 const searchTv = async (req, res) => {
   try {
-      const { query, page, year, language } = req.query;
-      const movies = await tmdbApi.searchTv(query, page, year, language);
-      const formattedMovies = movies.map(movie => ({
-        id: movie.id,
-        title: movie.title,
-        poster_path: movie.poster_path,
-        overview: movie.overview
-    }));
-      responseHandler.ok(res, formattedMovies);
-  } catch (error) {
-      responseHandler.error(res, error.message);
-  }
+    const { query, page, year } = req.query;
+    const movies = await tmdbApi.searchTv(query, page, year);
+    const formattedSeries = movies.map(movie => ({
+      id: movie.id,
+      title: movie.name,
+      poster_path: movie.poster_path,
+      overview: movie.overview
+  }));
+    responseHandler.ok(res, formattedSeries);
+} catch (error) {
+    responseHandler.error(res, error.message);
+}
 };
 const discoverTv = async (req, res) => {
   try {
-    const { sort_by, page, year, language, genre } = req.query;
-    const genreId = with_genres[genre] || '';
-    const movies = await tmdbApi.discoverMovies(sort_by, page, year, language, genreId);
-    responseHandler.ok(res, movies);
+    const { sort_by = 'popularity.desc', page = 1, year = '', with_genres = '' } = req.query;
+    console.log('TMDB discoverMovies request parameters:', sort_by, page, year, with_genres);
+    
+    if (!with_genres) {
+      console.log("if genreQueryn sisällä")
+      return responseHandler.error(res, 'Genre query is required', 400);
+    }
+   console.log("rivi 61 media_discoverM")
+    const formattedMovies = await tmdbApi.discoverTv(sort_by, page, year, with_genres);
+    console.log('Formatted Movies:', formattedMovies);  
+    responseHandler.ok(res, formattedMovies);
   } catch (error) {
-    responseHandler.error(res, error.message);
+    console.error('TMDB discoverMovies error:', error);
+    responseHandler.error(res, error.message, 500);
   }
 };
 
