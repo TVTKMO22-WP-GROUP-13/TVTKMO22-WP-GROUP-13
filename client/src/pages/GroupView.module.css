@@ -34,7 +34,8 @@
 
 .membersHeader,
 .requestsHeader,
-.showtimesHeader {
+.showtimesHeader,
+.groupMediaHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,7 +51,8 @@
 
 .membersList,
 .requestsList,
-.showtimesList {
+.showtimesList,
+.mediaList {
     list-style: none;
     padding: 0;
     margin: 0;
