@@ -65,35 +65,37 @@ router.post('/login', async (req,res)=>{
 
 
 //end point for deleting account
-router.delete('/delete', auth, async(req, res)=>{
+router.delete('/delete', auth, async(req, res) => {
+    console.log('Authenticated user:', res.locals.username);  // log
     const username = req.body.username;
     const pw = req.body.pw;
 
     try {
-        
-            if (res.locals.username !== username){
-                return res.status(403).json({error: 'Unaut. You can only delete your own account'})
-            }
-            
-            const db_pw = await getPassword(username);
-            
-            if(db_pw){
-                const isAuth = await bcrypt.compare(pw,db_pw);
-                if(isAuth){
-                    await deleteUser(username);
-                    res.status(200).json({message: 'user deleted'})
-                } else{
-                    res.status(401).json({error: 'incorrect password'})
-                }
-            } else{
-                res.status(404).json({ error: 'user not found'})
-            
+        if (res.locals.username !== username) {
+            console.log('Authorization error: user mismatch');  // log
+            return res.status(403).json({error: 'Unaut. You can only delete your own account'});
         }
-    } catch (error){
-        console.error('deletion error', error)
-        res.status(500).json({error: 'internal server error'})
+
+        const db_pw = await getPassword(username);
+        if (!db_pw) {
+            console.log('No password found for user:', username);  // log
+            return res.status(404).json({error: 'user not found'});
+        }
+
+        const isAuth = await bcrypt.compare(pw, db_pw);
+        if (!isAuth) {
+            console.log('Password mismatch for user:', username);  // log
+            return res.status(401).json({error: 'incorrect password'});
+        }
+
+        await deleteUser(username);
+        console.log('User deleted:', username);  // log
+        res.status(200).json({message: 'user deleted'});
+    } catch (error) {
+        console.error('Deletion error', error);  // log
+        res.status(500).json({error: 'internal server error'});
     }
-})
+});
 
 
 module.exports = router;
