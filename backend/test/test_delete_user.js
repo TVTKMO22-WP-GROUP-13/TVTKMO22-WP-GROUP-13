@@ -15,7 +15,7 @@ const expect = chai.expect;
 function generateTestToken() {
     const payload = {
         username: 'testUser3',
-        user_id: '105'
+        user_id: '117'
     };
     return jwt.sign(payload, process.env.JWT_SECRET);
 }
@@ -41,7 +41,7 @@ describe('DELETE /delete', () => {
         deleteUserStub = sinon.stub(authDb, 'deleteUser').resolves();
         authStub = sinon.stub(auth, 'auth').callsFake((req, res, next) => {
             res.locals.username = req.body.username;  // Authenticate as the requested user
-            res.locals.user_id = '105';                // Fake user ID
+            res.locals.user_id = '117';                // Fake user ID
             next();
         });
     });
