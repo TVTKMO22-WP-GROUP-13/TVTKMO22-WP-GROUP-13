@@ -1,4 +1,6 @@
-const { getAllReviews, getReviewById, getReviewByMediaId, addReview, deleteReview} = require('../database/review_db');
+const { getAllReviews, getReviewsByUser, getReviewById, getReviewByMediaId, addReview, deleteReview} = require('../database/review_db');
+const { getMediaByTmdbId, addMedia } = require('../database/media_db');
+const { auth } = require('../middleware/auth');
 
 const router = require('express').Router();
 
@@ -11,6 +13,22 @@ router.get('/all', async (req, res) => {
             return res.status(404).json({ message: 'No reviews found' });
         }
         console.log(reviews);
+        res.json({ message: 'Reviews retrieved successfully', reviews });
+    } catch (error) {
+        console.error('Error fetching reviews:', error);
+        res.status(500).json({ message: 'Failed to retrieve reviews' });
+    }
+});
+
+// endpoint to get all reviews by user_id
+router.get('/getReviewsByUser/:user_id', async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+        const reviews = await getReviewsByUser(user_id);
+        if (reviews.length === 0) {
+            return res.status(404).json({ message: 'No reviews found' });
+        }
         res.json({ message: 'Reviews retrieved successfully', reviews });
     } catch (error) {
         console.error('Error fetching reviews:', error);
@@ -53,13 +71,54 @@ router.get('/getReviewByMediaId/:media_id', async (req, res) => {
 });
 
 // endpoint to add a review
-router.post('/addReview', async (req, res) => {
+router.post('/addReview', auth, async (req, res) => {
     const media_id = req.body.media_id;
     const user_id = req.body.user_id;
+    const tmdb_id = req.body.tmdb_id;
     const rating = req.body.rating;
     const review_text = req.body.review_text;
 
     try {
+        // Check if the user exists
+        console.log('User ID:', user_id);
+
+        if (!user_id) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the media_id exists
+        let media = await getMediaByTmdbId(tmdb_id);
+        if (!media) {
+            // If media doesn't exist, add it
+            await addMedia(tmdb_id, media_type);
+            // Fetch the media again
+            console.log('3RD TMDB ID:', tmdb_id);
+            media = await getMediaByTmdbId(tmdb_id);
+            if (!media) {
+                return res.status(500).json({ message: 'Failed to add media' });
+            }
+        }
+
+        // Extract the media_id from the fetched media
+        const media_id = media.media_id;
+
+        // Check if the review already exists
+        const existingReview = await getReviewByMediaId(media_id);
+        if (existingReview) {
+            return res.status(400).json({ message: 'Review already exists' });
+        }
+
+        // Check if the rating is valid
+        if (rating < 1 || rating > 5) {
+            return res.status(400).json({ message: 'Invalid rating' });
+        }
+
+        // Check if the review text is valid
+        if (!review_text) {
+            return res.status(400).json({ message: 'Invalid review text' });
+        }
+
+        // Add the review
         await addReview(media_id, user_id, rating, review_text);
         res.json({ message: 'Review added successfully' });
     } catch (error) {
