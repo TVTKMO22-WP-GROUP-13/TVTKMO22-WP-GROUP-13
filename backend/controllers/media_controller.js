@@ -118,6 +118,7 @@ const getTvById = async (req, res) => {
   try {
     const { id } = req.params;
     const movie = await tmdbApi.getTvById(id);
+    responseHandler.ok(res, movie);
   } catch (error) {
     responseHandler.error(res, error.message);
   }

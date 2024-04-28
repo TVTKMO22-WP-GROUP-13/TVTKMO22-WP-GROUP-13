@@ -276,7 +276,7 @@ return (
           <h2>{show.movie_title}</h2>
           <h3>{show.auditrium}</h3>
 
-          <div className="ShowtimeSELECT-content">
+          <div className="SELECT-content">
           {/* Group dropdown and select button, only visible when user in group(s) */}
           {showShowtimeSelectContainer && (
             <div>
