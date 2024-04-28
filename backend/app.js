@@ -8,6 +8,7 @@ const group_request = require('./routes/group_request');
 const showtime = require('./routes/showtime');
 const list_entry = require('./routes/list_entry');
 const media = require('./routes/media');
+const review = require('./routes/review');
 const cors = require('cors');
 
 const express = require('express');
@@ -31,6 +32,7 @@ app.use('/group_member', group_member);
 app.use('/group_request', group_request);
 app.use('/showtime', showtime); 
 app.use('/media', media);
+app.use('/review', review);
 app.use('/list_entry', list_entry);
 
 const PORT = process.env.PORT || 3001;
