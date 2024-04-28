@@ -12,16 +12,6 @@ const auth = require('../middleware/auth');
 chai.use(chaiHttp);
 const expect = chai.expect;
 
-// Create a valid JWT token for testing with real user data
-function generateTestToken() {
-    const payload = {
-        username: 'testUser3',
-        user_id: '117'
-    };
-    return jwt.sign(payload, process.env.JWT_SECRET);
-}
-const validToken = generateTestToken();
-
 // Create a invalid JWT token for testing with non-existing user data
 function generateInvalidTestToken() {
     const payload = {
@@ -32,17 +22,22 @@ function generateInvalidTestToken() {
 }
 const invalidToken = generateInvalidTestToken();
 
-
 describe('DELETE /delete', () => {
-    let getPasswordStub, bcryptCompareStub, deleteUserStub, authStub;
+    let validToken, createdUser, createdUsername, password;
+
+    //generate username and pw with faker, use these credentials to create a valid token
+    before(async () => {
+        createdUsername = faker.internet.userName();
+        password = faker.internet.password(8);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        createdUser = await authDb.register(createdUsername, hashedPassword);
+        validToken = jwt.sign({ username: createdUsername, user_id: createdUser.user_id }, process.env.JWT_SECRET);
+    });
 
     beforeEach(() => {
-        getPasswordStub = sinon.stub(authDb, 'getPassword').resolves('hashed_password');
-        bcryptCompareStub = sinon.stub(bcrypt, 'compare').resolves(true);
-        deleteUserStub = sinon.stub(authDb, 'deleteUser').resolves();
-        authStub = sinon.stub(auth, 'auth').callsFake((req, res, next) => {
-            res.locals.username = req.body.username;  // Authenticate as the requested user
-            res.locals.user_id = '117';                // Fake user ID
+        sinon.stub(auth, 'auth').callsFake((req, res, next) => {
+            res.locals.username = req.body.username; 
+            res.locals.user_id = createdUserId;
             next();
         });
     });
@@ -51,19 +46,12 @@ describe('DELETE /delete', () => {
         sinon.restore();
     });
 
+    //here we try to delete a user with correct credentials that we just generated before
     it('should return 403 if trying to delete another user\'s account', (done) => {
-        // Override authentication stub to simulate logged in as a different user
-        authStub.restore();
-        sinon.stub(auth, 'auth').callsFake((req, res, next) => {
-            res.locals.username = 'motivation';  // Authenticate as another user
-            res.locals.user_id = '52';
-            next();
-        });
-
         chai.request(server)
             .delete('/authentication/delete')
             .set('Authorization', `Bearer ${validToken}`)
-            .send({ username: 'testuser', pw: 'password' })
+            .send({ username: 'anotherUser', pw: 'password' })
             .end((err, res) => {
                 expect(res).to.have.status(403);
                 expect(res.body).to.have.property('error', 'Unaut. You can only delete your own account');
@@ -71,13 +59,12 @@ describe('DELETE /delete', () => {
             });
     });
 
+    //here we try to delete user with wrong password
     it('should return 401 if password is incorrect', (done) => {
-        bcryptCompareStub.resolves(false); // Override for this test case
-
         chai.request(server)
             .delete('/authentication/delete')
             .set('Authorization', `Bearer ${validToken}`)
-            .send({ username: 'testUser3', pw: 'wrongpassword' })
+            .send({ username: createdUser.username, pw: 'wrongpassword' })
             .end((err, res) => {
                 expect(res).to.have.status(401);
                 expect(res.body).to.have.property('error', 'incorrect password');
@@ -85,9 +72,8 @@ describe('DELETE /delete', () => {
             });
     });
 
+    //here we try to delete a user that does not exist
     it('should return 404 if user not found', (done) => {
-        getPasswordStub.resolves(null); // Override for this test case
-
         chai.request(server)
             .delete('/authentication/delete')
             .set('Authorization', `Bearer ${invalidToken}`)
@@ -99,16 +85,17 @@ describe('DELETE /delete', () => {
             });
     });
 
+    //THIS TEST ONLY WORKS WHEN THE FIRST TEST SUCCEEDS
+    //here we try to delete a user with correct credentials that we just generated before
     it('should delete a user if authenticated and password is correct', (done) => {
         chai.request(server)
             .delete('/authentication/delete')
             .set('Authorization', `Bearer ${validToken}`)
-            .send({ username: 'testUser3', pw: '1234' })
+            .send({ username: createdUsername, pw: password })
             .end((err, res) => {
                 expect(res).to.have.status(200);
                 expect(res.body).to.have.property('message', 'user deleted');
                 done();
             });
     });
-
 });

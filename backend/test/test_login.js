@@ -11,6 +11,7 @@ const userDataDb = require('../database/user_data_db');
 chai.use(chaiHttp);
 const expect = chai.expect;
 
+
 describe('POST /login', () => {
     let getPasswordStub, bcryptCompareStub, getUserStub, jwtSignStub;
 
@@ -25,6 +26,7 @@ describe('POST /login', () => {
         sinon.restore();
     });
 
+    //here we try to log in user with correct credentials so you can test it for ex. with your own account
     it('should log in user and return JWT if credentials are correct', (done) => {
         chai.request(server)
             .post('/authentication/login')
