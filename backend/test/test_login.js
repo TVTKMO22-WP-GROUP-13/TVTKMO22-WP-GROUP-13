@@ -1,12 +1,12 @@
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../app');
-let sinon = require('sinon');
-let bcrypt = require('bcrypt');
-let jwt = require('jsonwebtoken');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const server = require('../app');
+const sinon = require('sinon');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-let authDb = require('../database/auth_db');
-let userDataDb = require('../database/user_data_db');
+const authDb = require('../database/auth_db');
+const userDataDb = require('../database/user_data_db');
 
 chai.use(chaiHttp);
 const expect = chai.expect;

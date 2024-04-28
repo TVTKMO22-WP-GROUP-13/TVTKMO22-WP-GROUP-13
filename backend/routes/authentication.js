@@ -23,8 +23,9 @@ router.post('/register', async (req, res) => {
     const hashPw = await bcrypt.hash(pw, 10);
 
     try {
-        await register(username, hashPw);
+        const newUser = await register(username, hashPw);
         res.status(201).json({ message: 'User registered successfully' });
+        console.log('User registered:', newUser.username, newUser.user_id);  // log
     } catch (error) {
         //check if username is already taken (code 23505 is unique_violation in postgres)
         if (error.code === '23505') {
