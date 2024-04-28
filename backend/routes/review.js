@@ -1,7 +1,6 @@
 const { getAllReviews, getReviewsByUser, getReviewById, getReviewByMediaId, addReview, deleteReview} = require('../database/review_db');
 const { getMediaByTmdbId, addMedia } = require('../database/media_db');
 const { auth } = require('../middleware/auth');
-
 const router = require('express').Router();
 
 // endpoint to get all reviews
@@ -72,12 +71,15 @@ router.get('/getReviewByMediaId/:media_id', async (req, res) => {
 
 // endpoint to add a review
 router.post('/addReview', auth, async (req, res) => {
-    const media_id = req.body.media_id;
-    const user_id = req.body.user_id;
+    //const media_id = req.body.media_id;
+    const media_type = req.body.media_type;
+    const user_id = res.locals.user_id;
     const tmdb_id = req.body.tmdb_id;
     const rating = req.body.rating;
     const review_text = req.body.review_text;
 
+    console.log('TMDB ID:', body);
+    console.log('Media Type:', media_type);
     try {
         // Check if the user exists
         console.log('User ID:', user_id);
