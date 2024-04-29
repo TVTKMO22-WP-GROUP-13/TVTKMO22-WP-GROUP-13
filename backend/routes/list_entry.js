@@ -81,12 +81,12 @@ router.post('/addEntry', auth, async (req, res) => {
     const list_type = req.body.list_type;
     const group_id = req.body.group_id;
 
-    console.log('Body:', req.body);  
-    console.log("UUUSERID", user_id);
+    //console.log('Body:', req.body);  
+    //console.log("UUUSERID", user_id);
 
     try {
         // Check if the user exists
-        console.log('TNDSFG ID:', tmdb_id)
+        //console.log('TNDSFG ID:', tmdb_id)
 
         if (!user_id) {
             return res.status(404).json({ message: 'User not found' });
@@ -100,7 +100,7 @@ router.post('/addEntry', auth, async (req, res) => {
             // If media doesn't exist, add it
             await addMedia(tmdb_id, media_type);
             // Fetch the media again after adding it
-            console.log('3RD TMDB ID:', tmdb_id)
+            //console.log('3RD TMDB ID:', tmdb_id)
             media = await getMediaByTmdbId(tmdb_id);
             if (!media) {
                 return res.status(500).json({ message: 'Failed to add media' });
@@ -119,7 +119,7 @@ router.post('/addEntry', auth, async (req, res) => {
 
         // Check if the group_id is required for the list type
         if (list_type === 'GroupMedia' && !group_id) {
-            return res.status(400).json({ message: 'Group ID required for GroupMedia list type' });
+            return res.json({ message: 'Group ID required for GroupMedia list type' });
         }
 
         if(list_type === 'Favorite' && group_id) {
