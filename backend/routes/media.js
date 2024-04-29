@@ -37,7 +37,7 @@ router.get('/getMediaByTmdbId/:tmdb_id', async (req, res) => {
     
     const { tmdb_id } = req.params;
     
-    console.log('TMDB ID:', tmdb_id);
+    //console.log('TMDB ID:', tmdb_id);
     try {
         const media = await getMediaByTmdbId(tmdb_id);
         if (!media) {

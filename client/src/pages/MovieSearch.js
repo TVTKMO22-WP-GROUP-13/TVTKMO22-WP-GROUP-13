@@ -93,7 +93,7 @@ const MovieResults = ({ movies }) => {
           }).then(response => {
             console.log("Success:", response.data.message)
           } )
-        } else if (Choice === 'Select'){
+        } else if (Choice === 'Select' && Choice === ''){
           console.log("No nothing")
           alert("Please select a choice before adding")
         }
@@ -157,11 +157,6 @@ const Movies = () => {
     const genreIds = Array.from(selectedGenres).map(genre => genreIdsMap[genre]).join(',');
     setGenreQuery(genreIds);
   }, [selectedGenres]);
-
-  useEffect(() => {
-    handleSearch();
-  }, [page]);
-
 
   const handleSearch = async () => {
     try {
