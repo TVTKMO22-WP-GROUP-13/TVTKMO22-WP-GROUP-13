@@ -77,5 +77,6 @@ Taustajärjestelmä käynnistyy komennolla "npm start".
 Avaa uusi terminaali ja siirry oikeaan hakemistoon "cd ./client/" tai vaihtoehtoisesti avaa terminaali suoraan ./client/ hakemistoon. 
 Käyttöliittymä käynnistyy komennolla "npm start".
 
-
+### REST dokumentaatio
+https://documenter.getpostman.com/view/30843162/2sA3JDfjTT
 
