@@ -89,7 +89,7 @@ export default function YourReviews() {
     <div className="wrapperI">
       <h1>Reviews</h1>
       {error && <div>{error}</div>}
-      <ul>
+    
         <div className="flex-containerI">
         {reviews.map((review) => (
           <div key={review.id} className="review">
@@ -108,7 +108,7 @@ export default function YourReviews() {
           </div>
         ))}
         </div>
-      </ul>
+      
     </div>
   )
 }
