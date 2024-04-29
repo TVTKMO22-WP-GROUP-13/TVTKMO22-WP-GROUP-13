@@ -78,7 +78,7 @@ router.post('/addReview', auth, async (req, res) => {
     const rating = req.body.rating;
     const review_text = req.body.review_text;
 
-    console.log('TMDB ID:', body);
+    console.log('Data:', req.body);
     console.log('Media Type:', media_type);
     try {
         // Check if the user exists
@@ -104,11 +104,11 @@ router.post('/addReview', auth, async (req, res) => {
         // Extract the media_id from the fetched media
         const media_id = media.media_id;
 
-        // Check if the review already exists
-        const existingReview = await getReviewByMediaId(media_id);
+        // Check if the user has already reviewed the media
+        /*const existingReview = await getReviewByMediaId(media_id);
         if (existingReview) {
             return res.status(400).json({ message: 'Review already exists' });
-        }
+        }*/
 
         // Check if the rating is valid
         if (rating < 1 || rating > 5) {

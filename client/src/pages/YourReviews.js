@@ -11,7 +11,7 @@ export default function YourReviews() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/review/getAllReviews', {
+        const response = await axios.get('http://localhost:3001/review/all', {
           headers: {
             Authorization: `Bearer ${jwtToken.value}`,
           },
@@ -82,23 +82,27 @@ export default function YourReviews() {
   }
 
   return (
-    <div>
-      <h1>Your Reviews</h1>
+    <div className="wrapperi">
+      <h1>Reviews</h1>
       {error && <div>{error}</div>}
       <ul>
+        <div className="flex-container">
         {reviews.map((review) => (
-          <li key={review.id}>
+          <div key={review.id} className="review">
             <div>
               <img src={`https://image.tmdb.org/t/p/w185${review.poster_path}`} alt={review.title} />
             </div>
-            <div>
+            <div className="review-content">
               <h2>{review.title}</h2>
               <p>Release Date: {review.release_date}</p>
               <p>Number of Seasons: {review.number_of_seasons}</p>
+              <p>Rating: {review.rating}</p>
+              <p>Review: {review.review_text}</p>
               <button onClick={() => handleDeleteReview(review.id)}>Delete Review</button>
             </div>
-          </li>
+          </div>
         ))}
+        </div>
       </ul>
     </div>
   )
