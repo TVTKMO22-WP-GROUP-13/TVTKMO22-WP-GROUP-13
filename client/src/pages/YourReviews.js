@@ -11,7 +11,7 @@ export default function YourReviews() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/review/all', {
+        const response = await axios.get('http://localhost:3001/review/getReviewsByUser/:user_id', {
           headers: {
             Authorization: `Bearer ${jwtToken.value}`,
           },
