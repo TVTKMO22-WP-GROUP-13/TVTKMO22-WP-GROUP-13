@@ -42,6 +42,9 @@ const MovieResults = ({ movies }) => {
   const [createdGroups, setCreatedGroups] = useState([]);
   const [joinedGroups, setJoinedGroups] = useState([]);
   const [showChoices, setshowChoices] = useState(false);
+  const [reviews, setReviews] = useState({});
+  const [ratings, setRatings] = useState({});
+
 
   useEffect(() => {
     const GetGroups = async (url, setUserGroups, groupType) => {
@@ -93,9 +96,6 @@ const MovieResults = ({ movies }) => {
           }).then(response => {
             console.log("Success:", response.data.message)
           } )
-        } else if (Choice === 'Select' && Choice === ''){
-          console.log("No nothing")
-          alert("Please select a choice before adding")
         }
         else {
           console.log("Add to group")
@@ -113,37 +113,96 @@ const MovieResults = ({ movies }) => {
           } )
         }
       }
+          // Käsittelijät arvostelun ja arvostelunumeron päivittämiseen
+    const handleReviewChange = (movieId, text) => {
+      setReviews({ ...reviews, [movieId]: text });
+    };
+  
+    const handleRatingChange = (movieId, rating) => {
+      setRatings({ ...ratings, [movieId]: rating });
+    };
+  
+    // Käsittelijä arvostelun lähettämiselle
+    const handleSubmitReview = async (movieId) => {
+      const review = reviews[movieId];
+      const rating = ratings[movieId];
+      console.log('Arvostelu:', review);
+      console.log('Arvosana:', rating);
 
-  return (
-    <div className="movie-results-wrapper">
-      {movies.map((movie) => (
-        <div key={movie.id} className="movie-result">
-          <img src={movie.poster_path} alt={movie.title} />
-          <div className="movie-info">
-            <h3>{movie.title}</h3>
-            <p>{movie.overview}</p>
+      axios.post('http://localhost:3001/review/addReview', {
+        media_type: 'movie',
+        tmdb_id: movieId,
+        rating: rating,
+        review_text: review
+      }, {
+        headers: {
+          'Authorization': `Bearer ${jwtToken.value}`
+        }
+      }).then(response => {
+        console.log('Arvostelu lisätty:', response.data.message);
+      }).catch(error => {
+        console.error('Virhe arvostelun lisäämisessä:', error);
+      });
+      // Lähetä arvostelu backendiin...
+      // Tyhjennä arvostelukentät
+      setReviews({ ...reviews, [movieId]: '' });
+      setRatings({ ...ratings, [movieId]: 0 });
+    };
+
+
+    return (
+      <div className="movie-results-wrapper">
+        {movies.map((movie) => (
+          <div key={movie.id} className="movie-result">
+            <img src={movie.poster_path} alt={movie.title} />
+            <div className="movie-info">
+              <h3>{movie.title}</h3>
+              <p>{movie.overview}</p>
+            </div>
+            <div>
+              {showChoices && (
+                <select onChange={(e) => SetChoice(e.target.value)}>
+                  <option value="Select">Select</option>
+                  <option value="Favorite">Favorite</option>
+                  {createdGroups.map((group) => (
+                    <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
+                  ))}
+                  {joinedGroups.map((group) => (
+                    <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
+                  ))}
+                  <option value="WriteReview">Write Review</option>
+                </select>
+              )}
+              {(Choice !== 'Favorite' && Choice !== 'WriteReview' && Choice !== 'Select' && Choice !== '') && (
+                <button onClick={() => handleAdd(movie, Choice)}>Save to group</button>
+              )}
+              {Choice === 'Favorite' && (
+                <button onClick={() => handleAdd(movie, Choice)}>Add to Favorite</button>
+              )}
+              {Choice === 'WriteReview' && (
+                <>
+                  <textarea
+                    placeholder="Write your review here"
+                    value={reviews[movie.id] || ''}
+                    onChange={(e) => handleReviewChange(movie.id, e.target.value)}
+                  />
+                  <input
+                    type="number"
+                    placeholder="Rating (0-5)"
+                    min="0"
+                    max="5"
+                    value={ratings[movie.id] || ''}
+                    onChange={(e) => handleRatingChange(movie.id, e.target.value)}
+                  />
+                  <button onClick={() => handleSubmitReview(movie.id)}>Submit Review</button>
+                </>
+              )}
+            </div>
           </div>
-          <div>
-            {showChoices && (     
-            <><select value={Choice} onChange={(e) => SetChoice(e.target.value)}>
-            <option value="Select">Select</option>
-            <option value="Favorite">Favorite</option>
-            {createdGroups.map(group => (
-              <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
-            ))}
-            {joinedGroups.map(group => (
-              <option key={group.group_id} value={group.group_id}>{group.group_name}</option>
-            ))}
-            </select><button onClick={() => handleAdd(movie, Choice)}>Add</button></>
-            )} 
-          </div>
-
-        </div>
-      ))}
-    </div>
-  );
-};
-
+        ))}
+      </div>
+    );
+  };
 
 const Movies = () => {
   const [query, setQuery] = useState('');
