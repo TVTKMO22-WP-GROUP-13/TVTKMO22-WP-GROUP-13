@@ -26,12 +26,14 @@ export default function YourReviews() {
         const allReviews = await Promise.all(
           reviewsData.reviews.map(async (review) => {
             //console.log("review", review)
-            const { media_id, rating, review_text } = review
+            const { media_id, rating, review_text, user_id, review_id } = review
             const mediaResponse = await axios.get(`http://localhost:3001/media/getMedia/${media_id}`)
             const { tmdb_id, media_type } = mediaResponse.data.media
             const mediaDetails = media_type === 'movie' ? 'tmdb/movie' : 'tmdb/tv'
             const mediaResponseDetails = await axios.get(`http://localhost:3001/${mediaDetails}/${tmdb_id}`)
             const responseData = mediaResponseDetails.data
+            const usernameResponse = await axios.get(`http://localhost:3001/user_data/user_id?user_id=${user_id}` )
+            const username = usernameResponse.data.user.username
             return {
               id: responseData.id,
               title: responseData.title || responseData.name,
@@ -40,6 +42,8 @@ export default function YourReviews() {
               number_of_seasons: responseData.number_of_seasons,
               rating,
               review_text,
+              username,
+              review_id
             }
           })
         )
@@ -66,7 +70,7 @@ export default function YourReviews() {
           review_id,
         },
       })
-      setReviews((reviews) => reviews.filter((review) => review.id !== review_id))
+      setReviews((reviews) => reviews.filter((review) => review.review_id !== review_id))
     } catch (error) {
       console.error('Error deleting review:', error)
       setError('Failed to delete review')
@@ -82,11 +86,11 @@ export default function YourReviews() {
   }
 
   return (
-    <div className="wrapperi">
+    <div className="wrapperI">
       <h1>Reviews</h1>
       {error && <div>{error}</div>}
       <ul>
-        <div className="flex-container">
+        <div className="flex-containerI">
         {reviews.map((review) => (
           <div key={review.id} className="review">
             <div>
@@ -96,9 +100,10 @@ export default function YourReviews() {
               <h2>{review.title}</h2>
               <p>Release Date: {review.release_date}</p>
               <p>Number of Seasons: {review.number_of_seasons}</p>
+              <p>By: {review.username}</p>
               <p>Rating: {review.rating}</p>
               <p>Review: {review.review_text}</p>
-              <button onClick={() => handleDeleteReview(review.id)}>Delete Review</button>
+              <button onClick={() => handleDeleteReview(review.review_id)}>Delete Review</button>
             </div>
           </div>
         ))}

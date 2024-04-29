@@ -130,8 +130,8 @@ router.post('/addReview', auth, async (req, res) => {
 });
 
 // endpoint to delete a review
-router.delete('/deleteReview/:review_id', async (req, res) => {
-    const { review_id } = req.params;
+router.delete('/deleteReview', async (req, res) => {
+    const  review_id  = req.body.review_id;
 
     try {
         await deleteReview(review_id);
