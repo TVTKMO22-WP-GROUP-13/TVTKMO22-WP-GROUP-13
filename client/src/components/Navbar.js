@@ -40,7 +40,7 @@ export default function Navbar() {
         <li><a> Reviews</a>
           <ul className="dropdownmenu">
           <li>
-            <Link to="/ReviewsSearch">Reviews search</Link>
+            <Link to="/ReviewsSearch">Reviews</Link>
             </li>
           </ul>
         </li>
