@@ -5,8 +5,6 @@ const Footer = () => {
 
     return (
         <div className="footer">
-            <h2> tässä jotain footer</h2>
-
             </div>
     );
 

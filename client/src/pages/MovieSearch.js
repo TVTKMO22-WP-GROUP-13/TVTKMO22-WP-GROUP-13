@@ -59,93 +59,113 @@ const MovieResults = ({ movies }) => {
         const groupData = groupType === 'created' ? response.data.groups : response.data.groupsJoined
         if (groupData && groupData.length > 0) {
           setUserGroups(groupData)
-         
+
         } else {
           console.log(`No ${groupType} groups found`)
-        }    
+        }
       } catch (error) {
         console.error(`Error fetching ${groupType} groups:`, error)
       }
     }
-   
-    if(jwtToken.value) {
+
+    if (jwtToken.value) {
       GetGroups('http://localhost:3001/user_group/getUserCreatedGroups', setCreatedGroups, 'created');
       GetGroups('http://localhost:3001/group_member/groups_joined', setJoinedGroups, 'joined');
       setshowChoices(true)
     } else {
       console.log("no token")
       setshowChoices(false)
-     
+
     }
   }, [])
   const handleAdd = async (movieData, Choice) => {
     const { id } = movieData
-        console.log("SelectedMovie:", id)
-        console.log("SelectedChoice:", Choice)
-        if(Choice === 'Favorite') {
-        console.log("Add to favorites")
-            axios.post(`http://localhost:3001/list_entry/addEntry`, {
-            tmdb_id: id,
-            media_type: 'movie',
-            list_type: 'Favorite'
-          }, 
-          {
-            headers: {
-              'Authorization': `Bearer ${jwtToken.value}`
-            }
-          }).then(response => {
-            console.log("Success:", response.data.message)
-          } )
-        } else if (Choice === 'Select' && Choice === ''){
-          console.log("No nothing")
-          alert("Please select a choice before adding")
+    console.log("SelectedMovie:", id)
+    console.log("SelectedChoice:", Choice)
+    if (Choice === 'Favorite') {
+      console.log("Add to favorites")
+      axios.post(`http://localhost:3001/list_entry/addEntry`, {
+        tmdb_id: id,
+        media_type: 'movie',
+        list_type: 'Favorite'
+      },
+        {
+          headers: {
+            'Authorization': `Bearer ${jwtToken.value}`
+          }
+        }).then(response => {
+          console.log("Success:", response.data.message)
+        })
+    }
+    else if (Choice === 'Select' && Choice === '') {
+
+      alert("Please select a group or Favorite to add the movie to.")
+
+    }
+    else {
+      console.log("Add to group")
+      axios.post(`http://localhost:3001/list_entry/addEntry`, {
+        tmdb_id: id,
+        media_type: 'movie',
+        list_type: 'GroupMedia',
+        group_id: Choice
+      }, {
+        headers: {
+          'Authorization': `Bearer ${jwtToken.value}`
         }
-        else {
-          console.log("Add to group")
-          axios.post(`http://localhost:3001/list_entry/addEntry`, {
-            tmdb_id: id,
-            media_type: 'movie',
-            list_type: 'GroupMedia',
-            group_id: Choice
-          }, {
-            headers: {
-              'Authorization': `Bearer ${jwtToken.value}`
-            }
-          }).then(response => {
-            console.log("Success:", response.data.message)
-          } )
-        }
+      }).then(response => {
+        console.log("Success:", response.data.message)
+      })
+    }
+  }
+  // Käsittelijät arvostelun ja arvostelunumeron päivittämiseen
+  const handleReviewChange = (movieId, text) => {
+    setReviews({ ...reviews, [movieId]: text });
+  };
+
+  const handleRatingChange = (movieId, rating) => {
+    setRatings({ ...ratings, [movieId]: rating });
+  };
+
+  // Käsittelijä arvostelun lähettämiselle
+  const handleSubmitReview = async (movieId) => {
+    const review = reviews[movieId];
+    const rating = ratings[movieId];
+    console.log('Arvostelu:', review);
+    console.log('Arvosana:', rating);
+
+    axios.post('http://localhost:3001/review/addReview', {
+      media_type: 'movie',
+      tmdb_id: movieId,
+      rating: rating,
+      review_text: review
+    }, {
+      headers: {
+        'Authorization': `Bearer ${jwtToken.value}`
       }
-          // Käsittelijät arvostelun ja arvostelunumeron päivittämiseen
-    const handleReviewChange = (movieId, text) => {
-      setReviews({ ...reviews, [movieId]: text });
-    };
-  
-    const handleRatingChange = (movieId, rating) => {
-      setRatings({ ...ratings, [movieId]: rating });
-    };
-  
-    // Käsittelijä arvostelun lähettämiselle
-    const handleSubmitReview = async (movieId) => {
-      const review = reviews[movieId];
-      const rating = ratings[movieId];
-      // Lähetä arvostelu backendiin...
-      // Tyhjennä arvostelukentät
-      setReviews({ ...reviews, [movieId]: '' });
-      setRatings({ ...ratings, [movieId]: 0 });
-    };
+    }).then(response => {
+      console.log('Arvostelu lisätty:', response.data.message);
+    }).catch(error => {
+      console.error('Virhe arvostelun lisäämisessä:', error);
+    });
+    // Lähetä arvostelu backendiin...
+    // Tyhjennä arvostelukentät
+    setReviews({ ...reviews, [movieId]: '' });
+    setRatings({ ...ratings, [movieId]: 0 });
+  };
 
 
-    return (
-      <div className="movie-results-wrapper">
-        {movies.map((movie) => (
-          <div key={movie.id} className="movie-result">
-            <img src={movie.poster_path} alt={movie.title} />
-            <div className="movie-info">
-              <h3>{movie.title}</h3>
-              <p>{movie.overview}</p>
-            </div>
-            <div>
+  return (
+    <div className="movie-results-wrapper">
+      {movies.map((movie) => (
+        <div key={movie.id} className="movie-result">
+          <img src={movie.poster_path} alt={movie.title} />
+          <div className="movie-info">
+            <h3>{movie.title}</h3>
+            <p>{movie.overview}</p>
+          </div>
+          <div>
+            {showChoices && (
               <select onChange={(e) => SetChoice(e.target.value)}>
                 <option value="Select">Select</option>
                 <option value="Favorite">Favorite</option>
@@ -157,37 +177,37 @@ const MovieResults = ({ movies }) => {
                 ))}
                 <option value="WriteReview">Write Review</option>
               </select>
-              {Choice === createdGroups && joinedGroups (
-            <button onClick={() => handleAdd(movie, Choice)}>Add</button>
-          )}
-              {Choice === 'Favorite' && (
-                <button onClick={() => handleAdd(movie, Choice)}>Add to Favorite</button>
-              )}
-              {Choice === 'WriteReview' && (
-                <>
-                  <textarea
-                    placeholder="Write your review here"
-                    value={reviews[movie.id] || ''}
-                    onChange={(e) => handleReviewChange(movie.id, e.target.value)}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Rating (0-5)"
-                    min="0"
-                    max="5"
-                    value={ratings[movie.id] || ''}
-                    onChange={(e) => handleRatingChange(movie.id, e.target.value)}
-                  />
-                  <button onClick={() => handleSubmitReview(movie.id)}>Submit Review</button>
-                </>
-              )}
-            </div>
+            )}
+            {(Choice !== 'Favorite' && Choice !== 'WriteReview' && Choice !== 'Select' && Choice !== '') && (
+              <button onClick={() => handleAdd(movie, Choice)}>Save to group</button>
+            )}
+            {Choice === 'Favorite' && (
+              <button onClick={() => handleAdd(movie, Choice)}>Add to Favorite</button>
+            )}
+            {Choice === 'WriteReview' && (
+              <>
+                <textarea
+                  placeholder="Write your review here"
+                  value={reviews[movie.id] || ''}
+                  onChange={(e) => handleReviewChange(movie.id, e.target.value)}
+                />
+                <input
+                  type="number"
+                  placeholder="Rating (0-5)"
+                  min="0"
+                  max="5"
+                  value={ratings[movie.id] || ''}
+                  onChange={(e) => handleRatingChange(movie.id, e.target.value)}
+                />
+                <button onClick={() => handleSubmitReview(movie.id)}>Submit Review</button>
+              </>
+            )}
           </div>
-        ))}
-      </div>
-    );
-  };
-
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const Movies = () => {
   const [query, setQuery] = useState('');
@@ -224,9 +244,9 @@ const Movies = () => {
         });
       }
       console.log(response.data);
-      console.log('haku:',query);
-      console.log('haku:',genreQuery); 
-      setMovies(response.data); 
+      console.log('haku:', query);
+      console.log('haku:', genreQuery);
+      setMovies(response.data);
     } catch (error) {
       console.error('Hakuvirhe:', error);
     }
@@ -291,8 +311,8 @@ const Movies = () => {
 
         <button className="search-button" onClick={handleSearch}>Search</button>
       </div>
-      <MovieResults movies={movies}/>
-         
+      <MovieResults movies={movies} />
+
     </div>
   );
 };
