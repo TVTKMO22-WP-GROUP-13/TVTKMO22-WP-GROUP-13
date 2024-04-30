@@ -29,6 +29,7 @@ export default function YourReviews() {
             const { media_id, rating, review_text, user_id, review_id } = review
             const mediaResponse = await axios.get(`http://localhost:3001/media/getMedia/${media_id}`)
             const { tmdb_id, media_type } = mediaResponse.data.media
+            console.log("mediaResponse", mediaResponse.data.media)
             const mediaDetails = media_type === 'movie' ? 'tmdb/movie' : 'tmdb/tv'
             const mediaResponseDetails = await axios.get(`http://localhost:3001/${mediaDetails}/${tmdb_id}`)
             const responseData = mediaResponseDetails.data
@@ -43,7 +44,8 @@ export default function YourReviews() {
               rating,
               review_text,
               username,
-              review_id
+              review_id,
+              mediaDetails : mediaResponse.data.media.media_type
             }
           })
         )
@@ -94,7 +96,9 @@ export default function YourReviews() {
         {reviews.map((review) => (
           <div key={review.id} className="review">
             <div>
+            <a href={`https://www.themoviedb.org/${review.mediaDetails}/${review.id}`} target="_blank" rel="noopener noreferrer">
               <img src={`https://image.tmdb.org/t/p/w185${review.poster_path}`} alt={review.title} />
+              </a>
             </div>
             <div className="review-content">
               <h2>{review.title}</h2>

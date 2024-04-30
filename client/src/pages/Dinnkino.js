@@ -229,6 +229,7 @@ const handleSelectedShowtime = (showtimeItem, selectedGroupId) => {
 
 return (
   <div className="everything-wrapper">
+    <h1>Dinnkino</h1>
     <div className='dropdown'>
       {/* Kino dropdown */}
       <select value={selectedKino} onChange={(e) => setSelectedKino(e.target.value)}>
