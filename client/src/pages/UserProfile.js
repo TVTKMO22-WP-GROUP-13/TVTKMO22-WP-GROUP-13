@@ -15,16 +15,8 @@ export default function UserProfile() {
     <>
     <div className='Konkka'>
     <div className='KolmeEkaa'>
-    <div className='Kaikki' id='UserProfileAndAva'>
-        <p>User xxx Profile</p>
-    </div>
     <div className='Kaikki' id='ReviewsDiv'> 
         <p> <Link to="/YourReviews">Reviews</Link></p>
-        <p id='Review'> Review 1</p>
-        <p id='Review'> Review 2</p>
-        <p id='Review'> Review 3</p>
-        <p id='Review'> Review 4</p>
-        <p id='Review'> Review 5</p>
     </div>
     <div className='Kaikki' id='Listat'>
         <p id='Lista'><Link to="/UserCompletedPages">Completed </Link>{Num}</p>
@@ -36,26 +28,16 @@ export default function UserProfile() {
     <div className='ToisetKolme'>
     <div className='Kaikki' id='Favourites'> 
     <p> <Link to="/UserFavorites">Favourites</Link></p>
-    <p id='Favori'> favo 1</p>
-    <p id='Favori'> favo 2</p>
-    <p id='Favori'> favo 3</p>
-    <p id='Favori'> favo 4</p>
-    <p id='Favori'> favo 5</p>
+
  
     </div>
     <div className='Kaikki' id='LastWatched'> 
     <p> <Link to="/UserLastWatched">Last watched</Link></p>
-    <p id='Lwatched'> Movie 1</p>
-    <p id='Lwatched'> Movie 2</p>
-    <p id='Lwatched'> Movie 3</p>
-    <p id='Lwatched'> Movie 4</p>
+
 
     </div>
     <div className='Kaikki' id='Groups'>
     <p>Groups</p> 
-    <p id='GroupsID'> Group 1</p>
-    <p id='GroupsID'> Group 2</p>
-    <p id='GroupsID'> Group 3</p>
     <Link to='/MakeGroup'>
     <button id='MakeGroupButton' type='button'> Make Group</button>
     </Link>
