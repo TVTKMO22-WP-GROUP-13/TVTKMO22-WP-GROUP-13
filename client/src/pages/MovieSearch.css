@@ -20,11 +20,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    margin-left: 20px; /* Adjust as needed */
+    margin-left: 20px;
   }
   
   .movie-result {
-    width: 200px; /* Or any other width you prefer */
+    width: 200px;
     margin-bottom: 20px;
   }
   .movie-result img {

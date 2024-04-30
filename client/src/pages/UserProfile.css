@@ -1,59 +1,82 @@
-.Konkka{
+:root {
+    --primary-color: #22438c;
+    --secondary-color: #b84545;
+    --accent-color: rgb(46, 46, 117);
+    --font-size-large: 25px; 
+    --font-size-medium: 16px; 
+    --font-size-small: 14px;
+    --spacing-small: 8px; 
+    --spacing-medium: 16px;
+    --spacing-large: 24px; 
+}
+
+.Konkka {
     display: flex;
     flex-direction: column;
     border: 5px solid black;
     height: 50vh;
     justify-content: space-evenly;
-
-
 }
 
-.Kaikki{
+.Kaikki {
     height: 200px;
     width: 200px;
     text-align: center;
-    font-size: large;
+    justify-content: center;
+    font-size: var(--font-size-large);
     border-radius: 10px;
     border: 1px solid black;
-    margin-left: 10px;
-    
+    margin-left: var(--spacing-medium);
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    transition: background-color 0.3s ease; 
 }
-.KolmeEkaa, .ToisetKolme{
+
+.Kaikki:hover {
+    background-color: var(--accent-color);
+}
+
+.KolmeEkaa, .ToisetKolme {
     display: flex;
-    column-gap: 20em;
+    gap: var(--spacing-large);
     justify-content: center;
-
 }
+
 .Kaikki a {
-    
     text-decoration: none;
+    color: var(--secondary-color);
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
-#Review{
-    font-size: auto;
-    margin-top: 0.5em;
+#ReviewsDiv {
+    background-color: var(--primary-color);
 }
 
-#Lista{
-    font-size: 15px;
-    padding: 20px;
-    text-align: start;
-    font-weight: bold;
-
+#Listat {
+    background-color: var(--primary-color);
 }
 
-#Favori{
-    font-size: auto;
-    margin-top: 0.5em;
-    text-align: start;
-    
+#Favourites {
+    background-color: var(--primary-color);
+    padding: var(--spacing-small);
 }
-#MakeGroupButton{
+
+#LastWatched {
+    background-color: var(--primary-color);
+}
+
+#Groups {
+    background-color: var(--primary-color);
+}
+
+#MakeGroupButton {
     display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #dd1313;
-    background-color: #4CAF50;
+    padding: var(--spacing-small) var(--spacing-medium);
+    font-size: var(--font-size-medium);
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -62,40 +85,11 @@
     transition: background-color 0.3s ease;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
-#MakeGroupButton:hover{
-    background-color: #033f06;
 
-}
-#ComplitedA{
-    background-color: rgb(255, 0, 0);
+#MakeGroupButton:hover {
+    background-color: var(--accent-color);
 }
 
-#UserProfileAndAva{
-    background-color: blue;
-    
-    
-     
-}
-#ReviewsDiv{
-    background-color: yellow;
-    
-
-}
-#Listat {
-    background-color: aqua;
-
-}
-#Favourites{
-    background-color: rgb(212, 165, 10);
-    padding: 8px;
-    
-    
-}
-#LastWatched{
-    background-color: red;
-    
-}
-#Groups{
-    background-color: green;
-   
+#CompletedA {
+    background-color: var(--primary-color);
 }
