@@ -157,11 +157,13 @@ const MovieResults = ({ movies }) => {
     <div className="movie-results-wrapper">
       {movies.map((movie) => (
         <div key={movie.id} className="movie-result">
+        <a href={`https://www.themoviedb.org/movie/${movie.id}`} target="_blank" rel="noopener noreferrer">
           <img src={movie.poster_path} alt={movie.title} />
           <div className="movie-info">
             <h3>{movie.title}</h3>
             <p>{movie.overview}</p>
           </div>
+        </a>
           <div>
             {showChoices && (
               <select onChange={(e) => SetChoice(e.target.value)}>
