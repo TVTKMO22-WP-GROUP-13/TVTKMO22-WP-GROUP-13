@@ -38,24 +38,28 @@ Ohjelman käynnistäminen vaatii seuraavat kirjastot ja riippuvuudet:
 * multer
 * mocha
 
-## Suunnitelma
-### Nettisivun suunnitelma
+## Käyttöliittymä
 
 Käyttöliittymän luuranko on suunniteltu käyttäen Wireframe suunnittelusivua. 
 
 Käyttöliittymän etusivun (kuva 1) yläpalkista löytyy valikot, josta käyttäjä pääsee navigoimaan eri sivuille ja kirjautumaan sisään. Jokainen valikon valinta aukaisee asianmukaisen sivun, jolla käyttäjä pääsee käyttämään sivun toiminnallisuuksia. 
 
-![image](https://github.com/TVTKMO22-WP-GROUP-13/TVTKMO23-WP-GROUP-13/assets/143520681/f721e6a4-719c-4b73-946e-d593203230cb)
+![image](https://github.com/TVTKMO22-WP-GROUP-13/TVTKMO23-WP-GROUP-13/assets/143520681/72a4223a-0d84-4bf9-a7f1-6b71434f75d5)
+
+
 KUVA 1: Etusivu
 
 Esimerkiksi sarjojen ja elokuvien haku (kuva 2) tapahtuu siihen kuuluvalla sivulla. Haku hyödyntää TMBD-rajapintaa ja näyttää haun tulokset samalla sivulla käyttäen hakuun annettuja parametrejä.
 
-![image](https://github.com/TVTKMO22-WP-GROUP-13/TVTKMO23-WP-GROUP-13/assets/143520681/ae759617-b164-4053-9c08-953a3d7dfffd)
-KUVA 2: Kirjautuminen ja käyttäjän luonti
+![image](https://github.com/TVTKMO22-WP-GROUP-13/TVTKMO23-WP-GROUP-13/assets/143520681/d58ff33e-6764-47e8-8636-f3dce953debd)
+
+KUVA 2: Elokuvien suodatettu haku
 
 Kuvassa 3 viitataan ryhmän sivuille, jossa on näkyvillä ryhmän jäsenet, tallennetut elokuvat, sarjat ja näytösajat. 
 
-![image](https://github.com/TVTKMO22-WP-GROUP-13/TVTKMO23-WP-GROUP-13/assets/143520681/9fdcca01-275a-4e0e-8c91-fcc96d9d6f4d)
+![image](https://github.com/TVTKMO22-WP-GROUP-13/TVTKMO23-WP-GROUP-13/assets/143520681/a349da04-f7db-4fb6-b3a9-c68f0e4c84d2)
+
+
 KUVA 3: Ryhmäsivu
 
 
@@ -65,11 +69,11 @@ Ohjelman saa käyttöön käynnistämällä käyttöliittymän ja taustajärjest
 
 ### Taustajärjestelmän käynnistäminen
 
-Avaa terminaali ja siirry oikeaan hakemistoon komennolla cd ./backend/, tai vaihtoehtoisesti avaa terminaali suoraan ./backend/ hakemistoon. Taustajärjestelmä käynnistyy antamalla samaan terminaaliin komennon npm start. 
+Avaa terminaali ja siirry oikeaan hakemistoon komennolla cd ./backend/ tai vaihtoehtoisesti avaa terminaali suoraan ./backend/ hakemistoon. Taustajärjestelmä käynnistyy antamalla samaan terminaaliin komennon npm start. 
 
 ### Käyttöliittymän käynnistäminen
 
-Avaa uusi terminaali ja siirry oikeaan hakemistoon cd ./client/, tai vaihtoehtoisesti avaa terminaali suoraan ./client/ hakemistoon. Käyttöliittymä käynnistyy antamalla samaan terminaaliin komennon npm start. 
+Avaa uusi terminaali ja siirry oikeaan hakemistoon cd ./client/ tai vaihtoehtoisesti avaa terminaali suoraan ./client/ hakemistoon. Käyttöliittymä käynnistyy antamalla samaan terminaaliin komennon npm start. 
 
 ### REST dokumentaatio
 
