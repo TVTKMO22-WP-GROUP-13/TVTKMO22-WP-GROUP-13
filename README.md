@@ -77,9 +77,9 @@ Avaa uusi terminaali ja siirry oikeaan hakemistoon cd ./client/ tai vaihtoehtois
 
 ### REST dokumentaatio
 
-https://documenter.getpostman.com/view/30843162/2sA3JDfjTT
+[Linkki Postman-dokumentaatioon](https://documenter.getpostman.com/view/30843162/2sA3JDfjTT)
 
 ### Projektinhallinta (Front UI Design & DB ER-Diagram)
 
-https://oamk-my.sharepoint.com/:f:/g/personal/o7sajo00_students_oamk_fi/EkftUUBz0rdAqTW4QF-TI2oBJWmyq7o_KsI1M3q83haJmw?e=tNRHpn
+[Linkki projektin käyttöliittymän ja tietokannan suunnitelmiin](https://oamk-my.sharepoint.com/:f:/g/personal/o7sajo00_students_oamk_fi/EkftUUBz0rdAqTW4QF-TI2oBJWmyq7o_KsI1M3q83haJmw?e=tNRHpn)
 
